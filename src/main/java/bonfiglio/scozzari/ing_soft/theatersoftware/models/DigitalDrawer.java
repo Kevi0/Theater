@@ -19,11 +19,9 @@ public class DigitalDrawer {
     private Long id;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "artist_id")
     private Artist artist;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "theater_id")
     private Theater theater;
 
     @OneToMany(mappedBy = "digitalDrawer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

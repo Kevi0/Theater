@@ -170,7 +170,7 @@ public class Artist {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "artist_digital_drawer",
+            name = "artist_agency",
             joinColumns = { @JoinColumn(name = "artist_id") },
             inverseJoinColumns = { @JoinColumn(name = "agency_id") }
     )

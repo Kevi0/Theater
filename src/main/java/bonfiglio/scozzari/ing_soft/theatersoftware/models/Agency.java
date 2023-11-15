@@ -45,6 +45,6 @@ public class Agency{
     @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserAgency> userAgencies = new HashSet<>();
 
-    @ManyToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "agencies", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Artist> artists = new HashSet<>();
 }
