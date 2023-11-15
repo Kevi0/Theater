@@ -1,6 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.UserRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,6 +46,16 @@ public class User implements UserDetails {
     @Column
     @Enumerated(EnumType.STRING)
     private UserRoles role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Artist artist;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserAgency> userAgencies = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserTheater> userTheaters = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

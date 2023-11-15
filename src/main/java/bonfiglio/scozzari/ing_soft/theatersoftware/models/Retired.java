@@ -17,4 +17,7 @@ public class Retired {
 
     @Column
     private Boolean isOver65;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Artist artist;
 }

@@ -1,9 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,4 +20,7 @@ public class Typology {
 
     @Column
     private String nameTypology;
+
+    @ManyToMany(mappedBy = "typologies", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Artist> artists = new HashSet<>();
 }

@@ -18,4 +18,7 @@ public class Student implements Work {
 
     @Column
     private String studies;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Artist artist;
 }

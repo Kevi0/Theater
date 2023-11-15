@@ -20,4 +20,7 @@ public class PermanentWork {
 
     @Column
     private Boolean isRevenueOver5000;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Artist artist;
 }

@@ -124,4 +124,55 @@ public class Artist {
     @Column
     @Enumerated(EnumType.STRING)
     private Occupation occupation;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private User user;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Retired retired;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private TemporaryWork temporaryWork;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private PermanentWork permanentWork;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Unemployed unemployed;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Student student;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private BankAccountIT bankAccountIT;
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private BankAccountForeign bankAccountForeign;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "artist_typology",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = { @JoinColumn(name = "typology_id") }
+    )
+    private Set<Typology> typologies = new HashSet<>();
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "artist_opera",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = { @JoinColumn(name = "opera_id") }
+    )
+    private Set<Opera> operas = new HashSet<>();
+
+    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private DigitalDrawer digitalDrawer;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "artist_digital_drawer",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = { @JoinColumn(name = "agency_id") }
+    )
+    private Set<Agency> agencies = new HashSet<>();
 }

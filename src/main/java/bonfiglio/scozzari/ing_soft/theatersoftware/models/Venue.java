@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -26,4 +29,10 @@ public class Venue {
 
     @Column
     private Long capacity;
+
+    @ManyToMany(mappedBy = "venues", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Theater> theaters = new HashSet<>();
+
+    @OneToOne(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Opera opera;
 }

@@ -24,4 +24,7 @@ public class BankAccountForeign implements BankAccount {
 
     @Column
     private String bicSwift;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Artist artist;
 }

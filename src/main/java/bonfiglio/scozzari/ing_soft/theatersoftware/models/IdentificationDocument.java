@@ -15,8 +15,9 @@ import java.util.Date;
 public class IdentificationDocument {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_id", referencedColumnName = "id")
+    private Document document;
 
     @Enumerated(EnumType.STRING)
     @Column

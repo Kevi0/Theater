@@ -14,8 +14,9 @@ import java.util.Date;
 public class ResidencePermit {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "document_id", referencedColumnName = "id")
+    private Document document;
 
     @Column
     private String documentNumber;

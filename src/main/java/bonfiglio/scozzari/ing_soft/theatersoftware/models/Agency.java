@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -40,4 +41,10 @@ public class Agency{
 
     @Column
     private String webSite;
+
+    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<UserAgency> userAgencies = new HashSet<>();
+
+    @ManyToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Artist> artists = new HashSet<>();
 }

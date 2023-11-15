@@ -1,13 +1,19 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Season {
 
     @Id
@@ -58,4 +64,11 @@ public class Season {
 
     @Column
     private BigDecimal travelTransportAccommodationCosts;
+
+    @ManyToMany(mappedBy = "seasons",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Set<Opera> operas = new HashSet<>();
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "theater_id")
+    private Theater theater;
 }

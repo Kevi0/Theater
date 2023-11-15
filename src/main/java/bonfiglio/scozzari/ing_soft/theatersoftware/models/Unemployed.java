@@ -17,4 +17,7 @@ public class Unemployed {
 
     @Column
     private String allowance;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Artist artist;
 }

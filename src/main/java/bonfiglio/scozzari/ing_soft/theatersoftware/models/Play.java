@@ -22,4 +22,8 @@ public class Play {
 
     @Column
     private LocalDate datePlay;
+
+    @ManyToOne
+    @JoinColumn(name = "opera_id")
+    private Opera opera;
 }
