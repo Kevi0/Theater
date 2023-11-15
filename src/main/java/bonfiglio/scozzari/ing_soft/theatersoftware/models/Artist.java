@@ -5,7 +5,6 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Occupation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.StateOfCitizenship;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Taxation;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -125,7 +124,7 @@ public class Artist {
     @Enumerated(EnumType.STRING)
     private Occupation occupation;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private User user;
 
     @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -170,7 +169,7 @@ public class Artist {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
-            name = "artist_digital_drawer",
+            name = "artist_agency",
             joinColumns = { @JoinColumn(name = "artist_id") },
             inverseJoinColumns = { @JoinColumn(name = "agency_id") }
     )

@@ -17,25 +17,25 @@ public abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(columnDefinition = "BINARY(16)", updatable = false, nullable = false)
-    private UUID id;
+    private UUID uuid;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id);
+        return Objects.equals(uuid, that.uuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(uuid);
     }
 
     @Override
     public String toString() {
         return "BaseEntity{" +
-                "id=" + id +
+                "uuid=" + uuid +
                 '}';
     }
 }
