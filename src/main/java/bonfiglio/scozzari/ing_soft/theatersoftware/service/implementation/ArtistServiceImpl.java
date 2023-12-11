@@ -22,7 +22,8 @@ import java.util.Set;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ArtistServiceImpl implements ArtistService {
+public class
+ArtistServiceImpl implements ArtistService {
 
     private final UserRepository userRepository;
     private final TypologyRepository typologyRepository;
