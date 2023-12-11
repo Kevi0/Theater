@@ -1,4 +1,4 @@
-package bonfiglio.scozzari.ing_soft.theatersoftware.models.base;
+package bonfiglio.scozzari.ing_soft.theatersoftware.models.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
@@ -35,7 +35,12 @@ public class BaseEntityAudit extends BaseEntity implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         BaseEntityAudit that = (BaseEntityAudit) o;
-        return Objects.equals(createdBy, that.createdBy) && Objects.equals(updatedBy, that.updatedBy) && Objects.equals(deletedBy, that.deletedBy) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(deletedAt, that.deletedAt);
+        return Objects.equals(createdBy, that.createdBy)
+                && Objects.equals(updatedBy, that.updatedBy)
+                && Objects.equals(deletedBy, that.deletedBy)
+                && Objects.equals(createdAt, that.createdAt)
+                && Objects.equals(updatedAt, that.updatedAt)
+                && Objects.equals(deletedAt, that.deletedAt);
     }
 
     @Override

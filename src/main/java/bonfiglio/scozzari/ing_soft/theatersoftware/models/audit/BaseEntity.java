@@ -1,4 +1,4 @@
-package bonfiglio.scozzari.ing_soft.theatersoftware.models.base;
+package bonfiglio.scozzari.ing_soft.theatersoftware.models.audit;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

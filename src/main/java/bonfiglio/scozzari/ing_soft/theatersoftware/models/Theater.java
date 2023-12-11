@@ -1,6 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Observers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Theater{
+public class Theater implements Observers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,4 +69,8 @@ public class Theater{
     private Set<DigitalDrawer> digitalDrawers = new HashSet<>();
 
 
+    @Override
+    public void update() {
+
+    }
 }

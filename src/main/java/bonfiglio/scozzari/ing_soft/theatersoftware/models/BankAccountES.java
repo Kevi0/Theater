@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankAccountForeign implements BankAccount {
+public class BankAccountES implements BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

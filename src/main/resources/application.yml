@@ -1,9 +1,11 @@
 spring:
+
   datasource:
     url: jdbc:mysql://localhost:3306/theater?createDatabaseIfNotExist=true
     username: kevin
     password: kevin12345.
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -15,9 +17,34 @@ spring:
     database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: false
     defer-datasource-initialization: true
+
   sql:
     init:
       data-locations: classpath:data.sql
       platform: mysql
       continue-on-error: true
       mode: always
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kscozzari03@gmail.com
+    password: wahk qnwq tmrw gilt
+    default-encoding: UTF-8
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+        connection:
+          timeout: 5000  # Timeout per la connessione al server SMTP
+          pool:
+            max-size: 10  # Numero massimo di connessioni nel pool
+            min-idle: 1   # Numero minimo di connessioni inattive nel pool
+            max-idle: 5   # Numero massimo di connessioni inattive nel pool
+    protocol: smtp
+    test-connection: false
+
+  freemarker:
+    template-loader-path: classpath:/templates

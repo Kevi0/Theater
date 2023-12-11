@@ -4,14 +4,13 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Gender;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Occupation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.StateOfCitizenship;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Taxation;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Observers;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.AssertTrue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,7 +18,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Artist {
+public class Artist{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -147,7 +146,7 @@ public class Artist {
     private BankAccountIT bankAccountIT;
 
     @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private BankAccountForeign bankAccountForeign;
+    private BankAccountES bankAccountES;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -175,4 +174,5 @@ public class Artist {
             inverseJoinColumns = { @JoinColumn(name = "agency_id") }
     )
     private Set<Agency> agencies = new HashSet<>();
+
 }
