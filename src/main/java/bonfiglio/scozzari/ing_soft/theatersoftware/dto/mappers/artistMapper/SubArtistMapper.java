@@ -2,10 +2,10 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.artistMapper;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationArtist.subRegistrationArtistDTO.SubArtistDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Artist;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Gender;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Occupation;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.StateOfCitizenship;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Taxation;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Gender;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Occupation;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.StateOfCitizenship;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Taxation;
 import org.springframework.stereotype.Component;
 
 @Component

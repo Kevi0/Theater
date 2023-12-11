@@ -1,4 +1,4 @@
-package bonfiglio.scozzari.ing_soft.theatersoftware.models.enums;
+package bonfiglio.scozzari.ing_soft.theatersoftware.enums;
 
 public enum DocumentType {
     IDENTITY_CARD,

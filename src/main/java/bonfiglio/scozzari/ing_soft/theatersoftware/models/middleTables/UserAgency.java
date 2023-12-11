@@ -2,7 +2,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.User;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.AgencyRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.AgencyRoles;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

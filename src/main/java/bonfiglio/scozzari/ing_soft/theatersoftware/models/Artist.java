@@ -1,10 +1,9 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Gender;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Occupation;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.StateOfCitizenship;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Taxation;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Observers;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Gender;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Occupation;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.StateOfCitizenship;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Taxation;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

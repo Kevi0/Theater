@@ -1,8 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.*;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Observers;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Publisher;
+import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Observers;
+import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Publisher;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.BankAccount;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.ArtistRepository;

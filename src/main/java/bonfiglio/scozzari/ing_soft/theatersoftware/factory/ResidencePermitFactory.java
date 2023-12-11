@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.factory;
 
-import ing_soft.bonfiglio.scozzari.Ing_Soft.model.Document;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.Document;
 
 public class ResidencePermitFactory implements DocumentFactory{
     @Override

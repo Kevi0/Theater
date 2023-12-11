@@ -4,7 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.B
 import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.UserAlreadyExistsException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.User;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.UserRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.UserRoles;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.security.configuration.JwtService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.UserService;
@@ -16,7 +16,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

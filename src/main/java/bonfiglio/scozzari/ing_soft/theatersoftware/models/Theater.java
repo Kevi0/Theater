@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.observer.Observers;
+import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Observers;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

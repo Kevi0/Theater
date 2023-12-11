@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.UserRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.UserRoles;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
 import jakarta.persistence.*;

@@ -1,12 +1,11 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.enums.Art5;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Art5;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.lang.annotation.Documented;
 import java.math.BigDecimal;
 import java.util.Date;
 
