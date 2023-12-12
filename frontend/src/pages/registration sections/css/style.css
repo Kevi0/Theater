@@ -1,0 +1,49 @@
+@import '../../../configs/colors.css';
+
+h6, h5 {
+  color: var(--primary);
+  font-weight: bold !important;
+  margin-bottom: 1vh !important;
+  /*margin-top: -2vh !important;*/
+  text-align: center;
+}
+
+/* Stile quando i dati sono validi */
+/* .Mui-focused {
+    
+    border-color: green;
+  }
+  
+  
+  .Mui-error .Mui-focused {
+    border-color: red; 
+    color: red; 
+  }
+
+  .MuiInputBase-colorPrimary .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root .MuiFormLabel-colorPrimary:hover{
+    color: brown;
+  }
+  
+  .Mui-error .Mui-focused {
+    border-color: red; 
+  }
+
+  .MuiInputBase-input .MuiOutlinedInput-input .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input :hover{
+    color: black !important;
+
+  } */
+
+.Mui-error .Mui-focused {
+  border-color: black !important;
+
+}
+
+.Mui-success{
+  border-color: green !important;
+}
+
+
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input:invalid {
+  border-color: purple !important;
+}
