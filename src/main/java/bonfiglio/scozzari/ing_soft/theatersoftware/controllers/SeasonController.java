@@ -15,18 +15,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/theater")
 public class SeasonController {
-
-    public final SeasonServiceImpl seasonService;
-
-    public final SeasonMapper seasonMapper;
-
-    public ResponseEntity<String> create(
-            @RequestBody InputDTO seasonDTO
-    ) throws Exception {
-        if(seasonDTO instanceof SeasonDTO dto){
-            seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO), dto.getIdTheater());
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Season successfully created!");
-    }
-
 }

@@ -14,16 +14,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/opera")
 public class OperaController {
-
-    private final OperaServiceImpl operaService;
-
-    /*@PostMapping(value = "/add")
-    public ResponseEntity<String> create(
-            @RequestBody InputDTO operaDTO
-    ) throws Exception {
-        if(operaDTO instanceof OperaDTO dto){
-            operaService.addOpera()
-        }
-    }*/
-
 }

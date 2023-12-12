@@ -16,18 +16,4 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/venue")
 public class VenueController {
-
-    private final VenueServiceImpl venueService;
-
-    private final VenueMapper venueMapper;
-
-    @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
-            @RequestBody InputDTO venueDTO
-    ) throws Exception {
-        if(venueDTO instanceof VenueDTO dto){
-            venueService.addVenue(venueMapper.venueDTOToVenue(venueDTO), dto.getIdTheater());
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Venue successfully created!");
-    }
 }
