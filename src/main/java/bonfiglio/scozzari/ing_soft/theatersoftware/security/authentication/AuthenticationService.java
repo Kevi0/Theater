@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class AuthenticationService {
     ) throws UserAlreadyExistsException, InvalidDataException {
 
         if (userService.getUserByUsername(request.getUsername()).isPresent())
-            throw new UserAlreadyExistsException("Errore durante la registrazione: l'utente esiste già!");
+            throw new UserAlreadyExistsException("Errore durante la registrazione!");
 
         validator.validate(request);
 
@@ -53,6 +54,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .createdAt(LocalDateTime.now())
                 .role(UserRoles.USER)
                 .build();
 

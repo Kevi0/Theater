@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TemporaryWork implements Work {
+public class TemporaryWork extends BaseEntity implements Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

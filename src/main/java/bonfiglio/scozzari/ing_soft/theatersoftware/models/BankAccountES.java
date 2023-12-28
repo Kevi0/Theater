@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.BankAccount;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankAccountES implements BankAccount {
+public class BankAccountES extends BaseEntity implements BankAccount{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

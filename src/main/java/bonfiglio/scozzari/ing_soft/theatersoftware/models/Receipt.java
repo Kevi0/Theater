@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Receipt {
+public class Receipt extends BaseEntity {
 
     @Id
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

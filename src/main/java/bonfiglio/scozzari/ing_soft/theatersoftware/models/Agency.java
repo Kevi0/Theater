@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -18,7 +19,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Agency{
+public class Agency extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

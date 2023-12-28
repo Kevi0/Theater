@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Observers;
 import jakarta.persistence.*;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Theater implements Observers {
+public class Theater extends BaseEntity implements Observers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
