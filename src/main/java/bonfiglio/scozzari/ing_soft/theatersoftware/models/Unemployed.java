@@ -1,6 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Unemployed extends BaseEntity implements Work {
+public class Unemployed extends BaseEntityAudit implements Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

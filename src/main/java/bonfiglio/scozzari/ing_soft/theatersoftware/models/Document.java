@@ -1,6 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Document extends BaseEntity {
+public class Document extends BaseEntityAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

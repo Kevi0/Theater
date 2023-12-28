@@ -1,6 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Season extends BaseEntity {
+public class Season extends BaseEntityAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
