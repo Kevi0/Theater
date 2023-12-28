@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Venue extends BaseEntityAudit {
+public class Venue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

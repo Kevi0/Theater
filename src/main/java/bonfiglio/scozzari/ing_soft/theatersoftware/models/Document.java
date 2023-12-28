@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Document extends BaseEntityAudit {
+public class Document {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

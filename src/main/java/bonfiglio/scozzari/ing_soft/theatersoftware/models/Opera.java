@@ -15,7 +15,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Opera extends BaseEntityAudit {
+public class Opera {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Typology extends BaseEntityAudit {
+public class Typology {
 
     @Id
     @Column(length = 3)

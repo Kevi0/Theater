@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Invoice extends BaseEntityAudit {
+public class Invoice {
 
     @Id
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

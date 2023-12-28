@@ -20,7 +20,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Agency extends BaseEntityAudit {
+public class Agency {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

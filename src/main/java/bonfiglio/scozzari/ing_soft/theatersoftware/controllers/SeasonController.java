@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/api/theater")
+@RequestMapping("/api/season")
 public class SeasonController {
 
     private final SeasonServiceImpl seasonService;

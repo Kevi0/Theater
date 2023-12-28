@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class IdentificationDocument extends BaseEntityAudit {
+public class IdentificationDocument {
 
     @Id
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

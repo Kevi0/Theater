@@ -16,7 +16,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Season extends BaseEntityAudit {
+public class Season {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

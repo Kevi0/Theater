@@ -54,7 +54,7 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .createdAt(LocalDateTime.now())
+                //.createdAt(LocalDateTime.now())
                 .role(UserRoles.USER)
                 .build();
 

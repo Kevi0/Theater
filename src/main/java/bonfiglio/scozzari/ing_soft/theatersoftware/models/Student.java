@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Student extends BaseEntityAudit implements Work {
+public class Student implements Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

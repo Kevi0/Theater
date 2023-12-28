@@ -17,7 +17,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Theater extends BaseEntityAudit implements Observers {
+public class Theater implements Observers {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

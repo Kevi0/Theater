@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PermanentWork extends BaseEntityAudit implements Work {
+public class PermanentWork implements Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

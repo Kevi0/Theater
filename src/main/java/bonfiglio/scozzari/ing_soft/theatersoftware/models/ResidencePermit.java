@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResidencePermit extends BaseEntityAudit {
+public class ResidencePermit {
 
     @Id
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

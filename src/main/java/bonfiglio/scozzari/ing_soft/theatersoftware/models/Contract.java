@@ -15,7 +15,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Contract extends BaseEntityAudit {
+public class Contract {
 
     @Id
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

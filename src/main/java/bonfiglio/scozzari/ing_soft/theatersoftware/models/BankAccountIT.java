@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BankAccountIT extends BaseEntityAudit implements BankAccount {
+public class BankAccountIT implements BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

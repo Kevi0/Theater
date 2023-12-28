@@ -23,7 +23,7 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntityAudit implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

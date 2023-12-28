@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TemporaryWork extends BaseEntityAudit implements Work {
+public class TemporaryWork implements Work {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
