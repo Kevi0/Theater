@@ -34,6 +34,12 @@ public class VenueServiceImpl implements VenueService {
         }
     }
 
+    public void addVenue(Venue venue) throws Exception {
+        if(venueRepository.findById(venue.getId()).isPresent())
+            throw new Exception("Venue already exist!"); //TODO Custom VenueNotFoundException
+        venueRepository.save(venue);
+    }
+
     @Override
     public Optional<Venue> deleteVenue(Long id) {
         return Optional.empty();

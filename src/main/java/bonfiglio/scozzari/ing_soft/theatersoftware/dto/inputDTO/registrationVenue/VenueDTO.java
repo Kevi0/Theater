@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationVenue;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -10,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class VenueDTO {
+public class VenueDTO implements InputDTO {
 
     @NotBlank(message = "Il luogo non può essere vuoto")
     private String venue;

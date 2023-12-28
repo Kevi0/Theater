@@ -1,6 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.controllers;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationAgency.AgencyDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.agencyMapper.AgencyMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.AgencyServiceImpl;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,13 @@ public class AgencyController {
     public ResponseEntity<String> create(
             @RequestBody InputDTO agencyDTO
     ) throws Exception {
-        agencyService.addAgency(agencyMapper.agencyDTOToAgency(agencyDTO));
-        return ResponseEntity.status(HttpStatus.CREATED).body("Agency successfully created!");
+
+        if (agencyDTO instanceof AgencyDTO){
+            agencyService.addAgency(agencyMapper.agencyDTOToAgency(agencyDTO));
+
+            return new ResponseEntity<>("Agency added", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Agency not added", HttpStatus.BAD_REQUEST);
+        }
     }
 }

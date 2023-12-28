@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationSeason;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import jakarta.validation.constraints.DecimalMax;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SeasonDTO {
+public class SeasonDTO implements InputDTO {
 
     @NotBlank(message = "Title cannot be empty")
     @Size(max = 255, message = "Title cannot exceed 255 characters")

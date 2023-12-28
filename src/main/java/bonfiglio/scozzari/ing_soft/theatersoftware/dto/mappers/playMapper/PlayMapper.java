@@ -3,7 +3,9 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.playMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationPlay.PlayDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Play;
+import org.springframework.stereotype.Component;
 
+@Component
 public class PlayMapper {
 
     public Play playDTOToPlay(InputDTO playDTO){

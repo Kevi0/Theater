@@ -15,10 +15,6 @@
                     <td align="center" valign="top" bgcolor="#d3be6c"
                         style="background-color: #ffffff; font-family: Arial, Helvetica, sans-serif; font-size: 13px; color: #000000; padding: 0px 15px 10px 15px;">
 
-                        <!-- <div style="font-size: 48px; color:blue;">
-                            <b>Java Techie</b>
-                        </div> -->
-
                         <div style="font-size: 24px; color: #000000;">
                             <br><h2><b> Benvenuto, ${name}! </b></h2><br>
                         </div>

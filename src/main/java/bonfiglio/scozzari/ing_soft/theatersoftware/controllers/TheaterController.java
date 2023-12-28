@@ -16,4 +16,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/theater")
 public class TheaterController {
+
+    private TheaterServiceImpl theaterService;
+
+    private final TheaterMapper theaterMapper;
+
+    @PostMapping(value = "/add")
+    public ResponseEntity<String> create(
+            @RequestBody InputDTO theaterDTO
+    ) throws Exception {
+        if (theaterDTO instanceof TheaterDTO){
+            theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
+
+            return new ResponseEntity<>("Theater added", HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>("Theater not added", HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
 }

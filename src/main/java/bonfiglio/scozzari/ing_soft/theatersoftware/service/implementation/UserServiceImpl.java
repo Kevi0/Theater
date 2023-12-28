@@ -23,6 +23,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Optional<User> changePassword(String username, String newPassword) {
+        if (userRepository.findUserByUsername(username).isPresent()) {
+            User user = userRepository.findUserByUsername(username).get();
+            user.setPassword(newPassword);
+            return Optional.of(userRepository.save(user));
+        }
+        return Optional.empty();
+    }
+
+    @Override
     public Optional<User> deleteUser(Long id) {
         return Optional.empty();
     }

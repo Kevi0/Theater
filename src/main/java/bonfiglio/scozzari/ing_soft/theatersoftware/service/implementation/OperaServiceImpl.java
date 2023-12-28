@@ -48,4 +48,10 @@ public class OperaServiceImpl implements OperaService {
     public Optional<Opera> deleteOpera(Long id) {
         return Optional.empty();
     }
+
+    public void addOpera(Opera opera) {
+
+        operaRepository.save(opera);
+
+    }
 }

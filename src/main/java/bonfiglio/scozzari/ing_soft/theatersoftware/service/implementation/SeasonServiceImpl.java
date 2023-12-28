@@ -33,6 +33,12 @@ public class SeasonServiceImpl implements SeasonService {
         }
     }
 
+    public void addSeason(Season season) throws Exception {
+        if(seasonRepository.findById(season.getId()).isPresent())
+            throw new Exception("Season already exist"); //TODO Custom SeasonAlreadyExistException
+        seasonRepository.save(season);
+    }
+
     @Override
     public Optional<Season> deleteSeason(Long id) {
         return Optional.empty();
