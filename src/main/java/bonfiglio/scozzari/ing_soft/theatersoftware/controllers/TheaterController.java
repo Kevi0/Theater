@@ -67,4 +67,9 @@ public class TheaterController {
         return theaterService.getAllTheaters();
     }
 
+    @GetMapping(value = "/getTheaterIdByName/{name}")
+    public Long getTheaterIdByName(@PathVariable String name){
+        return theaterService.getTheaterIdByName(name);
+    }
+
 }

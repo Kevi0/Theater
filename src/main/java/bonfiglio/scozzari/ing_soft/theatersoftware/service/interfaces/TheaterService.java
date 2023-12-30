@@ -17,4 +17,6 @@ public interface TheaterService {
 
     List<Optional<Theater>> getAllTheaters();
 
+    Long getTheaterIdByName(String name);
+
 }

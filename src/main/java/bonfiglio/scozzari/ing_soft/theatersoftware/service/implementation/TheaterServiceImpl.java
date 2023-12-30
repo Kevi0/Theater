@@ -98,4 +98,9 @@ public class TheaterServiceImpl implements TheaterService {
     public List<Optional<Theater>> getAllTheaters() {
         return theaterRepository.findAll().stream().map(Optional::of).toList();
     }
+
+    @Override
+    public Long getTheaterIdByName(String name) {
+        return theaterRepository.findTheaterByName(name).get().getId();
+    }
 }
