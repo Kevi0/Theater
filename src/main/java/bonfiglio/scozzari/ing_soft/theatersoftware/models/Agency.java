@@ -1,19 +1,12 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity

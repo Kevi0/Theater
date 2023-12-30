@@ -1,8 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.DocumentType;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

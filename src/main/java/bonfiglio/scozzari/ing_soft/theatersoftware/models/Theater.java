@@ -1,7 +1,5 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Observers;
 import jakarta.persistence.*;

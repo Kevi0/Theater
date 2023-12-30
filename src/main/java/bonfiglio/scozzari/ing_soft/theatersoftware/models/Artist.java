@@ -4,8 +4,6 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Gender;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Occupation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.StateOfCitizenship;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Taxation;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntity;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;

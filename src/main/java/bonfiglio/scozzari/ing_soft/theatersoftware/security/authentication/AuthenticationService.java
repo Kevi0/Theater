@@ -54,11 +54,33 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                //.createdAt(LocalDateTime.now())
+                .createdAt(LocalDateTime.now())
                 .role(UserRoles.USER)
                 .build();
 
-        Map<String, Object> emailModel = new HashMap<>();
+        try {
+
+            userRepository.save(user);
+
+            Map<String, Object> emailModel = new HashMap<>();
+            emailModel.put("subject", "Registrazione utente");
+            emailModel.put("name", user.getName());
+
+            emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "registration-email", emailModel);
+
+            var jwtToken = jwtService.generateToken(user);
+
+            return AuthenticationResponse
+                    .builder()
+                    .token(jwtToken)
+                    .build();
+
+        }catch (Exception e) {
+            e.printStackTrace();
+            throw new UserAlreadyExistsException("Errore durante la registrazione!");
+        }
+
+        /*Map<String, Object> emailModel = new HashMap<>();
         emailModel.put("subject", "Registrazione utente");
         emailModel.put("name", user.getName());
 
@@ -71,7 +93,7 @@ public class AuthenticationService {
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
-                .build();
+                .build();*/
     }
 
     /*public AuthenticationResponse registerAdmin(RegisterRequest request) {

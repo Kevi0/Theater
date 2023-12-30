@@ -1,10 +1,16 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models.audit;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,17 +18,25 @@ import java.util.Objects;
 
 @Data
 @MappedSuperclass
-public class BaseEntityAudit extends BaseEntity implements Serializable {
+@EntityListeners(AuditingEntityListener.class)
+public abstract class BaseEntityAudit {
 
+    @CreatedBy
+    @Column(name = "created_by", length = 50)
     private String createdBy;
+
+    @LastModifiedBy
+    @Column(name = "updated_by", length = 50)
     private String updatedBy;
+
+    @Column(name = "deleted_by", length = 50)
     private String deletedBy;
 
-    @CreationTimestamp
+    @CreatedDate
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
+    @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
