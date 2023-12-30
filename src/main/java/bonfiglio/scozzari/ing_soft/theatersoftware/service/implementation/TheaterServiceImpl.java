@@ -30,8 +30,8 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
-    public Optional<Theater> updateTheater(Theater theater) throws Exception {
-        Optional<Theater> theaterToUpdate = theaterRepository.findById(theater.getId());
+    public Optional<Theater> updateTheater(Long id, Theater theater) throws Exception {
+        Optional<Theater> theaterToUpdate = theaterRepository.findById(id);
 
         if (theaterToUpdate.isPresent()){
             Theater existingTheater = theaterToUpdate.get();
@@ -56,13 +56,25 @@ public class TheaterServiceImpl implements TheaterService {
 
     @Override
     public Optional<Theater> deleteTheater(Long id) {
-        if (theaterRepository.findById(id).isPresent()){
-            theaterRepository.findById(id).get().setDeletedAt(LocalDateTime.now());
-            return Optional.of(theaterRepository.findById(id).get());
+        Optional<Theater> theaterToDelete = theaterRepository.findById(id);
+
+        if (theaterToDelete.isPresent()) {
+            Theater existingTheater = theaterToDelete.get();
+
+            // Verifica se il teatro è già stato cancellato
+            if (existingTheater.getDeletedAt() == null) {
+                existingTheater.setDeletedAt(LocalDateTime.now());
+                return Optional.of(theaterRepository.save(existingTheater));
+            } else {
+                // Il teatro è già stato cancellato
+                return Optional.empty();
+            }
         } else {
+            // Il teatro non è stato trovato
             return Optional.empty();
         }
     }
+
 
     @Override
     public List<Optional<Theater>> getAllTheaters() {

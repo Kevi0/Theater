@@ -36,12 +36,13 @@ public class TheaterController {
         }
     }
 
-    @PutMapping(value = "/update")
+    @PutMapping(value = "/update/{id}")
     public ResponseEntity<ResponseMessage> update(
+            @PathVariable Long id,
             @RequestBody InputDTO theaterDTO
     ) throws Exception {
         if (theaterDTO instanceof TheaterDTO){
-            theaterService.updateTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
+            theaterService.updateTheater(id, theaterMapper.theaterDTOToTheater(theaterDTO));
 
             return new ResponseEntity<>(new ResponseMessage("Theater updated successfully!"), HttpStatus.OK);
         } else {
@@ -49,14 +50,15 @@ public class TheaterController {
         }
     }
 
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<ResponseMessage> delete(
-            @PathVariable Long id
-    ) throws Exception {
-        if (theaterService.deleteTheater(id).isPresent()){
-            return new ResponseEntity<>(new ResponseMessage("Theater deleted successfully!"), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new ResponseMessage("Theater not deleted!"), HttpStatus.BAD_REQUEST);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<ResponseMessage> delete(@PathVariable Long id) {
+        try {
+            Optional<Theater> deletedTheater = theaterService.deleteTheater(id);
+            return deletedTheater.map(theater ->
+                            new ResponseEntity<>(new ResponseMessage("Theater deleted successfully!"), HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(new ResponseMessage("Theater not deleted or already deleted!"), HttpStatus.BAD_REQUEST));
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ResponseMessage("Error deleting theater: " + e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
