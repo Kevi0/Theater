@@ -7,7 +7,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +21,7 @@ public class TheaterServiceImpl implements TheaterService {
 
     @Override
     public Optional<Theater> addTheater(Theater theater) throws Exception {
-        if(theaterRepository.findTheaterByName(theater.getName()).isEmpty()){
+        if (theaterRepository.findTheaterByName(theater.getName()).isEmpty()){
             theater.setCreatedAt(LocalDateTime.now());
             return Optional.of(theaterRepository.save(theater));
         } else {
@@ -28,7 +30,42 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
+    public Optional<Theater> updateTheater(Theater theater) throws Exception {
+        Optional<Theater> theaterToUpdate = theaterRepository.findById(theater.getId());
+
+        if (theaterToUpdate.isPresent()){
+            Theater existingTheater = theaterToUpdate.get();
+
+            Field[] fields = theater.getClass().getDeclaredFields();
+
+            for(Field field : fields){
+                field.setAccessible(true);
+
+                Object fieldValue = field.get(theater);
+
+                if (fieldValue != null && !fieldValue.equals(field.get(existingTheater))){
+                    field.set(existingTheater, fieldValue);
+                }
+            }
+            existingTheater.setUpdatedAt(LocalDateTime.now());
+            return Optional.of(theaterRepository.save(existingTheater));
+        } else {
+            throw new Exception("Theater not found!"); //TODO Custom TheaterNotFoundException
+        }
+    }
+
+    @Override
     public Optional<Theater> deleteTheater(Long id) {
-        return Optional.empty();
+        if (theaterRepository.findById(id).isPresent()){
+            theaterRepository.findById(id).get().setDeletedAt(LocalDateTime.now());
+            return Optional.of(theaterRepository.findById(id).get());
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Optional<Theater>> getAllTheaters() {
+        return theaterRepository.findAll().stream().map(Optional::of).toList();
     }
 }

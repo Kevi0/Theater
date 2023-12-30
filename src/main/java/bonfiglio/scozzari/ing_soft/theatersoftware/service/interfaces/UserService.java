@@ -10,8 +10,8 @@ public interface UserService {
 
     //TODO UPDATE
 
-    Optional<User> changePassword(String username, String newPassword);
+    Optional<User> changePassword(String username, String newPassword) throws Exception;
 
-    Optional<User> deleteUser(Long id);
+    Optional<User> deleteUser(String username) throws Exception;
 
 }

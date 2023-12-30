@@ -5,6 +5,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Override
@@ -23,18 +25,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> changePassword(String username, String newPassword) {
-        if (userRepository.findUserByUsername(username).isPresent()) {
-            User user = userRepository.findUserByUsername(username).get();
-            user.setPassword(newPassword);
-            return Optional.of(userRepository.save(user));
+    public Optional<User> changePassword(String username, String newPassword) throws Exception {
+        if (!(userRepository.findUserByUsername(username).isEmpty())){
+            if (passwordEncoder.matches(newPassword, userRepository.findUserByUsername(username).get().getPassword())){
+                throw new Exception("La nuova password non può essere uguale a password utilizzate in precedenza!"); //TODO: Custom ErrorChangePasswordException
+            } else {
+                userRepository.findUserByUsername(username).get().setPassword(passwordEncoder.encode(newPassword));
+                return userRepository.findUserByUsername(username);
+            }
+        } else {
+            return Optional.empty();
         }
-        return Optional.empty();
     }
 
     @Override
-    public Optional<User> deleteUser(Long id) {
-        return Optional.empty();
+    public Optional<User> deleteUser(String username) throws Exception {
+        if (!(userRepository.findUserByUsername(username).isEmpty())){
+            userRepository.delete(userRepository.findUserByUsername(username).get());
+            return userRepository.findUserByUsername(username);
+        } else {
+            return Optional.empty();
+        }
     }
 
 }
