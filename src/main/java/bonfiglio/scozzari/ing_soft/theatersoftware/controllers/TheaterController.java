@@ -23,16 +23,15 @@ public class TheaterController {
     private final TheaterMapper theaterMapper;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
+    public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
     ) throws Exception {
         if (theaterDTO instanceof TheaterDTO){
             theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
 
-            return new ResponseEntity<>(new ResponseMessage("Theater added successfully").getMessage(), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Theater added successfully!"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("Theater not added").getMessage(), HttpStatus.BAD_REQUEST);
-
+            return new ResponseEntity<>(new ResponseMessage("Theater not added!"), HttpStatus.BAD_REQUEST);
         }
     }
 
