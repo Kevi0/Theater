@@ -1,5 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

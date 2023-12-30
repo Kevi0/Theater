@@ -4,6 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Gender;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Occupation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.StateOfCitizenship;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enums.Taxation;
+import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +18,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Artist {
+public class Artist extends BaseEntityAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,6 +7,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -19,6 +20,7 @@ public class TheaterServiceImpl implements TheaterService {
     @Override
     public Optional<Theater> addTheater(Theater theater) throws Exception {
         if(theaterRepository.findTheaterByName(theater.getName()).isEmpty()){
+            theater.setCreatedAt(LocalDateTime.now());
             return Optional.of(theaterRepository.save(theater));
         } else {
             throw new Exception(); //TODO Custom TheaterNotFoundException
