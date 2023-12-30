@@ -3,6 +3,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.controllers;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationTheater.TheaterDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.theaterMapper.TheaterMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.TheaterServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class TheaterController {
         if (theaterDTO instanceof TheaterDTO){
             theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
 
-            return new ResponseEntity<>("Theater added", HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Theater added successfully").getMessage(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Theater not added", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Theater not added").getMessage(), HttpStatus.BAD_REQUEST);
 
         }
     }
