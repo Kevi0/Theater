@@ -41,7 +41,7 @@ public class Theater extends BaseEntityAudit implements Observers {
     private String taxCode;*/
 
     @Column
-    private String webSite;
+    private String website;
 
     @Column
     private String iva;
