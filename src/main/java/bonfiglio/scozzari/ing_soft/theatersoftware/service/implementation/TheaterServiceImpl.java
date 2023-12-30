@@ -56,7 +56,7 @@ public class TheaterServiceImpl implements TheaterService {
 
     @Override
     public Optional<Theater> deleteTheater(Long id) {
-        Optional<Theater> theaterToDelete = theaterRepository.findById(id);
+        /*Optional<Theater> theaterToDelete = theaterRepository.findById(id);
 
         if (theaterToDelete.isPresent()) {
             Theater existingTheater = theaterToDelete.get();
@@ -65,6 +65,24 @@ public class TheaterServiceImpl implements TheaterService {
             if (existingTheater.getDeletedAt() == null) {
                 existingTheater.setDeletedAt(LocalDateTime.now());
                 return Optional.of(theaterRepository.save(existingTheater));
+            } else {
+                // Il teatro è già stato cancellato
+                return Optional.empty();
+            }
+        } else {
+            // Il teatro non è stato trovato
+            return Optional.empty();
+        }*/
+
+        Optional<Theater> theaterToDelete = theaterRepository.findById(id);
+
+        if (theaterToDelete.isPresent()) {
+            Theater existingTheater = theaterToDelete.get();
+
+            // Verifica se il teatro è già stato cancellato
+            if (existingTheater.getDeletedAt() == null) {
+                theaterRepository.deleteTheaterById(id);
+                return Optional.of(existingTheater);
             } else {
                 // Il teatro è già stato cancellato
                 return Optional.empty();
