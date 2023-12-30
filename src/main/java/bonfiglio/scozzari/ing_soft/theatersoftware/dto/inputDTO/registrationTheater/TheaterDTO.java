@@ -38,7 +38,7 @@ public class TheaterDTO implements InputDTO {
     private String taxCode;*/
 
     @Size(max = 255, message = "Il campo 'webSite' può contenere al massimo 255 caratteri")
-    private String webSite;
+    private String website;
 
     @Size(max = 11, message = "Il campo 'iva' può contenere al massimo 20 caratteri")
     private String iva;
