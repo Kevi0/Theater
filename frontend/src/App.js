@@ -2,6 +2,7 @@ import './App.css';
 import './pages/RegisterUser'
 import RegistrationForm from './pages/RegisterUser';
 import Footer from './components/Footer';
+import TheaterPage from "./pages/TheaterPage";
 
 function App() {
  
@@ -9,7 +10,8 @@ function App() {
     <div id='container'>
       <div id="content">
         <h1>Dynamic Form with React</h1>
-        <RegistrationForm />
+        <TheaterPage />
+
 
       </div>
 
