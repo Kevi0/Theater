@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface TheaterRepository extends JpaRepository<Theater, Long> {
@@ -19,4 +20,6 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     @Query("UPDATE Theater t SET t.deletedAt = CURRENT_TIMESTAMP WHERE t.id = :id")
     void deleteTheaterById(@Param("id") Long id);
 
+    @Query("SELECT t FROM Theater t WHERE t.deletedAt IS NULL")
+    List<Optional<Theater>> findAllTheaters();
 }

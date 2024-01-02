@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @Transactional
@@ -96,7 +97,7 @@ public class TheaterServiceImpl implements TheaterService {
 
     @Override
     public List<Optional<Theater>> getAllTheaters() {
-        return theaterRepository.findAll().stream().map(Optional::of).toList();
+        return theaterRepository.findAllTheaters().stream().toList();
     }
 
     @Override
