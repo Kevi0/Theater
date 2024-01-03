@@ -1,9 +1,9 @@
-import React, {useEffect, useState} from 'react';
-import {
-    Paper,
-} from "@mui/material";
+import React from 'react';
+
 import AddTheater from '../components/theater/AddTheater'
 import DeleteTheater from '../components/theater/DeleteTheater'
+import UpdateTheater from "../components/theater/UpdateTheater";
+import ListTheater from "../components/theater/ListTheater";
 
 
 const TheaterPage = () => {
@@ -11,9 +11,10 @@ const TheaterPage = () => {
         <div>
             <AddTheater />
             <DeleteTheater />
+            <UpdateTheater />
+            <ListTheater />
         </div>
     );
-
 };
 
 export default TheaterPage;

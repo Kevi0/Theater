@@ -91,6 +91,34 @@ const theaterApi = {
             console.log('Errore durante il recupero dell\'id del teatro:', error.message);
             throw error;
         }
+    },
+    updateTheater: async (theaterId, formData) => {
+        const formDataWithCustomType = {
+            ...formData,
+            CustomType: "registrationTheater"
+        };
+
+        try {
+            const response = await fetch(`${BASE_URL}/theater/update/${theaterId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formDataWithCustomType),
+                mode: 'cors',
+                credentials: 'same-origin',
+            });
+
+            if (!response.ok) {
+                throw new Error(`Errore nell'invio dei dati: ${response.status}`);
+            }
+
+            const responseData = await response.json();
+            return responseData;
+        } catch (error) {
+            console.error('Errore durante l\'invio di dati al backend:', error.message);
+            throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
+        }
     }
 };
 

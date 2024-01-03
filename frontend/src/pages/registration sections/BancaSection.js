@@ -2026,7 +2026,6 @@ const BancaSection = ({ currentSection, onSubmit, onUpdateBancaData }) => {
       // Estrai le informazioni dall'IBAN.
       const abi = iban.substring(5, 10);
       const cab = iban.substring(10, 15);
-      const bankNumber = iban.substring(15, 26);
       const abiCode = abiCodes.find((item) => item.Abi === abi);
 
       // Se l'ABI è stato trovato, imposta il nome della banca nello stato.

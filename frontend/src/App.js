@@ -1,6 +1,5 @@
 import './App.css';
 import './pages/RegisterUser'
-import RegistrationForm from './pages/RegisterUser';
 import Footer from './components/Footer';
 import TheaterPage from "./pages/TheaterPage";
 
