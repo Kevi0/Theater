@@ -19,7 +19,7 @@ public class AgencyMapper {
             agency.setPec(agencyData.getPec());
             agency.setTel1(agencyData.getTel1());
             agency.setTel2(agencyData.getTel2());
-            agency.setWebSite(agencyData.getWebSite());
+            agency.setWebsite(agencyData.getWebsite());
             return agency;
         }
     }

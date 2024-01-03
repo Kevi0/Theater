@@ -36,7 +36,7 @@ public class Agency extends BaseEntityAudit {
     private String tel2;
 
     @Column
-    private String webSite;
+    private String website;
 
     @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<UserAgency> userAgencies = new HashSet<>();

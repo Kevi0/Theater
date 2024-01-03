@@ -27,6 +27,7 @@ public class TheaterController {
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
     ) throws Exception {
+
         if (theaterDTO instanceof TheaterDTO){
             theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
 
@@ -41,6 +42,7 @@ public class TheaterController {
             @PathVariable Long id,
             @RequestBody InputDTO theaterDTO
     ) throws Exception {
+
         if (theaterDTO instanceof TheaterDTO){
             theaterService.updateTheater(id, theaterMapper.theaterDTOToTheater(theaterDTO));
 
@@ -63,7 +65,7 @@ public class TheaterController {
     }
 
     @GetMapping(value = "/getAll")
-        public List<Optional<Theater>> getAll(){
+    public List<Optional<Theater>> getAll(){
         return theaterService.getAllTheaters();
     }
 

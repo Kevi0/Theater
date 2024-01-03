@@ -9,6 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Field;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,26 +24,65 @@ public class SeasonServiceImpl implements SeasonService {
     private final SeasonRepository seasonRepository;
 
     @Override
-    public Optional<Season> addSeason(Season season, Long idTheater) throws Exception {
-        Optional<Theater> theater = theaterRepository.findById(idTheater);
-        if(theater.isEmpty())
-            throw new Exception("Theater not found!"); //TODO Custom TheaterNotFoundException
-        else {
-            if(seasonRepository.findById(season.getId()).isPresent())
-                throw new Exception("Season already exist"); //TODO Custom SeasonAlreadyExistException
-            season.setTheater(theater.get());
+    public Optional<Season> addSeason(Season season) throws Exception {
+        if (seasonRepository.findSeasonByTitle(season.getTitle()).isEmpty()){
+            season.setCreatedAt(LocalDateTime.now());
             return Optional.of(seasonRepository.save(season));
+        } else {
+            throw new Exception(); //TODO Custom SeasonAlreadyExistException
         }
     }
 
-    public void addSeason(Season season) throws Exception {
-        if(seasonRepository.findById(season.getId()).isPresent())
-            throw new Exception("Season already exist"); //TODO Custom SeasonAlreadyExistException
-        seasonRepository.save(season);
+    @Override
+    public Optional<Season> updateSeason(Long id, Season season) throws Exception {
+        Optional<Season> seasonToUpdate = seasonRepository.findById(id);
+
+        if (seasonToUpdate.isPresent()){
+            Season existingSeason = seasonToUpdate.get();
+
+            Field[] fields = season.getClass().getDeclaredFields();
+
+            for(Field field : fields){
+                field.setAccessible(true);
+
+                Object fieldValue = field.get(season);
+
+                if (fieldValue != null && !fieldValue.equals(field.get(existingSeason))){
+                    field.set(existingSeason, fieldValue);
+                }
+            }
+            existingSeason.setUpdatedAt(LocalDateTime.now());
+            return Optional.of(seasonRepository.save(existingSeason));
+        } else {
+            throw new Exception("Season not found!"); //TODO Custom SeasonNotFoundException
+        }
     }
 
     @Override
     public Optional<Season> deleteSeason(Long id) {
-        return Optional.empty();
+        Optional<Season> seasonToDelete = seasonRepository.findById(id);
+
+        if (seasonToDelete.isPresent()){
+            Season existingSeason = seasonToDelete.get();
+
+            if (existingSeason.getDeletedAt() == null){
+                seasonRepository.deleteSeasonById(id);
+                return Optional.of(seasonRepository.save(existingSeason));
+            } else {
+                return Optional.empty();
+            }
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    @Override
+    public List<Optional<Season>> getAllSeasons() {
+        return seasonRepository.findAllSeasons().stream().toList();
+    }
+
+    @Override
+    public Long getSeasonIdByTitle(String title) {
+        return seasonRepository.findSeasonByTitle(title).get().getId();
     }
 }

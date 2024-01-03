@@ -34,6 +34,6 @@ public class AgencyDTO implements InputDTO {
     private String tel2;
 
     @Size(max = 255, message = "Il campo 'webSite' può contenere al massimo 255 caratteri")
-    private String webSite;
+    private String website;
 
 }

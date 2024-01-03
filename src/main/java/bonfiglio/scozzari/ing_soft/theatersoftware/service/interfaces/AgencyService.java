@@ -2,6 +2,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface AgencyService {
@@ -10,6 +11,12 @@ public interface AgencyService {
 
     //TODO UPDATE
 
+    Optional<Agency> updateAgency(Long id, Agency agency) throws Exception;
+
     Optional<Agency> deleteAgency(Long id);
+
+    List<Optional<Agency>> getAllAgencies();
+
+    Long getAgencyIdByName(String name);
 
 }
