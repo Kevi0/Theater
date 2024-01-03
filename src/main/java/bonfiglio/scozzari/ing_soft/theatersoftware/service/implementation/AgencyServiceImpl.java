@@ -47,6 +47,7 @@ public class AgencyServiceImpl implements AgencyService {
                     field.set(existingAgency, fieldValue);
                 }
             }
+            existingAgency.setUpdatedAt(LocalDateTime.now());
             return Optional.of(agencyRepository.save(existingAgency));
         } else {
             throw new Exception("Agency not found!"); //TODO Custom AgencyNotFoundException
