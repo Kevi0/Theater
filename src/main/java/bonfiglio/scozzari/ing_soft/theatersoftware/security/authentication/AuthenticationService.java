@@ -43,7 +43,7 @@ public class AuthenticationService {
     ) throws UserAlreadyExistsException, InvalidDataException {
 
         if (userService.getUserByUsername(request.getUsername()).isPresent())
-            throw new UserAlreadyExistsException("Errore durante la registrazione!");
+            throw new UserAlreadyExistsException("Error during registration!");
 
         validator.validate(request);
 

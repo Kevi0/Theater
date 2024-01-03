@@ -4,6 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationAgency.AgencyDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.agencyMapper.AgencyMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
+import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.AgencyServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,16 +24,16 @@ public class AgencyController {
     private final AgencyMapper agencyMapper;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
+    public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO agencyDTO
     ) throws Exception {
 
         if (agencyDTO instanceof AgencyDTO){
             agencyService.addAgency(agencyMapper.agencyDTOToAgency(agencyDTO));
 
-            return new ResponseEntity<>("Agency added", HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Agency added"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Agency not added", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Agency not added"), HttpStatus.BAD_REQUEST);
         }
     }
 
