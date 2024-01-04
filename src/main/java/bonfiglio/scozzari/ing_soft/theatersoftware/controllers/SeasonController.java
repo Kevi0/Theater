@@ -24,30 +24,30 @@ public class SeasonController {
     private final SeasonMapper seasonMapper;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
+    public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO seasonDTO
     ) throws Exception {
         if (seasonDTO instanceof SeasonDTO){
             seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO));
 
-            return new ResponseEntity<>("Season added", HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Season added"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Season not added", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Season not added"), HttpStatus.BAD_REQUEST);
 
         }
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO seasonDTO
     ) throws Exception {
         if (seasonDTO instanceof SeasonDTO){
             seasonService.updateSeason(id, seasonMapper.seasonDTOToSeason(seasonDTO));
 
-            return new ResponseEntity<>("Season updated", HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Season updated"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Season not updated", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Season not updated"), HttpStatus.BAD_REQUEST);
 
         }
     }

@@ -6,6 +6,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.inputDTO.registrationArti
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mappers.artistMapper.ArtistMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.BankAccount;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
+import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.*;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.PermanentWorkService;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public class ArtistController {
     private final ArtistMapper artistMapper;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
+    public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO artistDTO
     ) throws Exception {
         if (artistDTO instanceof ArtistDTO dto){
@@ -62,7 +63,7 @@ public class ArtistController {
                     dto.getSubArtistDTO().getIdTypologies(), work, bankAccount);
 
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body("Artist successfully created!");
+        return new ResponseEntity<>(new ResponseMessage("Artist added"), HttpStatus.OK);
     }
 
 }

@@ -38,7 +38,7 @@ public class AgencyController {
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO agencyDTO
     ) throws Exception {
@@ -46,21 +46,21 @@ public class AgencyController {
         if (agencyDTO instanceof AgencyDTO){
             agencyService.updateAgency(id, agencyMapper.agencyDTOToAgency(agencyDTO));
 
-            return new ResponseEntity<>("Agency updated", HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Agency updated"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("Agency not updated", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Agency not updated"), HttpStatus.BAD_REQUEST);
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id) {
+    public ResponseEntity<ResponseMessage> delete(@PathVariable Long id) {
         try {
             Optional<Agency> deletedAgency = agencyService.deleteAgency(id);
             return deletedAgency.map(agency ->
-                            new ResponseEntity<>("Agency deleted", HttpStatus.OK))
-                    .orElseGet(() -> new ResponseEntity<>("Agency not found", HttpStatus.NOT_FOUND));
+                            new ResponseEntity<>(new ResponseMessage("Agency deleted"), HttpStatus.OK))
+                    .orElseGet(() -> new ResponseEntity<>(new ResponseMessage("Agency not found"), HttpStatus.NOT_FOUND));
         } catch (Exception e) {
-            return new ResponseEntity<>("Agency not deleted", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponseMessage("Agency not deleted"), HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -24,22 +24,22 @@ public class OperaController {
     private final OperaMapper operaMapper;
 
     @PostMapping(value = "/add")
-    public ResponseEntity<String> create(
+    public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO operaDTO
     ) throws Exception {
 
         if (operaDTO instanceof OperaDTO){
             operaService.addOpera(operaMapper.operaDTOToOpera(operaDTO));
 
-            return ResponseEntity.ok("Opera added");
+            return new ResponseEntity<>(new ResponseMessage("Opera added"), HttpStatus.OK);
         } else {
-            return ResponseEntity.badRequest().body("Opera not added");
+            return new ResponseEntity<>(new ResponseMessage("Opera not added"), HttpStatus.BAD_REQUEST);
 
         }
     }
 
     @PutMapping(value = "/update/{id}")
-    public ResponseEntity<String> update(
+    public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO operaDTO
     ) throws Exception {
@@ -47,9 +47,9 @@ public class OperaController {
         if (operaDTO instanceof OperaDTO){
             operaService.updateOpera(id, operaMapper.operaDTOToOpera(operaDTO));
 
-            return ResponseEntity.ok("Opera updated");
+            return new ResponseEntity<>(new ResponseMessage("Opera updated"), HttpStatus.OK);
         } else {
-            return ResponseEntity.badRequest().body("Opera not updated");
+            return new ResponseEntity<>(new ResponseMessage("Opera not updated"), HttpStatus.BAD_REQUEST);
 
         }
     }
@@ -59,8 +59,8 @@ public class OperaController {
         try {
             Optional<Opera> deletedOpera = operaService.deleteOpera(id);
             return deletedOpera.map(opera ->
-                    ResponseEntity.ok(new ResponseMessage("Opera deleted successfully!")))
-                .orElseGet(() -> ResponseEntity.badRequest().body(new ResponseMessage("Opera not found!")));
+                    new ResponseEntity<>(new ResponseMessage("Opera deleted successfully!"), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(new ResponseMessage("Opera not deleted!"), HttpStatus.BAD_REQUEST));
         } catch (Exception e) {
             return new ResponseEntity<>(new ResponseMessage("Error deleting opera!"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
