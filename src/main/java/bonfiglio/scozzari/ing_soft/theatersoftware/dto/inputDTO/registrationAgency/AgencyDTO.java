@@ -36,4 +36,8 @@ public class AgencyDTO implements InputDTO {
     @Size(max = 255, message = "Il campo 'webSite' può contenere al massimo 255 caratteri")
     private String website;
 
+    //private List<Long> idArtists;
+
+    //private List<Long> idUsers;
+
 }

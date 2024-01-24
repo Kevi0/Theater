@@ -1,16 +1,20 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.AgencyRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.AgencyService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -20,61 +24,66 @@ public class AgencyServiceImpl implements AgencyService {
     private final AgencyRepository agencyRepository;
 
     @Override
-    public Optional<Agency> addAgency(Agency agency) throws Exception {
-        if(agencyRepository.findAgencyByName(agency.getName()).isEmpty()){
-            agency.setCreatedAt(LocalDateTime.now());
-            return Optional.of(agencyRepository.save(agency));
+    public void addAgency(Agency agency) throws AgencyAlreadyExistException {
+
+        if (agencyRepository.findAgencyByName(agency.getName()).isEmpty()){
+            var agencyToInsert = Agency.builder()
+                            .name(agency.getName())
+                            .email(agency.getEmail())
+                            .pec(agency.getPec())
+                            .tel1(agency.getTel1())
+                            .tel2(agency.getTel2())
+                            .website(agency.getWebsite())
+                            .build();
+            agencyToInsert.setCreatedAt(LocalDateTime.now());
+            agencyRepository.save(agencyToInsert);
+
         } else {
-            throw new Exception(); //TODO Custom AgencyNotFoundException
+            throw new AgencyAlreadyExistException("Error when entering the agency");
         }
+
     }
 
     @Override
-    public Optional<Agency> updateAgency(Long id, Agency agency) throws Exception {
+    public void updateAgency(Long id, Agency agency) throws IllegalAccessException, AgencyNotFoundException {
+
         Optional<Agency> agencyToUpdate = agencyRepository.findById(id);
 
-        if (agencyToUpdate.isPresent()){
+        if (agencyToUpdate.isPresent()) {
             Agency existingAgency = agencyToUpdate.get();
+            ObjectUpdater<Agency> agencyUpdater = new ObjectUpdater<>();
+            agencyRepository.save(agencyUpdater.updateObject(existingAgency, agency));
 
-            Field[] fields = agency.getClass().getDeclaredFields();
-
-            for(Field field : fields){
-                field.setAccessible(true);
-
-                Object fieldValue = field.get(agency);
-
-                if (fieldValue != null && !fieldValue.equals(field.get(existingAgency))){
-                    field.set(existingAgency, fieldValue);
-                }
-            }
-            existingAgency.setUpdatedAt(LocalDateTime.now());
-            return Optional.of(agencyRepository.save(existingAgency));
         } else {
-            throw new Exception("Agency not found!"); //TODO Custom AgencyNotFoundException
+            throw new AgencyNotFoundException("Error when updating the agency");
         }
+
     }
 
     @Override
-    public Optional<Agency> deleteAgency(Long id) {
+    public Optional<Agency> deleteAgency(Long id) throws AgencyNotFoundException, AgencyAlreadyDeletedException {
+
         Optional<Agency> agencyToDelete = agencyRepository.findById(id);
 
-        if (agencyToDelete.isPresent()){
+        if (agencyToDelete.isPresent()) {
             Agency existingAgency = agencyToDelete.get();
 
-            if (existingAgency.getDeletedAt() == null){
+            if (existingAgency.getDeletedAt() == null) {
                 agencyRepository.deleteAgencyById(id);
-                return Optional.of(agencyRepository.save(existingAgency));
+                return Optional.of(existingAgency);
+
             } else {
-                return Optional.empty();
+                throw new AgencyAlreadyDeletedException("Error when deleting the agency");
             }
+
         } else {
-            return Optional.empty();
+            throw new AgencyNotFoundException("Error when deleting the agency");
         }
     }
 
     @Override
-    public List<Optional<Agency>> getAllAgencies() {
-        return agencyRepository.findAllAgencies().stream().toList();
+    public Set<Optional<Agency>> getAllAgencies() {
+        return new HashSet<>(agencyRepository.findAllAgencies());
     }
 
     @Override

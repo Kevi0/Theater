@@ -11,8 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @AllArgsConstructor
 @RestController
@@ -65,7 +65,7 @@ public class AgencyController {
     }
 
     @GetMapping(value = "/getAll")
-    public List<Optional<Agency>> getAll(){
+    public Set<Optional<Agency>> getAll(){
         return agencyService.getAllAgencies();
     }
 

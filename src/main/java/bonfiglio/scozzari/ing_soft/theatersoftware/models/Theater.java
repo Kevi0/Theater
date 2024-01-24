@@ -3,20 +3,22 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.observer.Observers;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.Updatable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Theater extends BaseEntityAudit implements Observers {
+public class Theater extends BaseEntityAudit implements Observers, Updatable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,5 +75,10 @@ public class Theater extends BaseEntityAudit implements Observers {
     @Override
     public void update() {
 
+    }
+
+    @Override
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.setUpdatedAt(updateAt);
     }
 }

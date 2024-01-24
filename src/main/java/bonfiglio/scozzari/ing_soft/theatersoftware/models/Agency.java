@@ -2,34 +2,38 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.models;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.middleTables.UserAgency;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.Updatable;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Agency extends BaseEntityAudit {
+public class Agency extends BaseEntityAudit implements Updatable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String pec;
 
-    @Column
+    @Column(nullable = false)
     private String tel1;
 
     @Column
@@ -42,5 +46,23 @@ public class Agency extends BaseEntityAudit {
     private Set<UserAgency> userAgencies = new HashSet<>();
 
     @ManyToMany(mappedBy = "agencies", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<Artist> artists = new HashSet<>();
+    private List<Artist> artists = new ArrayList<>();
+
+    @Override
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.setUpdatedAt(updateAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Agency{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", pec='" + pec + '\'' +
+                ", tel1='" + tel1 + '\'' +
+                ", tel2='" + tel2 + '\'' +
+                ", website='" + website + '\'' +
+                '}';
+    }
 }

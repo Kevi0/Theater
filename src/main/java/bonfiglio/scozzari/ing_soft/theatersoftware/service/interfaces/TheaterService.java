@@ -11,7 +11,7 @@ public interface TheaterService {
 
     //TODO UPDATE
 
-    Optional<Theater> updateTheater(Long id, Theater theater) throws Exception;
+    Theater updateTheater(Long id, Theater theater) throws Exception;
 
     Optional<Theater> deleteTheater(Long id);
 

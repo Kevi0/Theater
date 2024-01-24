@@ -1,21 +1,21 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface AgencyService {
 
-    Optional<Agency> addAgency(Agency agency) throws Exception;
+    void addAgency(Agency agency) throws Exception;
 
-    //TODO UPDATE
+    void updateAgency(Long id, Agency agency) throws Exception;
 
-    Optional<Agency> updateAgency(Long id, Agency agency) throws Exception;
+    Optional<Agency> deleteAgency(Long id) throws AgencyNotFoundException, AgencyAlreadyDeletedException;
 
-    Optional<Agency> deleteAgency(Long id);
-
-    List<Optional<Agency>> getAllAgencies();
+    Set<Optional<Agency>> getAllAgencies();
 
     Long getAgencyIdByName(String name);
 

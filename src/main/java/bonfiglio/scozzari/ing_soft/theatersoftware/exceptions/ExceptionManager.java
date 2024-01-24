@@ -1,8 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.exceptions;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.BadCredentialsException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.UserAlreadyExistsException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.*;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +19,48 @@ public class ExceptionManager {
     //TODO Specify the path of the API involved in the exception
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionManager.class);
+
+    @ExceptionHandler(value = {AgencyAlreadyDeletedException.class})
+    public ResponseEntity<ErrorMessage> handleAgencyAlreadyDeletedException(AgencyAlreadyDeletedException exception){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.GONE.value());
+        errorMessage.setError("GONE");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath("/api"); //Specifica il percorso dell'API coinvolto
+
+        LOGGER.error("AgencyAlreadyDeletedException: {}", exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.GONE);
+    }
+
+    @ExceptionHandler(value = {AgencyNotFoundException.class})
+    public ResponseEntity<ErrorMessage> handleAgencyNotFoundException(AgencyNotFoundException exception){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
+        errorMessage.setError("NOT FOUND");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath("/api"); //Specifica il percorso dell'API coinvolto
+
+        LOGGER.error("AgencyNotFoundException: {}", exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {AgencyAlreadyExistException.class})
+    public ResponseEntity<ErrorMessage> handleAgencyAlreadyExistException(AgencyAlreadyExistException exception){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath("/api"); //Specifica il percorso dell'API coinvolto
+
+        LOGGER.error("AgencyAlreadyExistException: {}", exception.getMessage());
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(value = {ExpiredJwtException.class})
     public ResponseEntity<ErrorMessage> handleExpiredJwtException(ExpiredJwtException exception){

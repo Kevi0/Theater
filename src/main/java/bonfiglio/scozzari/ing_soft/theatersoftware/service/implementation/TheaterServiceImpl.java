@@ -3,11 +3,11 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.models.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.TheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.TheaterService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -30,25 +30,12 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
-    public Optional<Theater> updateTheater(Long id, Theater theater) throws Exception {
+    public Theater updateTheater(Long id, Theater theater) throws Exception {
         Optional<Theater> theaterToUpdate = theaterRepository.findById(id);
-
         if (theaterToUpdate.isPresent()){
             Theater existingTheater = theaterToUpdate.get();
-
-            Field[] fields = theater.getClass().getDeclaredFields();
-
-            for(Field field : fields){
-                field.setAccessible(true);
-
-                Object fieldValue = field.get(theater);
-
-                if (fieldValue != null && !fieldValue.equals(field.get(existingTheater))){
-                    field.set(existingTheater, fieldValue);
-                }
-            }
-            existingTheater.setUpdatedAt(LocalDateTime.now());
-            return Optional.of(theaterRepository.save(existingTheater));
+            ObjectUpdater<Theater> theaterUpdater = new ObjectUpdater<>();
+            return theaterRepository.save(theaterUpdater.updateObject(existingTheater, theater));
         } else {
             throw new Exception("Theater not found!"); //TODO Custom TheaterNotFoundException
         }
