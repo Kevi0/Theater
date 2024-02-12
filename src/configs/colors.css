@@ -1,0 +1,15 @@
+:root {
+    --primary: #086171; /* Colore principale del sito (usato per pulsanti, link, ecc.) */
+    --secondary: ''; /* Colore complementare (usato per evidenziare parti secondarie o come sfondo) */
+    --success: '086171'; /* Colore di successo (usato per messaggi di conferma o icone di stato positivo) */
+    --error: '#a02239'; /* Colore di errore (usato per messaggi di errore o indicazioni di validazione errate) */
+    --warning: ''; /* Colore di avviso (usato per messaggi di avviso o situazioni problematiche) */
+    --background: ''; /* Colore di sfondo principale del sito */
+    --text: ''; /* Colore del testo principale */
+    --link: ''; /* Colore dei link ipertestuali non visitati */
+    --visitedLink: ''; /* Colore dei link ipertestuali già visitati */
+    --hover: ''; /* Colore quando il cursore è sopra un link o un elemento interattivo */
+    --active: ''; /* Colore quando un link o un elemento interattivo viene attivato */
+    --disabled: ''; /* Colore degli elementi disabilitati o non interattivi */
+  }
+  

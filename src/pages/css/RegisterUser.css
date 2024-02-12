@@ -1,0 +1,42 @@
+.css-5xe99f-MuiLinearProgress-bar1{
+    background-color: var(--primary) !important;
+}
+
+/* .MuiGrid-rootitem:focus .MuiInputBase-input{
+    border-color: aquamarine !important;
+} */
+
+.css-1jy569b-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+    color: green!important;
+    border-color: green!important;
+}
+
+.MuiGrid-root .MuiGrid-container .MuiGrid-spacing-xs-2 .css-mhc70k-MuiGrid-root .Mui-error{
+    
+    color: green !important;
+    border-color: green !important;
+}
+
+.MuiFormLabel-colorPrimary:focus{
+    color: blue !important;
+    border-color: blue !important;
+}
+
+/*
+
+MuiFormLabel-root MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined .MuiFormLabel-colorPrimary MuiFormLabel-filled Mui-required MuiInputLabel-root MuiInputLabel-formControl MuiInputLabel-animated MuiInputLabel-shrink MuiInputLabel-outlined css-1jy569b-MuiFormLabel-root-MuiInputLabel-root
+
+  
+
+
+.MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-error MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root
+
+MuiInputBase-root MuiOutlinedInput-root MuiInputBase-colorPrimary Mui-error MuiInputBase-fullWidth MuiInputBase-formControl css-md26zr-MuiInputBase-root-MuiOutlinedInput-root
+
+<input aria-invalid="false" id=":r1:" name="firstName" required="" type="text" class="MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input" value="">
+
+
+MuiInputBase-input MuiOutlinedInput-input css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input
+
+
+MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 css-1b3l6lk-MuiGrid-root*/

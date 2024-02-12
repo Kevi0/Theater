@@ -22,7 +22,8 @@ const theaterApi = {
                 throw new Error(`Errore nell'invio dei dati: ${response.status}`);
             }
 
-            return await response.json();
+            const responseData = await response.json();
+            return responseData;
         } catch (error) {
             console.error('Errore durante l\'invio di dati al backend:', error.message);
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario

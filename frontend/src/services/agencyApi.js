@@ -1,14 +1,14 @@
 const BASE_URL = 'http://localhost:8080/api';
 
-const theaterApi = {
-    addTheater: async (formData) => {
+const agencyApi = {
+    addAgency: async (formData) => {
         const formDataWithCustomType = {
             ...formData,
-            CustomType: "registrationTheater"
+            CustomType: "registrationAgency"
         };
 
         try {
-            const response = await fetch(`${BASE_URL}/theater/add`, {
+            const response = await fetch(`${BASE_URL}/agency/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -28,9 +28,9 @@ const theaterApi = {
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
     },
-    listTheaters: async () => {
+    listAgencies: async () => {
         try {
-            const response = await fetch(`${BASE_URL}/theater/getAll`, {
+            const response = await fetch(`${BASE_URL}/agency/getAll`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -49,9 +49,9 @@ const theaterApi = {
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
     },
-    deleteTheater: async (theaterId) => {
+    deleteAgency: async (agencyId) => {
         try {
-            const response = await fetch(`${BASE_URL}/theater/delete/${theaterId}`, {
+            const response = await fetch(`${BASE_URL}/agency/delete/${agencyId}`, {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -61,36 +61,36 @@ const theaterApi = {
             });
             console.log(response);
             if (!response.ok) {
-                throw new Error(`Errore nell'eliminazione del teatro: ${response.status}`);
+                throw new Error(`Errore nell'eliminazione dell'agenzia: ${response.status}`);
             }
 
             return await response.json();
         } catch (error) {
-            console.error('Errore durante l\'eliminazione del teatro:', error.message);
+            console.error('Errore durante l\'eliminazione dell\'agenzia:', error.message);
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
     },
-    getIdTheaterByName: async (theaterName) => {
+    getIdAgencyByName: async (agencyName) => {
         try {
-
-            const response = await fetch(`${BASE_URL}/theater/getTheaterIdByName/${theaterName}`, {
-                method: 'GET',
+            const response = await fetch(`${BASE_URL}/theater/getAgencyIdByName`, {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 mode: 'cors',
                 credentials: 'same-origin',
+                body: JSON.stringify({ agencyName }),
             });
 
             if (!response.ok) {
-                throw new Error(`Errore nel recupero dell'id del teatro: ${response.status}`);
+                throw new Error(`Errore nel recupero dell'id dell'agenzia: ${response.status}`);
             }
             return await response.json();
         } catch (error) {
-            console.log('Errore durante il recupero dell\'id del teatro:', error.message);
+            console.log('Errore durante il recupero dell\'id dell\'agenzia:', error.message);
             throw error;
         }
-    },
+    },/*
     updateTheater: async (theaterId, formData) => {
         const formDataWithCustomType = {
             ...formData,
@@ -118,7 +118,7 @@ const theaterApi = {
             console.error('Errore durante l\'invio di dati al backend:', error.message);
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
-    }
+    }*/
 };
 
-export default theaterApi;
+export default agencyApi;

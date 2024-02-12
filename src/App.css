@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Altezza minima pari all'intera altezza della viewport */
+  overflow: hidden; /* Nasconde il contenuto in eccesso oltre il footer */
+}
+
+#content {
+  flex: 1;
+  overflow: auto; /* Abilita lo scrolling del contenuto quando necessario */
+  padding-bottom: 10%; /* Altezza del footer in percentuale rispetto all'altezza del viewport */
+}
+
+#footer {
+  background-color: lightgray;
+  color: white;
+  padding: 1%; /* Padding in percentuale per il contenuto del footer */
+  position: sticky;
+  bottom: 0;
+}

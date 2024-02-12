@@ -1,14 +1,14 @@
 const BASE_URL = 'http://localhost:8080/api';
 
-const theaterApi = {
-    addTheater: async (formData) => {
+const seasonApi = {
+    addSeason: async (formData) => {
         const formDataWithCustomType = {
             ...formData,
-            CustomType: "registrationTheater"
+            CustomType: "registrationSeason"
         };
 
         try {
-            const response = await fetch(`${BASE_URL}/theater/add`, {
+            const response = await fetch(`${BASE_URL}/season/add`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ const theaterApi = {
             console.error('Errore durante l\'invio di dati al backend:', error.message);
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
-    },
+    },/*
     listTheaters: async () => {
         try {
             const response = await fetch(`${BASE_URL}/theater/getAll`, {
@@ -118,7 +118,7 @@ const theaterApi = {
             console.error('Errore durante l\'invio di dati al backend:', error.message);
             throw error; // Rilancia l'errore per gestirlo lato chiamante se necessario
         }
-    }
+    }*/
 };
 
-export default theaterApi;
+export default seasonApi;

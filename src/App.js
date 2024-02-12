@@ -3,7 +3,6 @@ import './pages/RegisterUser'
 import Footer from './components/Footer';
 import TheaterPage from "./pages/TheaterPage";
 import AgencyPage from "./pages/AgencyPage";
-import SeasonPage from "./pages/SeasonPage";
 
 function App() {
  
@@ -11,7 +10,7 @@ function App() {
     <div id='container'>
       <div id="content">
         <h1>Dynamic Form with React</h1>
-        <AgencyPage />
+        <TheaterPage />
 
 
       </div>
