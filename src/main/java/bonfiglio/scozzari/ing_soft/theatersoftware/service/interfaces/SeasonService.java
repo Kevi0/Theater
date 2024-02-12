@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Season;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
 
 import java.util.List;
 import java.util.Optional;

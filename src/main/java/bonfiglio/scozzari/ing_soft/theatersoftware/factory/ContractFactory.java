@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.factory;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Document;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Document;
 
 public class ContractFactory implements DocumentFactory{
 

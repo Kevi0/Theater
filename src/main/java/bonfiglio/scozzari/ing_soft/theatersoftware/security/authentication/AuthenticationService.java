@@ -1,15 +1,15 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.security.authentication;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.BadCredentialsException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.UserAlreadyExistsException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.User;
-import bonfiglio.scozzari.ing_soft.theatersoftware.enums.UserRoles;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.UserRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.BadCredentialsException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
+import bonfiglio.scozzari.ing_soft.theatersoftware.enumaration.UserRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.security.configuration.JwtService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.UserService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.mail.EmailService;
-import bonfiglio.scozzari.ing_soft.theatersoftware.utils.RegistrationValidator;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.UserRegistrationValidator;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,14 +36,14 @@ public class AuthenticationService {
     public final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    private final RegistrationValidator validator;
+    private final UserRegistrationValidator validator;
 
     public AuthenticationResponse register(
             RegisterRequest request
-    ) throws UserAlreadyExistsException, InvalidDataException {
+    ) throws UserAlreadyExistException, InvalidDataException {
 
         if (userService.getUserByUsername(request.getUsername()).isPresent())
-            throw new UserAlreadyExistsException("Error during registration!");
+            throw new UserAlreadyExistException("Error during registration!");
 
         validator.validate(request);
 
@@ -66,7 +66,7 @@ public class AuthenticationService {
             emailModel.put("subject", "Registrazione utente");
             emailModel.put("name", user.getName());
 
-            emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "registration-email", emailModel);
+            emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "user-registration-email", emailModel);
 
             var jwtToken = jwtService.generateToken(user);
 
@@ -76,8 +76,7 @@ public class AuthenticationService {
                     .build();
 
         }catch (Exception e) {
-            e.printStackTrace();
-            throw new UserAlreadyExistsException("Errore durante la registrazione!");
+            throw new UserAlreadyExistException("Errore durante la registrazione!");
         }
 
         /*Map<String, Object> emailModel = new HashMap<>();

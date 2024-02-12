@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.security.configuration;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.UserRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

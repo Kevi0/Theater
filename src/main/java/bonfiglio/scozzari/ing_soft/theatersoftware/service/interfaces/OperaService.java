@@ -1,21 +1,23 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Opera;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Opera;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface OperaService {
 
-    Optional<Opera> addOpera(Opera opera, Long idVenue, Long idSeason) throws Exception;
+    void addOpera(Opera opera, Long idVenue, Long idSeason);
 
-    Optional<Opera> addOpera(Opera opera) throws Exception;
+    void addOpera(Opera opera) throws OperaAlreadyExistException, InvalidDataException;
 
-    //TODO UPDATE
+    void updateOpera(Long id, Opera opera) throws IllegalAccessException, OperaNotFoundException, InvalidDataException;
 
-    Optional<Opera> updateOpera(Long id, Opera opera) throws Exception;
-
-    Optional<Opera> deleteOpera(Long id);
+    Optional<Opera> deleteOpera(Long id) throws OperaAlreadyDeletedException, OperaNotFoundException;
 
     List<Optional<Opera>> getAllOperas();
 

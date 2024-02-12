@@ -1,9 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Student;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.PermanentWorkRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.StudentRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Student;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.StudentRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.StudentService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

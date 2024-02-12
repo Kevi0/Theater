@@ -1,0 +1,30 @@
+package bonfiglio.scozzari.ing_soft.theatersoftware.model;
+
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.audit.BaseEntityAudit;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class Play extends BaseEntityAudit {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column
+    private String name;
+
+    @Column
+    private LocalDate datePlay;
+
+    @ManyToOne
+    @JoinColumn(name = "opera_id")
+    private Opera opera;
+}

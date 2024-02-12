@@ -1,9 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Unemployed;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.PermanentWorkRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.UnemployedRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Unemployed;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UnemployedRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.UnemployedService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

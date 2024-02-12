@@ -1,9 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Season;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Theater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.SeasonRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.TheaterRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.SeasonRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.SeasonService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

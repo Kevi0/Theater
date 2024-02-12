@@ -1,9 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.BankAccountES;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.BankAccount;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.BankAccountESRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.BankAccountITRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.BankAccountES;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.BankAccount;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.BankAccountESRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.BankAccountESService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

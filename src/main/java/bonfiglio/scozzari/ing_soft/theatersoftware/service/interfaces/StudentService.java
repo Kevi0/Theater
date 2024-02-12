@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Student;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Student;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
 
 import java.util.Optional;
 

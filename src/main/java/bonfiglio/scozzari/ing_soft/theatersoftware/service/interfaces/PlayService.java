@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Play;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Play;
 
 import java.util.Optional;
 

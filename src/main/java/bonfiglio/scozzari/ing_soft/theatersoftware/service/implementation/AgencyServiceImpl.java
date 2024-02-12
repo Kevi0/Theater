@@ -1,11 +1,13 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyAlreadyDeletedException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyAlreadyExistException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.AgencyNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Agency;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.AgencyRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Agency;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.AgencyRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.AgencyService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.AgencyRegistrationValidator;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -23,10 +25,15 @@ public class AgencyServiceImpl implements AgencyService {
 
     private final AgencyRepository agencyRepository;
 
+    private final AgencyRegistrationValidator validator;
+
     @Override
-    public void addAgency(Agency agency) throws AgencyAlreadyExistException {
+    public void addAgency(Agency agency) throws AgencyAlreadyExistException, InvalidDataException {
 
         if (agencyRepository.findAgencyByName(agency.getName()).isEmpty()){
+
+            validator.validate(agency);
+
             var agencyToInsert = Agency.builder()
                             .name(agency.getName())
                             .email(agency.getEmail())
@@ -45,11 +52,13 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public void updateAgency(Long id, Agency agency) throws IllegalAccessException, AgencyNotFoundException {
+    public void updateAgency(Long id, Agency agency) throws IllegalAccessException, AgencyNotFoundException, InvalidDataException {
 
         Optional<Agency> agencyToUpdate = agencyRepository.findById(id);
 
-        if (agencyToUpdate.isPresent()) {
+        if (agencyToUpdate.isPresent() && (!agencyRepository.checkIfAgencyIsDeleted(id))) {
+
+            validator.validate(agency);
             Agency existingAgency = agencyToUpdate.get();
             ObjectUpdater<Agency> agencyUpdater = new ObjectUpdater<>();
             agencyRepository.save(agencyUpdater.updateObject(existingAgency, agency));

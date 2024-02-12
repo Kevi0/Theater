@@ -1,8 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.security.authentication;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.BadCredentialsException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exceptions.customExceptions.UserAlreadyExistsException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.BadCredentialsException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ public class AuthenticationController {
     @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest request
-    ) throws UserAlreadyExistsException, InvalidDataException {
+    ) throws UserAlreadyExistException, InvalidDataException {
         return ResponseEntity.ok(service.register(request));
     }
 

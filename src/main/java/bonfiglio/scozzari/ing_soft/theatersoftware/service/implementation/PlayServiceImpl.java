@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Play;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.PlayRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Play;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.PlayRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.PlayService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

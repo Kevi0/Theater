@@ -1,9 +1,8 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Retired;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.Work;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.PermanentWorkRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.RetiredRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Retired;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.RetiredRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.RetiredService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

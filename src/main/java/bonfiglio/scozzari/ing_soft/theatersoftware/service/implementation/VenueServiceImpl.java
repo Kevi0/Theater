@@ -1,9 +1,9 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Theater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Venue;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.TheaterRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.VenueRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.VenueRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.VenueService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

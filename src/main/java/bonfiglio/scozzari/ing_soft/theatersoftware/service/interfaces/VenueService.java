@@ -1,6 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Venue;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
 
 import java.util.Optional;
 

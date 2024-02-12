@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.BankAccountIT;
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.interfaces.BankAccount;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.BankAccountIT;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.BankAccount;
 
 import java.util.Optional;
 

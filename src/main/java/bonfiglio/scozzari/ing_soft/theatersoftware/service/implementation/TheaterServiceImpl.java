@@ -1,16 +1,22 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
-import bonfiglio.scozzari.ing_soft.theatersoftware.models.Theater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repositories.TheaterRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.TheaterService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.TheaterRegistrationValidator;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -19,71 +25,78 @@ public class TheaterServiceImpl implements TheaterService {
 
     private final TheaterRepository theaterRepository;
 
+    private final TheaterRegistrationValidator validator;
+
+
     @Override
-    public Optional<Theater> addTheater(Theater theater) throws Exception {
+    public void addTheater(Theater theater) throws InvalidDataException, TheaterAlreadyExistException {
+
         if (theaterRepository.findTheaterByName(theater.getName()).isEmpty()){
-            theater.setCreatedAt(LocalDateTime.now());
-            return Optional.of(theaterRepository.save(theater));
+
+            validator.validate(theater);
+
+            var theaterToInsert = Theater.builder()
+                    .name(theater.getName())
+                    .city(theater.getCity())
+                    .tel(theater.getTel())
+                    .email(theater.getEmail())
+                    .pec(theater.getPec())
+                    .website(theater.getWebsite())
+                    .iva(theater.getIva())
+                    .uniqueCode(theater.getUniqueCode())
+                    .recipientCode(theater.getRecipientCode())
+                    .build();
+            theaterToInsert.setCreatedAt(LocalDateTime.now());
+            theaterRepository.save(theaterToInsert);
+
         } else {
-            throw new Exception(); //TODO Custom TheaterNotFoundException
+            throw new TheaterAlreadyExistException("Error when entering the theater");
         }
+
     }
 
     @Override
-    public Theater updateTheater(Long id, Theater theater) throws Exception {
+    public void updateTheater(Long id, Theater theater) throws InvalidDataException, IllegalAccessException, TheaterNotFoundException {
+
         Optional<Theater> theaterToUpdate = theaterRepository.findById(id);
-        if (theaterToUpdate.isPresent()){
+
+        if (theaterToUpdate.isPresent() && (!theaterRepository.checkIfTheaterIsDeleted(id))) {
+
+            validator.validate(theater);
             Theater existingTheater = theaterToUpdate.get();
             ObjectUpdater<Theater> theaterUpdater = new ObjectUpdater<>();
-            return theaterRepository.save(theaterUpdater.updateObject(existingTheater, theater));
+            theaterRepository.save(theaterUpdater.updateObject(existingTheater, theater));
+
         } else {
-            throw new Exception("Theater not found!"); //TODO Custom TheaterNotFoundException
+            throw new TheaterNotFoundException("Error when updating the theater");
         }
+
     }
 
     @Override
-    public Optional<Theater> deleteTheater(Long id) {
-        /*Optional<Theater> theaterToDelete = theaterRepository.findById(id);
-
-        if (theaterToDelete.isPresent()) {
-            Theater existingTheater = theaterToDelete.get();
-
-            // Verifica se il teatro è già stato cancellato
-            if (existingTheater.getDeletedAt() == null) {
-                existingTheater.setDeletedAt(LocalDateTime.now());
-                return Optional.of(theaterRepository.save(existingTheater));
-            } else {
-                // Il teatro è già stato cancellato
-                return Optional.empty();
-            }
-        } else {
-            // Il teatro non è stato trovato
-            return Optional.empty();
-        }*/
+    public Optional<Theater> deleteTheater(Long id) throws TheaterNotFoundException, TheaterAlreadyDeletedException {
 
         Optional<Theater> theaterToDelete = theaterRepository.findById(id);
 
         if (theaterToDelete.isPresent()) {
             Theater existingTheater = theaterToDelete.get();
 
-            // Verifica se il teatro è già stato cancellato
             if (existingTheater.getDeletedAt() == null) {
                 theaterRepository.deleteTheaterById(id);
                 return Optional.of(existingTheater);
+
             } else {
-                // Il teatro è già stato cancellato
-                return Optional.empty();
+                throw new TheaterAlreadyDeletedException("Error when deleting the theater");
             }
         } else {
-            // Il teatro non è stato trovato
-            return Optional.empty();
+            throw new TheaterNotFoundException("Error when deleting the theater");
         }
+
     }
 
-
     @Override
-    public List<Optional<Theater>> getAllTheaters() {
-        return theaterRepository.findAllTheaters().stream().toList();
+    public Set<Optional<Theater>> getAllTheaters() {
+        return new HashSet<>(theaterRepository.findAllTheaters());
     }
 
     @Override
