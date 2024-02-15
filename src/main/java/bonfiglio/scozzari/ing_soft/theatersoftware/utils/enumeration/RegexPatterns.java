@@ -58,12 +58,12 @@ public class RegexPatterns {
     public static final String DOMAIN_NAME_PATTERN = "(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]";
 
     // Regex pattern for IVA validation
-    public static final String IVA_PATTERN = "^\\d{11}$\n";
+    public static final String IVA_PATTERN = "^\\d{11}$";
 
     // Regex pattern for unique code validation
-    public static final String UNIQUE_CODE_PATTERN = "^\\d{6}$\n";
+    public static final String UNIQUE_CODE_PATTERN = "^\\d{6}$";
 
     // Regex pattern for recipient code validation
-    public static final String RECIPIENT_CODE_PATTERN = "^\\d{7}$\n";
+    public static final String RECIPIENT_CODE_PATTERN = "^\\d{7}$";
 
 }
