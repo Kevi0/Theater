@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -17,6 +18,6 @@ public class PlayDTO implements InputDTO {
 
     private String name;
 
-    private LocalDate datePlay;
+    private LocalDateTime datePlay;
 
 }
