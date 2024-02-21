@@ -39,9 +39,6 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     @Column
     private String pec;
 
-    /*@Column
-    private String taxCode;*/
-
     @Column
     private String website;
 

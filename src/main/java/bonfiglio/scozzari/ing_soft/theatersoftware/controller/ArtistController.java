@@ -6,7 +6,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.artist.sub.*;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.artist.ArtistMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.BankAccount;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
-import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
+import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.*;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.PermanentWorkService;
 import lombok.AllArgsConstructor;

@@ -15,11 +15,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class PlayDTO implements InputDTO {
 
-    @NotBlank(message = "Il nome non può essere vuoto")
     private String name;
 
-    @NotNull(message = "La data di gioco non può essere nulla")
-    @PastOrPresent(message = "La data di gioco deve essere nel passato o nel presente")
     private LocalDate datePlay;
 
 }

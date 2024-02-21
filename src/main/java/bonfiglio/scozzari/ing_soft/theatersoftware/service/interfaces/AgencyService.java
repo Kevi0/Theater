@@ -19,6 +19,6 @@ public interface AgencyService {
 
     Set<Optional<Agency>> getAllAgencies();
 
-    Long getAgencyIdByName(String name);
+    Long getAgencyIdByName(String name) throws AgencyNotFoundException;
 
 }

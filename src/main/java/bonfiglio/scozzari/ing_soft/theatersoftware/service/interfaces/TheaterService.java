@@ -13,14 +13,12 @@ public interface TheaterService {
 
     void addTheater(Theater theater) throws InvalidDataException, TheaterAlreadyExistException;
 
-    //TODO UPDATE
-
     void updateTheater(Long id, Theater theater) throws InvalidDataException, IllegalAccessException, TheaterNotFoundException;
 
     Optional<Theater> deleteTheater(Long id) throws TheaterAlreadyExistException, TheaterNotFoundException, TheaterAlreadyDeletedException;
 
     Set<Optional<Theater>> getAllTheaters();
 
-    Long getTheaterIdByName(String name);
+    Long getTheaterIdByName(String name) throws TheaterNotFoundException;
 
 }

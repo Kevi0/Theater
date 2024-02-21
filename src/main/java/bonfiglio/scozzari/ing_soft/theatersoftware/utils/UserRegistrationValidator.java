@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.utils;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.security.authentication.RegisterRequest;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.enumeration.RegexPatterns;
 import org.springframework.stereotype.Component;
 
@@ -10,14 +10,14 @@ import java.util.regex.Pattern;
 @Component
 public class UserRegistrationValidator {
 
-    public void validate(RegisterRequest request) throws InvalidDataException {
+    public void validate(User user) throws InvalidDataException {
 
-        validateName(request.getName());
-        validateSurname(request.getSurname());
-        validateTaxCode(request.getTaxCode());
-        validateEmail(request.getEmail());
-        validateUsername(request.getName(), request.getSurname(), request.getUsername());
-        validatePassword(request.getName(), request.getSurname(), request.getPassword());
+        validateName(user.getName());
+        validateSurname(user.getSurname());
+        validateTaxCode(user.getTaxCode());
+        validateEmail(user.getEmail());
+        validateUsername(user.getName(), user.getSurname(), user.getUsername());
+        validatePassword(user.getName(), user.getSurname(), user.getPassword());
 
     }
 

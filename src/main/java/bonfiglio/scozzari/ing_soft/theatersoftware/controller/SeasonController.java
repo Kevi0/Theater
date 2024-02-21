@@ -3,17 +3,24 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.controller;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.season.SeasonDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.season.SeasonMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyDeletedException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
-import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
+import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.SeasonServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+@SuppressWarnings("All")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/season")
@@ -23,55 +30,62 @@ public class SeasonController {
 
     private final SeasonMapper seasonMapper;
 
-    @PostMapping(value = "/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO seasonDTO
-    ) throws Exception {
-        if (seasonDTO instanceof SeasonDTO){
-            seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO));
+    ) throws SeasonAlreadyExistException, InvalidDataException {
 
-            return new ResponseEntity<>(new ResponseMessage("Season added"), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new ResponseMessage("Season not added"), HttpStatus.BAD_REQUEST);
+        try {
+            if (seasonDTO instanceof SeasonDTO) {
+                seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO));
 
+                return new ResponseEntity<>(new ResponseMessage("Season added"), HttpStatus.OK);
+            } else {
+                throw new IllegalArgumentException("Season not added");
+            }
+        } catch (JsonParseException e){
+            throw new HttpMessageNotReadableException("Invalid data");
         }
+
     }
 
-    @PutMapping(value = "/update/{id}")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO seasonDTO
-    ) throws Exception {
+    ) throws SeasonNotFoundException, InvalidDataException, IllegalAccessException {
+
         if (seasonDTO instanceof SeasonDTO){
             seasonService.updateSeason(id, seasonMapper.seasonDTOToSeason(seasonDTO));
 
             return new ResponseEntity<>(new ResponseMessage("Season updated"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("Season not updated"), HttpStatus.BAD_REQUEST);
-
+            throw new IllegalArgumentException("Season not updated");
         }
+
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ResponseMessage> delete(@PathVariable Long id){
-        try {
-            Optional<Season> deletedSeason = seasonService.deleteSeason(id);
-            return deletedSeason.map(season ->
-                    new ResponseEntity<>(new ResponseMessage("Season deleted successfully!"), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(new ResponseMessage("Season not deleted!"), HttpStatus.BAD_REQUEST));
-        } catch (Exception e) {
-            return new ResponseEntity<>(new ResponseMessage("Season not deleted!"), HttpStatus.BAD_REQUEST);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<ResponseMessage> delete(
+            @PathVariable Long id
+    ) throws SeasonNotFoundException, SeasonAlreadyDeletedException {
+
+        if (seasonService.deleteSeason(id).isPresent()) {
+            return new ResponseEntity<>(new ResponseMessage("Season deleted"), HttpStatus.OK);
+        } else {
+            throw new SeasonNotFoundException("Error when deleting the season");
         }
+
     }
 
-    @GetMapping("/getAll")
-    public List<Optional<Season>> getAll(){
-        return seasonService.getAllSeasons();
+    @RequestMapping(value = "/seasons", method = RequestMethod.GET)
+    public ResponseEntity<Set<Optional<Season>>> getAll(){
+        return new ResponseEntity<>(seasonService.getAllSeasons(), HttpStatus.OK);
     }
 
-    @GetMapping("/getSeasonIdByTitle/{title}")
-    public Long getSeasonIdByTitle(@PathVariable String title){
-        return seasonService.getSeasonIdByTitle(title);
+    @RequestMapping(value = "/{title}/id", method = RequestMethod.GET)
+    public ResponseEntity<Long> getSeasonIdByTitle(@PathVariable String title) throws SeasonNotFoundException {
+        return new ResponseEntity<>(seasonService.getSeasonIdByTitle(title), HttpStatus.OK);
     }
 
 }

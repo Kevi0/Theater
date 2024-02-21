@@ -9,17 +9,16 @@ import org.springframework.stereotype.Component;
 public class PlayMapper {
 
     public Play playDTOToPlay(InputDTO playDTO){
-        if(!(playDTO instanceof PlayDTO playData)){
+        if(!(playDTO instanceof PlayDTO playData))
             return null;
+        else {
+            Play play = new Play();
+
+            play.setName(playData.getName());
+            play.setDatePlay(playData.getDatePlay());
+
+            return play;
         }
-
-        Play play = new Play();
-
-        play.setName(playData.getName());
-        play.setDatePlay(playData.getDatePlay());
-
-        return play;
-
     }
 
 }

@@ -21,7 +21,6 @@ public class TheaterMapper {
         theater.setEmail(theaterData.getEmail());
         theater.setIva(theaterData.getIva());
         theater.setPec(theaterData.getPec());
-        //theater.setTaxCode(theaterData.getTaxCode());
         theater.setWebsite(theaterData.getWebsite());
         theater.setUniqueCode(theaterData.getUniqueCode());
         theater.setRecipientCode(theaterData.getRecipientCode());

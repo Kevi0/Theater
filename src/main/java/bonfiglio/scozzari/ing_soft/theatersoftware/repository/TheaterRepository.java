@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface TheaterRepository extends JpaRepository<Theater, Long> {
 
@@ -21,7 +21,7 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     void deleteTheaterById(@Param("id") Long id);
 
     @Query("SELECT t FROM Theater t WHERE t.deletedAt IS NULL")
-    List<Optional<Theater>> findAllTheaters();
+    Set<Optional<Theater>> findAllTheaters();
 
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.id = :id AND t.deletedAt IS NOT NULL")
     //return true if there is a theater with id = :id and deletedAt set (the theater has been deleted)

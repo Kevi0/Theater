@@ -8,6 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.Opera;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface OperaService {
 
@@ -19,8 +20,8 @@ public interface OperaService {
 
     Optional<Opera> deleteOpera(Long id) throws OperaAlreadyDeletedException, OperaNotFoundException;
 
-    List<Optional<Opera>> getAllOperas();
+    Set<Optional<Opera>> getAllOperas();
 
-    Long getOperaIdByTitle(String title);
+    Long getOperaIdByTitle(String title) throws OperaNotFoundException;
 
 }

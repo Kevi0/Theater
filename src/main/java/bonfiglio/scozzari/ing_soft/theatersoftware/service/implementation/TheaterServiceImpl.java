@@ -100,7 +100,9 @@ public class TheaterServiceImpl implements TheaterService {
     }
 
     @Override
-    public Long getTheaterIdByName(String name) {
-        return theaterRepository.findTheaterByName(name).get().getId();
+    public Long getTheaterIdByName(String name) throws TheaterNotFoundException {
+        return theaterRepository.findTheaterByName(name)
+                .map(Theater::getId)
+                .orElseThrow(() -> new TheaterNotFoundException("Error when getting the theater id by name"));
     }
 }

@@ -7,9 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -46,7 +44,7 @@ public class Agency extends BaseEntityAudit implements Updatable {
     private Set<UserAgency> userAgencies = new HashSet<>();
 
     @ManyToMany(mappedBy = "agencies", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private List<Artist> artists = new ArrayList<>();
+    private Set<Artist> artists = new HashSet<>();
 
     @Override
     public void setUpdateAt(LocalDateTime updateAt) {

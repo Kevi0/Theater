@@ -96,7 +96,9 @@ public class AgencyServiceImpl implements AgencyService {
     }
 
     @Override
-    public Long getAgencyIdByName(String name) {
-        return agencyRepository.findAgencyByName(name).get().getId();
+    public Long getAgencyIdByName(String name) throws AgencyNotFoundException {
+        return agencyRepository.findAgencyByName(name)
+                .map(Agency::getId)
+                .orElseThrow(() -> new AgencyNotFoundException("Error when getting the agency id by name"));
     }
 }

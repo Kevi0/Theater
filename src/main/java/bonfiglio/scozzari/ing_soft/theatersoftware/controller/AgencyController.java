@@ -8,7 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.ag
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Agency;
-import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
+import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.AgencyServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.json.JsonParseException;
@@ -30,7 +30,7 @@ public class AgencyController {
 
     private final AgencyMapper agencyMapper;
 
-    @PostMapping(value = "/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO agencyDTO
     ) throws AgencyAlreadyExistException, InvalidDataException {
@@ -42,14 +42,13 @@ public class AgencyController {
                 return new ResponseEntity<>(new ResponseMessage("Agency added"), HttpStatus.OK);
             } else {
                 throw new IllegalArgumentException("Agency not added");
-                //return new ResponseEntity<>(new ResponseMessage("Agency not added"), HttpStatus.BAD_REQUEST);
             }
         } catch (JsonParseException e){
             throw new HttpMessageNotReadableException("Invalid data");
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO agencyDTO
@@ -61,30 +60,30 @@ public class AgencyController {
             return new ResponseEntity<>(new ResponseMessage("Agency updated"), HttpStatus.OK);
         } else {
             throw new IllegalArgumentException("Agency not updated");
-            //return new ResponseEntity<>(new ResponseMessage("Agency not updated"), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
     ) throws AgencyNotFoundException, AgencyAlreadyDeletedException {
 
-        if (agencyService.deleteAgency(id).isPresent()){
+        if (agencyService.deleteAgency(id).isPresent()) {
             return new ResponseEntity<>(new ResponseMessage("Agency deleted"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("Agency not deleted"), HttpStatus.BAD_REQUEST);
+            throw new AgencyNotFoundException("Error when deleting the agency");
         }
 
     }
 
-    @GetMapping(value = "/agencies")
-    public Set<Optional<Agency>> getAll(){
-        return agencyService.getAllAgencies();
+
+    @RequestMapping(value = "/agencies", method = RequestMethod.GET)
+    public ResponseEntity<Set<Optional<Agency>>> getAll(){
+        return new ResponseEntity<>(agencyService.getAllAgencies(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/agencies/{name}")
-    public Long getAgencyIdByName(@PathVariable String name){
-        return agencyService.getAgencyIdByName(name);
+    @RequestMapping(value = "/{name}/id", method = RequestMethod.GET)
+    public ResponseEntity<Long> getAgencyIdByName(@PathVariable String name) throws AgencyNotFoundException {
+        return new ResponseEntity<>(agencyService.getAgencyIdByName(name), HttpStatus.OK);
     }
 }

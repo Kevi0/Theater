@@ -16,8 +16,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -110,12 +112,14 @@ public class OperaServiceImpl implements OperaService {
     }
 
     @Override
-    public List<Optional<Opera>> getAllOperas() {
-        return operaRepository.findAllOperas().stream().toList();
+    public Set<Optional<Opera>> getAllOperas() {
+        return new HashSet<>(operaRepository.findAllOperas());
     }
 
     @Override
-    public Long getOperaIdByTitle(String title) {
-        return operaRepository.findOperaByTitle(title).get().getId();
+    public Long getOperaIdByTitle(String title) throws OperaNotFoundException {
+        return operaRepository.findOperaByTitle(title)
+                .map(Opera::getId)
+                .orElseThrow(() -> new OperaNotFoundException("Error when getting the opera id by title"));
     }
 }

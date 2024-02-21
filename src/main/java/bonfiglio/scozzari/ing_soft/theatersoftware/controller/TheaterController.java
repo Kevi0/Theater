@@ -8,7 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.th
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.responses.ResponseMessage;
+import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.TheaterServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.json.JsonParseException;
@@ -30,7 +30,7 @@ public class TheaterController {
 
     private final TheaterMapper theaterMapper;
 
-    @PostMapping(value = "/add")
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
     ) throws TheaterAlreadyExistException, InvalidDataException {
@@ -42,7 +42,6 @@ public class TheaterController {
                 return new ResponseEntity<>(new ResponseMessage("Theater added successfully!"), HttpStatus.OK);
             } else {
                 throw new IllegalArgumentException("Theater not added!");
-                //return new ResponseEntity<>(new ResponseMessage("Theater not added!"), HttpStatus.BAD_REQUEST);
             }
         } catch (JsonParseException e){
             throw new HttpMessageNotReadableException("Invalid data");
@@ -50,7 +49,7 @@ public class TheaterController {
         }
     }
 
-    @PutMapping(value = "/update/{id}")
+    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
             @RequestBody InputDTO theaterDTO
@@ -61,12 +60,11 @@ public class TheaterController {
 
             return new ResponseEntity<>(new ResponseMessage("Theater updated successfully!"), HttpStatus.OK);
         } else {
-            //return new ResponseEntity<>(new ResponseMessage("Theater not updated!"), HttpStatus.BAD_REQUEST);
             throw new IllegalArgumentException("Theater not updated!");
         }
     }
 
-    @DeleteMapping("/delete/{id}")
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
     ) throws TheaterNotFoundException, TheaterAlreadyDeletedException {
@@ -74,19 +72,19 @@ public class TheaterController {
         if (theaterService.deleteTheater(id).isPresent()){
             return new ResponseEntity<>(new ResponseMessage("Theater deleted successfully!"), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponseMessage("Theater not deleted!"), HttpStatus.BAD_REQUEST);
+            throw new TheaterNotFoundException("Theater not found!");
         }
 
     }
 
-    @GetMapping(value = "/theaters")
-    public Set<Optional<Theater>> getAll(){
-        return theaterService.getAllTheaters();
+    @RequestMapping(value = "/theaters", method = RequestMethod.GET)
+    public ResponseEntity<Set<Optional<Theater>>> getAll(){
+        return new ResponseEntity<>(theaterService.getAllTheaters(), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/theaters/{name}")
-    public Long getTheaterIdByName(@PathVariable String name){
-        return theaterService.getTheaterIdByName(name);
+    @RequestMapping(value = "/theaters/{name}", method = RequestMethod.GET)
+    public ResponseEntity<Long> getTheaterIdByName(@PathVariable String name) throws TheaterNotFoundException {
+        return new ResponseEntity<>(theaterService.getTheaterIdByName(name), HttpStatus.OK);
     }
 
 }

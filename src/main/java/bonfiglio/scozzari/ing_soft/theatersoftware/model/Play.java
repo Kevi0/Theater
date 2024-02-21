@@ -2,13 +2,13 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.model;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.audit.BaseEntityAudit;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,11 +18,11 @@ public class Play extends BaseEntityAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
-    private LocalDate datePlay;
+    @Column(nullable = false)
+    private LocalDateTime datePlay;
 
     @ManyToOne
     @JoinColumn(name = "opera_id")

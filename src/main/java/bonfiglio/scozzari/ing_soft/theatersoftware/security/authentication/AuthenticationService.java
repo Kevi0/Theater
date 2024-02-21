@@ -38,101 +38,66 @@ public class AuthenticationService {
 
     private final UserRegistrationValidator validator;
 
-    public AuthenticationResponse register(
-            RegisterRequest request
-    ) throws UserAlreadyExistException, InvalidDataException {
+    public AuthenticationResponse register(User user) throws UserAlreadyExistException, InvalidDataException {
 
-        if (userService.getUserByUsername(request.getUsername()).isPresent())
-            throw new UserAlreadyExistException("Error during registration!");
+        if (userRepository.findUserByUsername(user.getUsername()).isEmpty()) {
 
-        validator.validate(request);
+            validator.validate(user);
 
-        var user = User.builder()
-                .name(request.getName())
-                .surname(request.getSurname())
-                .taxCode(request.getTaxCode())
-                .email(request.getEmail())
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .createdAt(LocalDateTime.now())
-                .role(UserRoles.USER)
-                .build();
-
-        try {
-
-            userRepository.save(user);
-
-            Map<String, Object> emailModel = new HashMap<>();
-            emailModel.put("subject", "Registrazione utente");
-            emailModel.put("name", user.getName());
-
-            emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "user-registration-email", emailModel);
-
-            var jwtToken = jwtService.generateToken(user);
-
-            return AuthenticationResponse
-                    .builder()
-                    .token(jwtToken)
+            var userToInsert = User.builder()
+                    .name(user.getName())
+                    .surname(user.getSurname())
+                    .taxCode(user.getTaxCode())
+                    .email(user.getEmail())
+                    .username(user.getUsername())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(UserRoles.USER)
                     .build();
+            userToInsert.setCreatedAt(LocalDateTime.now());
 
-        }catch (Exception e) {
+            try {
+
+                userRepository.save(userToInsert);
+
+                Map<String, Object> emailModel = new HashMap<>();
+                emailModel.put("subject", "Registrazione utente");
+                emailModel.put("name", user.getName());
+
+                emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "user-registration-email", emailModel);
+
+                var jwtToken = jwtService.generateToken(user);
+
+                return AuthenticationResponse
+                        .builder()
+                        .token(jwtToken)
+                        .build();
+
+            } catch (Exception e) {
+                throw new UserAlreadyExistException("Errore durante la registrazione!");
+            }
+
+        } else {
             throw new UserAlreadyExistException("Errore durante la registrazione!");
         }
-
-        /*Map<String, Object> emailModel = new HashMap<>();
-        emailModel.put("subject", "Registrazione utente");
-        emailModel.put("name", user.getName());
-
-        emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"),  null, null, "registration-email", emailModel);
-
-        userRepository.save(user);
-
-        var jwtToken = jwtService.generateToken(user);
-
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();*/
     }
 
-    /*public AuthenticationResponse registerAdmin(RegisterRequest request) {
-        var user = User.builder()
-                .name(request.getName())
-                .surname(request.getSurname())
-                .taxCode(request.getTaxCode())
-                .email(request.getEmail())
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .role(UserRoles.ADMIN)
-                .build();
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
-        return AuthenticationResponse
-                .builder()
-                .token(jwtToken)
-                .build();
-    }*/
 
-    public AuthenticationResponse authenticate(
-            AuthenticationRequest request
-    ) throws BadCredentialsException {
+    public AuthenticationResponse authenticate(User user) throws BadCredentialsException {
 
-        //TODO Implements other custom exceptions
-
-        var user = userRepository.findUserByUsername(request.getUsername())
+        var userToAuthenticate = userRepository.findUserByUsername(user.getUsername())
                 .orElseThrow(() -> new BadCredentialsException("Errore durante l'autenticazione: credenziali errate!"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPassword()))
+        if (!passwordEncoder.matches(user.getPassword(), userToAuthenticate.getPassword()))
             throw new BadCredentialsException("Errore durante l'autenticazione: credenziali errate!");
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getUsername(),
-                        request.getPassword()
+                        user.getUsername(),
+                        user.getPassword()
                 )
         );
 
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = jwtService.generateToken(userToAuthenticate);
 
         return AuthenticationResponse
                 .builder()

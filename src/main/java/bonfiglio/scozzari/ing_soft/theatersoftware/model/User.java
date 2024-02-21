@@ -4,6 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.enumaration.UserRoles;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.audit.BaseEntityAudit;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.middle.UserAgency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.middle.UserTheater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.utils.Updatable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,33 +21,29 @@ import java.util.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends BaseEntityAudit implements UserDetails {
+public class User extends BaseEntityAudit implements UserDetails, Updatable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
 
-    @Column
+    @Column(nullable = false)
     private String surname;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String taxCode;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column
+    @Column(nullable = false)
     private String password;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
 
     @Column
     @Enumerated(EnumType.STRING)
@@ -85,5 +82,10 @@ public class User extends BaseEntityAudit implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public void setUpdateAt(LocalDateTime updateAt) {
+        this.setUpdatedAt(updateAt);
     }
 }

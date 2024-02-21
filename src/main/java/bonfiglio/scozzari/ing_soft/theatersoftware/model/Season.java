@@ -2,16 +2,16 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.model;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.audit.BaseEntityAudit;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,49 +21,49 @@ public class Season extends BaseEntityAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String title;
 
-    @Column
-    private LocalDate startDate;
+    @Column(nullable = false)
+    private LocalDateTime startDate;
 
-    @Column
-    private LocalDate endDate;
+    @Column(nullable = false)
+    private LocalDateTime endDate;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal artisticDirectorSocialCosts;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal artisticDirectorCompensation;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal artisticPersonnelGrossSalary;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal artisticPersonnelSocialCosts;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal technicalPersonnelGrossSalary;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal technicalPersonnelSocialCosts;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal administrativePersonnelGrossSalary;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal administrativePersonnelSocialCosts;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal artisticPersonnelPerDiem;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal technicalPersonnelPerDiem;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal projectRelatedDailyExpenses;
 
-    @Column
+    @Column(nullable = false)
     private BigDecimal travelTransportAccommodationCosts;
 
     @ManyToMany(mappedBy = "seasons",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
