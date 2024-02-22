@@ -38,7 +38,18 @@ public class SeasonServiceImpl implements SeasonService {
                     .title(season.getTitle())
                     .startDate(season.getStartDate())
                     .endDate(season.getEndDate())
-                    // TODO COSTI
+                    .artisticDirectorSocialCosts(season.getArtisticDirectorSocialCosts())
+                    .artisticDirectorCompensation(season.getArtisticDirectorCompensation())
+                    .artisticPersonnelGrossSalary(season.getArtisticPersonnelGrossSalary())
+                    .artisticPersonnelSocialCosts(season.getArtisticPersonnelSocialCosts())
+                    .technicalPersonnelGrossSalary(season.getTechnicalPersonnelGrossSalary())
+                    .technicalPersonnelSocialCosts(season.getTechnicalPersonnelSocialCosts())
+                    .administrativePersonnelGrossSalary(season.getAdministrativePersonnelGrossSalary())
+                    .administrativePersonnelSocialCosts(season.getAdministrativePersonnelSocialCosts())
+                    .artisticPersonnelPerDiem(season.getArtisticPersonnelPerDiem())
+                    .technicalPersonnelPerDiem(season.getTechnicalPersonnelPerDiem())
+                    .projectRelatedDailyExpenses(season.getProjectRelatedDailyExpenses())
+                    .travelTransportAccommodationCosts(season.getTravelTransportAccommodationCosts())
                     .build();
             seasonToInsert.setCreatedAt(LocalDateTime.now());
             seasonRepository.save(seasonToInsert);
