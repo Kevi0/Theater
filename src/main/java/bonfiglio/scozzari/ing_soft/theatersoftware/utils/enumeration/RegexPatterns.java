@@ -55,7 +55,7 @@ public class RegexPatterns {
     public static final String CITY_NAME_PATTERN = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$";
 
     // Regex pattern for domain name validation
-    public static final String DOMAIN_NAME_PATTERN = "(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z0-9][a-z0-9-]{0,61}[a-z0-9]";
+    public static final String DOMAIN_NAME_PATTERN = "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(\\/\\S*)?$";
 
     // Regex pattern for IVA validation
     public static final String IVA_PATTERN = "^\\d{11}$";

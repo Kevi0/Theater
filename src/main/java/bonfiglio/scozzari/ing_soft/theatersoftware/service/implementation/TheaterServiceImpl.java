@@ -38,7 +38,7 @@ public class TheaterServiceImpl implements TheaterService {
             var theaterToInsert = Theater.builder()
                     .name(theater.getName())
                     .city(theater.getCity())
-                    .tel(theater.getTel())
+                    .tel(validator.validateTel(theater.getTel()))
                     .email(theater.getEmail())
                     .pec(theater.getPec())
                     .website(theater.getWebsite())

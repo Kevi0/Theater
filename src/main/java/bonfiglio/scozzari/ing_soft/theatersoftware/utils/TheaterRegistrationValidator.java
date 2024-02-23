@@ -4,6 +4,8 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.enumeration.RegexPatterns;
 import org.springframework.stereotype.Component;
+import com.google.i18n.phonenumbers.PhoneNumberUtil;
+import com.google.i18n.phonenumbers.Phonenumber;
 
 @Component
 public class TheaterRegistrationValidator {
@@ -12,7 +14,7 @@ public class TheaterRegistrationValidator {
 
         validateName(theater.getName());
         validateCity(theater.getCity());
-        validateTel(theater.getTel());
+        //validateTel(theater.getTel());
         validateEmail(theater.getEmail());
         validateIva(theater.getIva());
         validatePec(theater.getPec());
@@ -39,12 +41,21 @@ public class TheaterRegistrationValidator {
         }
     }
 
-    private void validateTel(String tel) throws InvalidDataException {
+    public String validateTel(String tel) throws InvalidDataException {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
-        if (tel == null || tel.trim().isEmpty()) {
-            throw new InvalidDataException("Error during registration: the 'tel' field cannot be empty, or cannot contain only spaces!");
-        }
-        if (!tel.matches(RegexPatterns.TEL_PATTERN)) {
+        System.out.println(tel);
+
+        try {
+            Phonenumber.PhoneNumber parsedNumber = phoneUtil.parse(tel, null);
+
+            if (!phoneUtil.isValidNumber(parsedNumber)) {
+                throw new InvalidDataException("Error during validation: the 'tel' field is not valid!");
+            }
+            else {
+                return phoneUtil.format(parsedNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+            }
+        } catch (Exception e) {
             throw new InvalidDataException("Error during registration: the 'tel' field is not in the correct format!");
         }
     }
