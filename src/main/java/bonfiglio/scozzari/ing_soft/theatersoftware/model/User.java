@@ -7,7 +7,6 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.middle.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.Updatable;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,9 +31,6 @@ public class User extends BaseEntityAudit implements UserDetails, Updatable {
 
     @Column(nullable = false)
     private String surname;
-
-    @Column(nullable = false, unique = true)
-    private String taxCode;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -88,4 +84,5 @@ public class User extends BaseEntityAudit implements UserDetails, Updatable {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.setUpdatedAt(updateAt);
     }
+
 }

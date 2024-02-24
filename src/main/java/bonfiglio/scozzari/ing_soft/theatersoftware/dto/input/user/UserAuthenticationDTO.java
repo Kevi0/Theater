@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class UserAuthenticationDTO implements InputDTO {
 
     private String username;
+
     private String password;
 
 }

@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings("All")
 @Service
 @Transactional
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class TheaterServiceImpl implements TheaterService {
     @Override
     public void addTheater(Theater theater) throws InvalidDataException, TheaterAlreadyExistException {
 
-        if (theaterRepository.findTheaterByName(theater.getName()).isEmpty()){
+        if (!theaterRepository.findByEmail(theater.getEmail())){
 
             validator.validate(theater);
 
@@ -47,7 +48,17 @@ public class TheaterServiceImpl implements TheaterService {
                     .recipientCode(theater.getRecipientCode())
                     .build();
             theaterToInsert.setCreatedAt(LocalDateTime.now());
+            //TODO SEND EMAIL
             theaterRepository.save(theaterToInsert);
+
+        } else if (theaterRepository.findByEmailAndDeletedAtIsNull(theater.getEmail())) {
+
+            Optional<Theater> theaterToUpdate = theaterRepository.findTheaterByEmail(theater.getEmail());
+            Theater existingTheater = theaterToUpdate.get();
+            existingTheater.setCreatedAt(LocalDateTime.now());
+            existingTheater.setDeletedAt(null);
+            //TODO SEND EMAIL
+            theaterRepository.save(existingTheater);
 
         } else {
             throw new TheaterAlreadyExistException("Error when entering the theater");

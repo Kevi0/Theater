@@ -21,6 +21,42 @@ import java.time.format.DateTimeParseException;
 public class ExceptionManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionManager.class);
 
+    @ExceptionHandler(value = {ClassCastException.class})
+    public ResponseEntity<ErrorMessage> handleClassCastException(ClassCastException exception, HandlerMethod handlerMethod){
+
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
+        errorMessage.setError("BAD REQUEST");
+        errorMessage.setMessage("Invalid data");
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("ClassCastException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.BAD_REQUEST);
+
+    }
+
+    @ExceptionHandler(value = {SendingMailException.class})
+    public ResponseEntity<ErrorMessage> handleMailException(SendingMailException exception, HandlerMethod handlerMethod){
+
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorMessage.setError("INTERNAL SERVER ERROR");
+        errorMessage.setMessage("Errore nell'invio della mail");
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("MailException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
+
     @ExceptionHandler(value = {DateTimeParseException.class})
     public ResponseEntity<ErrorMessage> handleDateTimeParseException(DateTimeParseException exception, HandlerMethod handlerMethod){
 

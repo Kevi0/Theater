@@ -17,6 +17,22 @@ public class UserExceptionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserExceptionManager.class);
 
+    @ExceptionHandler(value = {UnregisteredUserException.class})
+    public ResponseEntity<ErrorMessage> handleUnregisteredUserException(UnregisteredUserException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errorMessage.setError("UNAUTHORIZED");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("UnregisteredUserException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(value = {UserAlreadyExistException.class})
     public ResponseEntity<ErrorMessage> handleUserAlreadyExistsException(UserAlreadyExistException exception, HandlerMethod handlerMethod){
         ErrorMessage errorMessage = new ErrorMessage();

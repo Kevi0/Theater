@@ -5,18 +5,17 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UserAuthentica
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UserRegistrationDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UserAuthenticationMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UserRegistrationMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.SendingMailException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.BadCredentialsException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UnregisteredUserException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyExistException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @SuppressWarnings("deprecation")
 @RestController
@@ -29,10 +28,10 @@ public class AuthenticationController {
     private final UserRegistrationMapper userRegistrationMapper;
     private final UserAuthenticationMapper userAuthenticationMapper;
 
-    @PostMapping(value = "/register", consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody InputDTO userDTO
-    ) throws UserAlreadyExistException, InvalidDataException {
+    ) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
 
         try {
             if (userDTO instanceof UserRegistrationDTO) {
@@ -47,7 +46,7 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping(value = "/authenticate", consumes = "application/json", produces = "application/json")
+    @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody InputDTO userDTO
     ) throws BadCredentialsException {

@@ -61,12 +61,13 @@ public class AgencyRegistrationValidator {
         if (tel2.trim().isEmpty()) {
             throw new InvalidDataException("Errore durante la registrazione: il campo 'tel2' non può contenere solo spazi vuoti!");
         }
-    }
+    }*/
 
     private void validateWebsite(String website) throws InvalidDataException {
-        if (website.trim().isEmpty()) {
-            throw new InvalidDataException("Errore durante la registrazione: il campo 'website' non può essere vuoto!");
+
+        if (!website.matches(RegexPatterns.DOMAIN_NAME_PATTERN)) {
+            throw new InvalidDataException("Errore durante la registrazione: il campo 'website' non è nel formato corretto!");
         }
-    }*/
+    }
 
 }

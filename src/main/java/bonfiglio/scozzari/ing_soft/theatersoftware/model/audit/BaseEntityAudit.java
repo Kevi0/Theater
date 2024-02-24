@@ -30,14 +30,14 @@ public abstract class BaseEntityAudit {
     private String deletedBy;
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at", updatable = false)
+    @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
     @Override

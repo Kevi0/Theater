@@ -16,6 +16,8 @@ public interface AgencyRepository extends JpaRepository<Agency, Long> {
 
     Optional<Agency> findAgencyByName(String name);
 
+    Optional<Agency> findAgencyByEmail(String email);
+
     @Modifying
     @Query("UPDATE Agency a SET a.deletedAt = CURRENT_TIMESTAMP WHERE a.id = :id")
     void deleteAgencyById(@Param("id") Long id);
@@ -27,5 +29,11 @@ public interface AgencyRepository extends JpaRepository<Agency, Long> {
     // return true se esiste un'agenzia con id = :id e deletedAt valorizzato (quindi l'agenzia è stata cancellata)
     // return false se non esiste un'agenzia con id = :id e deletedAt non valorizzato (quindi l'agenzia non è stata cancellata)
     boolean checkIfAgencyIsDeleted(Long id);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Agency a WHERE a.email = :email AND a.deletedAt IS NOT NULL")
+    boolean findByEmailAndDeletedAtIsNull(String email);
+
+    @Query("SELECT CASE WHEN COUNT(a) > 0 THEN true ELSE false END FROM Agency a WHERE a.email = :email")
+    boolean findByEmail(String email);
 
 }

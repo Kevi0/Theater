@@ -1,16 +1,21 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.mail;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.SendingMailException;
+import freemarker.core.ParseException;
 import freemarker.template.*;
 import jakarta.annotation.Nullable;
+import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
+import java.io.IOException;
 import java.util.Map;
 
 @Service
@@ -27,7 +32,7 @@ public class EmailService {
             @Nullable String cc,
             @Nullable String bcc,
             String templateName,
-            Map<String, Object> model){
+            Map<String, Object> model) throws SendingMailException {
 
         try {
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -52,8 +57,8 @@ public class EmailService {
 
             javaMailSender.send(mimeMessage);
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (MailException | MessagingException | TemplateException | IOException e) {
+            throw new SendingMailException("Error when sending the email");
         }
 
     }

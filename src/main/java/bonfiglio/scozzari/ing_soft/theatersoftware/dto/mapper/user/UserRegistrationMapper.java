@@ -10,13 +10,12 @@ public class UserRegistrationMapper {
 
     public User userDTOToUser(InputDTO userDTO) {
         if (!(userDTO instanceof UserRegistrationDTO userData))
-            return null;
+            throw new ClassCastException("Errore di conversione");
         else {
             User user = new User();
 
             user.setName(userData.getName());
             user.setSurname(userData.getSurname());
-            user.setTaxCode(userData.getTaxCode());
             user.setEmail(userData.getEmail());
             user.setUsername(userData.getUsername());
             user.setPassword(userData.getPassword());

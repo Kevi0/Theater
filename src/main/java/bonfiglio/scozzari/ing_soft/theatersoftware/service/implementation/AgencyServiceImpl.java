@@ -18,6 +18,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings("All")
 @Service
 @Transactional
 @AllArgsConstructor
@@ -30,7 +31,7 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     public void addAgency(Agency agency) throws AgencyAlreadyExistException, InvalidDataException {
 
-        if (agencyRepository.findAgencyByName(agency.getName()).isEmpty()){
+        if (!agencyRepository.findByEmail(agency.getEmail())){
 
             validator.validate(agency);
 
@@ -43,7 +44,17 @@ public class AgencyServiceImpl implements AgencyService {
                             .website(agency.getWebsite())
                             .build();
             agencyToInsert.setCreatedAt(LocalDateTime.now());
+            //TODO SEND EMAIL
             agencyRepository.save(agencyToInsert);
+
+        } else if (agencyRepository.findByEmailAndDeletedAtIsNull(agency.getEmail())) {
+
+            Optional<Agency> agencyToUpdate = agencyRepository.findAgencyByEmail(agency.getEmail());
+            Agency existingAgency = agencyToUpdate.get();
+            existingAgency.setCreatedAt(LocalDateTime.now());
+            existingAgency.setDeletedAt(null);
+            //TODO SEND EMAIL
+            agencyRepository.save(existingAgency);
 
         } else {
             throw new AgencyAlreadyExistException("Error when entering the agency");

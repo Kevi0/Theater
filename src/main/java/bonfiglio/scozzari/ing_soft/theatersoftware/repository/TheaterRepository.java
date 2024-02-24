@@ -16,6 +16,8 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
 
     Optional<Theater> findTheaterByName(String name);
 
+    Optional<Theater> findTheaterByEmail(String email);
+
     @Modifying
     @Query("UPDATE Theater t SET t.deletedAt = CURRENT_TIMESTAMP WHERE t.id = :id")
     void deleteTheaterById(@Param("id") Long id);
@@ -27,4 +29,10 @@ public interface TheaterRepository extends JpaRepository<Theater, Long> {
     //return true if there is a theater with id = :id and deletedAt set (the theater has been deleted)
     //return false if there is no theater with id = :id and deletedAt not set (the theater has not been deleted)
     boolean checkIfTheaterIsDeleted(Long id);
+
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.email = :email AND t.deletedAt IS NOT NULL")
+    boolean findByEmailAndDeletedAtIsNull(String email);
+
+    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.email = :email")
+    boolean findByEmail(String email);
 }

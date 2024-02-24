@@ -14,8 +14,6 @@ public class UserRegistrationDTO implements InputDTO {
 
     private String surname;
 
-    private String taxCode;
-
     private String email;
 
     private String username;

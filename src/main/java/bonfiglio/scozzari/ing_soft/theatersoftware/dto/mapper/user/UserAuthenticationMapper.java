@@ -11,7 +11,7 @@ public class UserAuthenticationMapper {
 
     public User userDTOToUser(InputDTO userDTO) {
         if (!(userDTO instanceof UserAuthenticationDTO userData))
-            return null;
+            throw new ClassCastException("Errore di conversione");
         else {
             User user = new User();
 
