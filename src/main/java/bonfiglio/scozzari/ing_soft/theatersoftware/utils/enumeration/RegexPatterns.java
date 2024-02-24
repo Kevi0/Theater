@@ -6,10 +6,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.utils.enumeration;
  * <p>
  *
  * Patterns include:
- * - {@link #LENGTH_NAME_PATTERN}: Ensures the length of name and surname is between 3 and 50 characters.
- * - {@link #FORMAT_NAME_PATTERN}: Requires the name and surname to start with an uppercase letter, followed by lowercase letters.
- * - {@link #NOT_NUMBERS_NAME_PATTERN}: Prohibits the presence of numerical digits in the name and surname.
- * - {@link #NOT_SPECIAL_CHARACTERS_NAME_PATTERN}: Forbids the inclusion of special characters in the name and surname.
+ * - {@link #NAME_PATTERN}: Validates name and surname
  * - {@link #EMAIL_PATTERN}: Validates email addresses based on a standard format.
  * - {@link #TAX_CODE_PATTERN}: Verifies the validity of Italian tax codes using a specific regex pattern.
  * - {@link #PASSWORD_PATTERN}: Enforces password criteria, including uppercase, lowercase, digits, and special characters, with a minimum length of 8 characters.
@@ -29,10 +26,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.utils.enumeration;
 public class RegexPatterns {
 
     // Regex pattern for name and surname validation
-    public static final String LENGTH_NAME_PATTERN = ".{3,50}";
-    public static final String FORMAT_NAME_PATTERN = "^[A-Z][a-z]*$";
-    public static final String NOT_NUMBERS_NAME_PATTERN = ".*\\d.*";
-    public static final String NOT_SPECIAL_CHARACTERS_NAME_PATTERN = ".*[!@#\\$%\\^&\\*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*";
+    public static final String NAME_PATTERN = "^[A-Z][a-zA-Z ]{2,29}$";
 
     // Regex pattern for email validation
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$";
