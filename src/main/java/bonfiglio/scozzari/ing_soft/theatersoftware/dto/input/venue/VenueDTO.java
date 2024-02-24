@@ -16,6 +16,9 @@ public class VenueDTO implements InputDTO {
     @NotBlank(message = "Il luogo non può essere vuoto")
     private String venue;
 
+    @NotBlank(message = "Il nome non può essere vuoto")
+    private String name;
+
     @NotBlank(message = "Il CAP non può essere vuoto")
     private String cap;
 

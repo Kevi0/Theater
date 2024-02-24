@@ -16,6 +16,7 @@ public class VenueMapper {
         Venue venue = new Venue();
 
         venue.setVenue(venueData.getVenue());
+        venue.setName(venueData.getName());
         venue.setCap(venueData.getCap());
         venue.setCity(venueData.getCity());
         venue.setCapacity(venueData.getCapacity());

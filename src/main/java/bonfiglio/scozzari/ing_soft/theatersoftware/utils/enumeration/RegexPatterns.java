@@ -46,7 +46,7 @@ public class RegexPatterns {
     public static final String TEL_PATTERN = "^(\\+\\d{1,2}\\s?)?1?\\-?\\.?\\s?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$";
 
     // Regex pattern for city name validation
-    public static final String CITY_NAME_PATTERN = "^[a-zA-Z]+(?:[\\s-][a-zA-Z]+)*$";
+    public static final String CITY_NAME_PATTERN = "^[a-zA-Z0-9àèéìíòóùúüçÇ ]{1,30}$";
 
     // Regex pattern for domain name validation
     public static final String DOMAIN_NAME_PATTERN = "^(https?:\\/\\/)?(www\\.)?[a-zA-Z0-9-]+\\.[a-zA-Z]{2,}(\\/\\S*)?$";

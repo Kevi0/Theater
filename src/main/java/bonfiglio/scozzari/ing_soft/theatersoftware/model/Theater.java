@@ -57,7 +57,7 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Season> seasons = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(
             name = "theater_venue",
             joinColumns = @JoinColumn(name = "theater_id"),
