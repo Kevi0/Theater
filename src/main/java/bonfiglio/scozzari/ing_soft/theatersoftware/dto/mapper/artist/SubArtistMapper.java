@@ -18,6 +18,7 @@ public class SubArtistMapper {
 
         Artist artist = new Artist();
 
+        artist.setTaxCode(subArtistDTO.getTaxCode());
         artist.setGender(Gender.valueOf(subArtistDTO.getGender()));
         artist.setBirthDate(subArtistDTO.getBirthDate());
         artist.setBirthPlace(subArtistDTO.getBirthPlace());

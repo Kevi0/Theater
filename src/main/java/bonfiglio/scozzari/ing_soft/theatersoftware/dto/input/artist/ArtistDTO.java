@@ -14,7 +14,9 @@ import lombok.NoArgsConstructor;
 public class ArtistDTO implements InputDTO {
 
     private SubArtistDTO subArtistDTO;
+
     private SubBankAccountDTO subBankAccountDTO;
+
     private SubWorkDTO subWorkDTO;
 
 }

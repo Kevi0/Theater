@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,12 +19,12 @@ public class PermanentWork implements Work {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String employer;
 
-    @Column
+    @Column(nullable = false)
     private Boolean isRevenueOver5000;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Artist artist;
+    @OneToMany(mappedBy = "permanentWork") // mappedBy = "permanentWork" è il nome del campo nella classe Artist
+    private Set<Artist> artists= new HashSet<>();
 }

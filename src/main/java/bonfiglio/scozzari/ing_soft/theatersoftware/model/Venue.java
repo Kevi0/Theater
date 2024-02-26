@@ -2,14 +2,12 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.model;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.audit.BaseEntityAudit;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
@@ -21,24 +19,27 @@ public class Venue extends BaseEntityAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
+    @Column(nullable = false, unique = true)
     private String venue;
 
-    @Column
+    @Column(nullable = false)
     private String cap;
 
-    @Column
+    @Column(nullable = false)
     private String city;
 
-    @Column
+    @Column(nullable = false)
     private Long capacity;
 
-    @ManyToMany(mappedBy = "venues", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "venues")
     private Set<Theater> theaters = new HashSet<>();
 
-    @OneToOne(mappedBy = "venue", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Opera opera;
+    @OneToMany(mappedBy = "venue")
+    private Set<Opera> operas = new HashSet<>();
+
+    @OneToMany(mappedBy = "venue")
+    private Set<Play> plays = new HashSet<>();
 }

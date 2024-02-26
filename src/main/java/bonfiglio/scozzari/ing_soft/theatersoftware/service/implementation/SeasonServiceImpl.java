@@ -4,8 +4,14 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.SeasonRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.SeasonService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.SeasonRegistrationValidator;
@@ -24,11 +30,12 @@ import java.util.Set;
 public class SeasonServiceImpl implements SeasonService {
 
     private final SeasonRepository seasonRepository;
+    private final TheaterRepository theaterRepository;
 
     private final SeasonRegistrationValidator validator;
 
     @Override
-    public void addSeason(Season season) throws InvalidDataException, SeasonAlreadyExistException {
+    public void addSeason(Season season, Long idTheater) throws InvalidDataException, SeasonAlreadyExistException, TheaterNotFoundException {
 
         if (seasonRepository.findSeasonByTitle(season.getTitle()).isEmpty()){
 
@@ -52,6 +59,12 @@ public class SeasonServiceImpl implements SeasonService {
                     .travelTransportAccommodationCosts(season.getTravelTransportAccommodationCosts())
                     .build();
             seasonToInsert.setCreatedAt(LocalDateTime.now());
+
+            Theater theater = theaterRepository.findById(idTheater)
+                    .orElseThrow(() -> new TheaterNotFoundException("Theater not found with ID: " + idTheater));
+
+            seasonToInsert.setTheater(theater);
+
             seasonRepository.save(seasonToInsert);
 
         } else {

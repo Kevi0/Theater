@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,5 +29,7 @@ public class TheaterDTO implements InputDTO {
     private String uniqueCode;
 
     private String recipientCode;
+
+    private Set<Long> idUsers;
 
 }

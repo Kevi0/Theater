@@ -4,6 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public interface TheaterService {
 
-    void addTheater(Theater theater) throws InvalidDataException, TheaterAlreadyExistException;
+    void addTheater(Theater theater, Set<Long> idUsers) throws InvalidDataException, TheaterAlreadyExistException, UserNotFoundException;
 
     void updateTheater(Long id, Theater theater) throws InvalidDataException, IllegalAccessException, TheaterNotFoundException;
 

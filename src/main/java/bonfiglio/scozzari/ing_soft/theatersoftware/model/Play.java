@@ -25,6 +25,10 @@ public class Play extends BaseEntityAudit {
     private LocalDateTime datePlay;
 
     @ManyToOne
-    @JoinColumn(name = "opera_id")
     private Opera opera;
+
+    @ManyToOne
+    private Venue venue;
+
+
 }

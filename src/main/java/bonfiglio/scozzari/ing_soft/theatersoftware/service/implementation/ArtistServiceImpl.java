@@ -33,13 +33,13 @@ public class ArtistServiceImpl implements ArtistService {
             Set<String> idTypologies,
             Work work,
             BankAccount bankAccount
-    ) throws UserNotFoundException, TypologyNotFoundException {
+    ) throws TypologyNotFoundException, UserNotFoundException {
 
-        Optional<User> user = userRepository.findById(idUser);
-        if (user.isEmpty())
-            throw new UserNotFoundException("User not found with ID: " + idUser);
-        artist.setUser(user.get());
+        // Associa l'artista all'utente
+        User user = userRepository.findById(idUser).orElseThrow(() -> new UserNotFoundException("Utente non trovato"));
+        artist.setUser(user);
 
+        // Associa le tipologie all'artista
         for(String idTypology : idTypologies){
 
             Typology typology = typologyRepository.findById(idTypology)
@@ -50,35 +50,29 @@ public class ArtistServiceImpl implements ArtistService {
             artist.setTypologies(typologies);
         }
 
-        if(work instanceof PermanentWork){
+        // Associa il work all'artista
+        if (work instanceof PermanentWork) {
             artist.setPermanentWork((PermanentWork) work);
-        }
-        else if(work instanceof Retired){
-            artist.setRetired((Retired) work);
-        }
-        else if(work instanceof Student){
-            artist.setStudent((Student) work);
-        }
-        else if(work instanceof TemporaryWork){
+        } else if (work instanceof TemporaryWork) {
             artist.setTemporaryWork((TemporaryWork) work);
-        }
-        else if(work instanceof Unemployed){
+        } else if (work instanceof Retired) {
+            artist.setRetired((Retired) work);
+        } else if (work instanceof Unemployed) {
             artist.setUnemployed((Unemployed) work);
-        }
-        else {
-            throw new IllegalArgumentException("Work not found!");
-        }
-
-        if(bankAccount instanceof BankAccountIT){
-            ((BankAccountIT) bankAccount).setArtist(artist);
-        }
-        else if(bankAccount instanceof BankAccountES){
-            ((BankAccountES) bankAccount).setArtist(artist);
-        }
-        else {
-            throw new IllegalArgumentException("Bank account not found!");
+        } else if (work instanceof Student) {
+            artist.setStudent((Student) work);
+        } else {
+            throw new IllegalArgumentException("Work not found");
         }
 
+        // Associa il bank account all'artista
+        if (bankAccount instanceof BankAccountIT) {
+            artist.setBankAccountIT((BankAccountIT) bankAccount);
+        } else if (bankAccount instanceof BankAccountES) {
+            artist.setBankAccountES((BankAccountES) bankAccount);
+        }
+
+        // Salva l'artista con le relazioni
         artistRepository.save(artist);
 
     }

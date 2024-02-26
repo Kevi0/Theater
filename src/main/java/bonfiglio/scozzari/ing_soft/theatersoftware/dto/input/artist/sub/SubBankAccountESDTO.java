@@ -13,17 +13,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubBankAccountESDTO implements SubBankAccountDTO {
 
-    @NotBlank(message = "Beneficiary name cannot be empty")
-    @Size(max = 255, message = "Beneficiary name must be at most 50 characters long")
     private String beneficiaryName;
 
-    @NotBlank(message = "IBAN cannot be empty")
-    @Size(min = 27, max = 27, message = "Must be a valid IBAN (27 characters)")
     private String iban;
 
-    @NotBlank(message = "BIC/SWIFT cannot be empty")
-    @Pattern(regexp = "[A-Z0-9]{8,11}", message = "Must be a valid BIC/SWIFT (8 to 11 characters)")
-    @Size(min = 8, max = 11, message = "Must be a valid BIC/SWIFT (8 to 11 characters)")
     private String bicSwift;
 
 }

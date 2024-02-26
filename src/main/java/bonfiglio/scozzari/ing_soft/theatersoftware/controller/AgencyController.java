@@ -7,6 +7,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.ag
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Agency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.AgencyServiceImpl;
@@ -33,11 +34,11 @@ public class AgencyController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO agencyDTO
-    ) throws AgencyAlreadyExistException, InvalidDataException {
+    ) throws AgencyAlreadyExistException, InvalidDataException, UserNotFoundException {
 
         try {
-            if (agencyDTO instanceof AgencyDTO) {
-                agencyService.addAgency(agencyMapper.agencyDTOToAgency(agencyDTO));
+            if (agencyDTO instanceof AgencyDTO dto) {
+                agencyService.addAgency(agencyMapper.agencyDTOToAgency(agencyDTO), dto.getIdUsers());
 
                 return new ResponseEntity<>(new ResponseMessage("Agency added"), HttpStatus.OK);
             } else {

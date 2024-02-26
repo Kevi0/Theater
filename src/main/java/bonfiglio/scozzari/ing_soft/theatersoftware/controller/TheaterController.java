@@ -7,6 +7,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.TheaterServiceImpl;
@@ -33,11 +34,11 @@ public class TheaterController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
-    ) throws TheaterAlreadyExistException, InvalidDataException {
+    ) throws TheaterAlreadyExistException, InvalidDataException, UserNotFoundException {
 
         try {
-            if (theaterDTO instanceof TheaterDTO){
-                theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO));
+            if (theaterDTO instanceof TheaterDTO dto){
+                theaterService.addTheater(theaterMapper.theaterDTOToTheater(theaterDTO), dto.getIdUsers());
 
                 return new ResponseEntity<>(new ResponseMessage("Theater added successfully!"), HttpStatus.OK);
             } else {

@@ -4,6 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.venue.VenueDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.venue.VenueMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 import java.util.Set;
 
+@SuppressWarnings("All")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/venue")
@@ -31,16 +33,19 @@ public class VenueController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO venueDTO
-    ) throws Exception {
+    ) throws TheaterNotFoundException, VenueAlreadyExistException, InvalidDataException {
         try {
-            System.out.println(venueDTO);
-            if (venueDTO instanceof VenueDTO) {
-                venueService.addVenue(venueMapper.venueDTOToVenue(venueDTO), ((VenueDTO) venueDTO).getIdTheater());
+
+            if (venueDTO instanceof VenueDTO dto) {
+
+                venueService.addVenue(venueMapper.venueDTOToVenue(venueDTO), dto.getIdTheaters());
 
                 return new ResponseEntity<>(new ResponseMessage("Venue added"), HttpStatus.OK);
+
             } else {
                 throw new IllegalArgumentException("Venue not added");
             }
+
         } catch (JsonParseException e){
             throw new HttpMessageNotReadableException("Invalid data");
         }

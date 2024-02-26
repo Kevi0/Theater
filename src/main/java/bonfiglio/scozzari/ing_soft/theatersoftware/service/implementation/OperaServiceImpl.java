@@ -4,7 +4,12 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Opera;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Typology;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.OperaRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.SeasonRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.VenueRepository;
@@ -17,7 +22,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -38,20 +42,37 @@ public class OperaServiceImpl implements OperaService {
     public void addOpera(
             Opera opera,
             Long idVenue,
-            Long idSeason
-    ) {
-        /*Optional<Venue> venue = venueRepository.findById(idVenue);
-        Optional<Season> season = seasonRepository.findById(idSeason);
+            Set<Long> idSeasons
+    ) throws VenueNotFoundException, SeasonNotFoundException {
 
-        if(venue.isEmpty())
-            throw new Exception("Venue not found!"); //TODO Custom VenueNotFoundException
+        if (!operaRepository.findOperaById(opera.getId())) {
 
-        if(season.isEmpty())
-            throw new Exception("Season not found!"); //TODO Custom SeasonNotFoundException
+            // validator.validate(opera);
 
-        opera.setVenue(venue.get());
-        opera.getSeasons().add(season.get());
-        return Optional.of(operaRepository.save(opera));*/
+            var operaToInsert = Opera.builder()
+                    .title(opera.getTitle())
+                    .startDate(opera.getStartDate())
+                    .startRehearsal(opera.getStartRehearsal())
+                    .build();
+            operaToInsert.setCreatedAt(LocalDateTime.now());
+
+            Venue venue = venueRepository.findById(idVenue)
+                    .orElseThrow(() -> new VenueNotFoundException("Venue not found with ID: " + idVenue));
+            operaToInsert.setVenue(venue);
+
+            for (Long idSeason : idSeasons) {
+                Season season = seasonRepository.findById(idSeason)
+                        .orElseThrow(() -> new SeasonNotFoundException("Season not found with ID: " + idSeason));
+                Set<Season> seasons = opera.getSeasons() != null ? opera.getSeasons() : new HashSet<>();
+                seasons.add(season);
+                season.getOperas().add(operaToInsert);
+                operaToInsert.setSeasons(seasons);
+            }
+
+            operaRepository.save(operaToInsert);
+
+        }
+
     }
 
     @Override

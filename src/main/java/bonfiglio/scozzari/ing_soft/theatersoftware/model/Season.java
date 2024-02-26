@@ -5,8 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -25,10 +26,10 @@ public class Season extends BaseEntityAudit {
     private String title;
 
     @Column(nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(nullable = false)
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @Column(nullable = false)
     private BigDecimal artisticDirectorSocialCosts;
@@ -66,10 +67,24 @@ public class Season extends BaseEntityAudit {
     @Column(nullable = false)
     private BigDecimal travelTransportAccommodationCosts;
 
-    @ManyToMany(mappedBy = "seasons",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "seasons")
     private Set<Opera> operas = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "theater_id")
+    @ManyToOne
     private Theater theater;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, title, startDate, endDate, artisticDirectorSocialCosts, artisticDirectorCompensation, artisticPersonnelGrossSalary, artisticPersonnelSocialCosts, technicalPersonnelGrossSalary, technicalPersonnelSocialCosts, administrativePersonnelGrossSalary, administrativePersonnelSocialCosts, artisticPersonnelPerDiem, technicalPersonnelPerDiem, projectRelatedDailyExpenses, travelTransportAccommodationCosts);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Season season = (Season) o;
+        return Objects.equals(id, season.id) && Objects.equals(title, season.title) && Objects.equals(startDate, season.startDate) && Objects.equals(endDate, season.endDate) && Objects.equals(artisticDirectorSocialCosts, season.artisticDirectorSocialCosts) && Objects.equals(artisticDirectorCompensation, season.artisticDirectorCompensation) && Objects.equals(artisticPersonnelGrossSalary, season.artisticPersonnelGrossSalary) && Objects.equals(artisticPersonnelSocialCosts, season.artisticPersonnelSocialCosts) && Objects.equals(technicalPersonnelGrossSalary, season.technicalPersonnelGrossSalary) && Objects.equals(technicalPersonnelSocialCosts, season.technicalPersonnelSocialCosts) && Objects.equals(administrativePersonnelGrossSalary, season.administrativePersonnelGrossSalary) && Objects.equals(administrativePersonnelSocialCosts, season.administrativePersonnelSocialCosts) && Objects.equals(artisticPersonnelPerDiem, season.artisticPersonnelPerDiem) && Objects.equals(technicalPersonnelPerDiem, season.technicalPersonnelPerDiem) && Objects.equals(projectRelatedDailyExpenses, season.projectRelatedDailyExpenses) && Objects.equals(travelTransportAccommodationCosts, season.travelTransportAccommodationCosts);
+    }
+
 }

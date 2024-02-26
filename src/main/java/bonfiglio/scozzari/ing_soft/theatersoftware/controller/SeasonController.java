@@ -7,6 +7,8 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.SeasonServiceImpl;
@@ -33,11 +35,11 @@ public class SeasonController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO seasonDTO
-    ) throws SeasonAlreadyExistException, InvalidDataException {
+    ) throws SeasonAlreadyExistException, InvalidDataException, TheaterNotFoundException {
 
         try {
-            if (seasonDTO instanceof SeasonDTO) {
-                seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO));
+            if (seasonDTO instanceof SeasonDTO dto) {
+                seasonService.addSeason(seasonMapper.seasonDTOToSeason(seasonDTO), dto.getIdTheater());
 
                 return new ResponseEntity<>(new ResponseMessage("Season added"), HttpStatus.OK);
             } else {

@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -15,11 +15,9 @@ public class SeasonDTO implements InputDTO {
 
     private String title;
 
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
-    private LocalDateTime endDate;
-
-    //private Long idTheater;
+    private LocalDate endDate;
 
     private BigDecimal artisticDirectorSocialCosts;
 
@@ -44,5 +42,7 @@ public class SeasonDTO implements InputDTO {
     private BigDecimal projectRelatedDailyExpenses;
 
     private BigDecimal travelTransportAccommodationCosts;
+
+    private Long idTheater;
 
 }

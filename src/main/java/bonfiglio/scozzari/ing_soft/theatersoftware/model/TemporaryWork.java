@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -22,12 +24,12 @@ public class TemporaryWork implements Work {
     @Temporal(TemporalType.DATE)
     private LocalDate deadline;
 
-    @Column
+    @Column(nullable = false)
     private String employer;
 
-    @Column
+    @Column(nullable = false)
     private Boolean isRevenueOver5000;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Artist artist;
+    @OneToMany(mappedBy = "temporaryWork") // mappedBy = "temporaryWork" è il nome del campo nella classe Artist
+    private Set<Artist> artists= new HashSet<>();
 }

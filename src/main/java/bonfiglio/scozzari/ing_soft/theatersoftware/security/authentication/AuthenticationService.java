@@ -80,7 +80,7 @@ public class AuthenticationService {
             } catch (ConstraintViolationException e) {
                 throw new UserAlreadyExistException("Errore durante la registrazione!");
             } catch (DataIntegrityViolationException e) {
-                throw new InvalidDataException("Errore durante la registrazione, probelmi con l'itegrità dei dati!");
+                throw new InvalidDataException("Errore durante la registrazione, problemi con l'itegrità dei dati!");
             } catch (TransientObjectException | LockAcquisitionException e) {
                 throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
             }

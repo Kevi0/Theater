@@ -58,7 +58,7 @@ public class UserController {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{username}/id", method = RequestMethod.GET)
+    @RequestMapping(value = "/id/{username}", method = RequestMethod.GET)
     public ResponseEntity<Long> getUserIdByUsername(@PathVariable String username) throws UserNotFoundException {
         return new ResponseEntity<>(userService.getUserIdByUsername(username), HttpStatus.OK);
     }

@@ -25,4 +25,11 @@ public interface OperaRepository extends JpaRepository<Opera, Long> {
 
     @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.id = :id AND o.deletedAt IS NOT NULL")
     boolean checkIfOperaIsDeleted(Long id);
+
+    /*@Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.title = :title AND o.deletedAt IS NOT NULL")
+    boolean findByIdAndDeletedAtIsNull(Long id);*/
+
+    @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.id = :id")
+    boolean findOperaById(Long id);
+
 }

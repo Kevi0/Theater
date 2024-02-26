@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,8 +24,6 @@ public class AgencyDTO implements InputDTO {
 
     private String website;
 
-    //private List<Long> idArtists;
-
-    //private List<Long> idUsers;
+    private Set<Long> idUsers;
 
 }

@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,15 +19,15 @@ public class BankAccountES implements BankAccount{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String beneficiaryName;
 
-    @Column
+    @Column(nullable = false)
     private String iban;
 
-    @Column
+    @Column(nullable = false)
     private String bicSwift;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Artist artist;
+    @OneToMany(mappedBy = "bankAccountES") // mappedBy = "bankAccountES" è il nome del campo nella classe Artist
+    private Set<Artist> artists= new HashSet<>();
 }

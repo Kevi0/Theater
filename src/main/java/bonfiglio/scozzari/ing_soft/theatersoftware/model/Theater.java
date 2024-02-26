@@ -9,10 +9,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
-
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
@@ -51,13 +50,13 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     @Column(nullable = false)
     private String recipientCode;
 
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "theater") // mappedBy = "theater" -> theater è il nome del campo nella classe UserTheater
     private Set<UserTheater> userTheaters = new HashSet<>();
 
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "theater") // mappedBy = "theater" -> theater è il nome del campo nella classe Season
     private Set<Season> seasons = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "theater_venue",
             joinColumns = @JoinColumn(name = "theater_id"),
@@ -65,7 +64,7 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     )
     private Set<Venue> venues = new HashSet<>();
 
-    @OneToMany(mappedBy = "theater", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "theater") // mappedBy = "theater" -> theater è il nome del campo nella classe DigitalDrawer
     private Set<DigitalDrawer> digitalDrawers = new HashSet<>();
 
 
@@ -78,4 +77,5 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     public void setUpdateAt(LocalDateTime updateAt) {
         this.setUpdatedAt(updateAt);
     }
+
 }

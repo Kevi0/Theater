@@ -40,10 +40,10 @@ public class Agency extends BaseEntityAudit implements Updatable {
     @Column
     private String website;
 
-    @OneToMany(mappedBy = "agency", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "agency") // mappedBy = "agency" -> agency è il nome del campo nella classe UserAgency
     private Set<UserAgency> userAgencies = new HashSet<>();
 
-    @ManyToMany(mappedBy = "agencies", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "agencies") // mappedBy = "agencies" -> agencies è il nome del campo nella classe Artist
     private Set<Artist> artists = new HashSet<>();
 
     @Override
@@ -51,16 +51,4 @@ public class Agency extends BaseEntityAudit implements Updatable {
         this.setUpdatedAt(updateAt);
     }
 
-    @Override
-    public String toString() {
-        return "Agency{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", pec='" + pec + '\'' +
-                ", tel1='" + tel1 + '\'' +
-                ", tel2='" + tel2 + '\'' +
-                ", website='" + website + '\'' +
-                '}';
-    }
 }

@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -32,7 +33,7 @@ public class Opera extends BaseEntityAudit {
     @ManyToMany(mappedBy = "operas")
     private Set<Artist> artists = new HashSet<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "opera_season",
             joinColumns = @JoinColumn(name = "opera_id"),
@@ -40,10 +41,24 @@ public class Opera extends BaseEntityAudit {
     )
     private Set<Season> seasons = new HashSet<>();
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "venue_id")
     private Venue venue;
 
-    @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "opera")
     private Set<Play> plays = new HashSet<>();
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, title, startDate, startRehearsal, venue, plays);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Opera opera = (Opera) o;
+        return Objects.equals(id, opera.id) && Objects.equals(title, opera.title) && Objects.equals(startDate, opera.startDate) && Objects.equals(startRehearsal, opera.startRehearsal) && Objects.equals(venue, opera.venue) && Objects.equals(plays, opera.plays);
+    }
 }

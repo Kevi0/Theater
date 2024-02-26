@@ -6,6 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -16,9 +19,9 @@ public class Unemployed implements Work {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false)
     private String allowance;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Artist artist;
+    @OneToMany(mappedBy = "unemployed") // mappedBy = "unemployed" è il nome del campo nella classe Artist
+    private Set<Artist> artists= new HashSet<>();
 }

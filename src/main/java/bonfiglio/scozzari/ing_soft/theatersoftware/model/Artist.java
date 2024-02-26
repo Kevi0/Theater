@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @EqualsAndHashCode(callSuper = true)
@@ -26,7 +27,10 @@ public class Artist extends BaseEntityAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
+    @Column(nullable = false, unique = true)
+    private String taxCode;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -126,50 +130,38 @@ public class Artist extends BaseEntityAudit {
     @Enumerated(EnumType.STRING)
     private Occupation occupation;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     private User user;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "retired_id")
     private Retired retired;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "temporary_work_id")
     private TemporaryWork temporaryWork;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "permanent_work_id")
     private PermanentWork permanentWork;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "unemployed_id")
     private Unemployed unemployed;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "student_id")
     private Student student;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "bank_account_it_id")
     private BankAccountIT bankAccountIT;
 
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "bank_account_es_id")
     private BankAccountES bankAccountES;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "artist_typology",
-            joinColumns = { @JoinColumn(name = "artist_id") },
-            inverseJoinColumns = { @JoinColumn(name = "typology_id") }
-    )
-    private Set<Typology> typologies = new HashSet<>();
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "artist_opera",
-            joinColumns = { @JoinColumn(name = "artist_id") },
-            inverseJoinColumns = { @JoinColumn(name = "opera_id") }
-    )
-    private Set<Opera> operas = new HashSet<>();
-
-    @OneToOne(mappedBy = "artist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private DigitalDrawer digitalDrawer;
-
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "artist_agency",
             joinColumns = { @JoinColumn(name = "artist_id") },
@@ -177,4 +169,35 @@ public class Artist extends BaseEntityAudit {
     )
     private Set<Agency> agencies = new HashSet<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "artist_typology",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = { @JoinColumn(name = "typology_id") }
+    )
+    private Set<Typology> typologies = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "artist_opera",
+            joinColumns = { @JoinColumn(name = "artist_id") },
+            inverseJoinColumns = { @JoinColumn(name = "opera_id") }
+    )
+    private Set<Opera> operas = new HashSet<>();
+
+    @OneToOne(mappedBy = "artist") // mappedBy = "artist" -> artist è il nome del campo nella classe DigitalDrawer
+    private DigitalDrawer digitalDrawer;
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id, taxCode);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Artist artist = (Artist) o;
+        return Objects.equals(id, artist.id) && Objects.equals(taxCode, artist.taxCode);
+    }
 }

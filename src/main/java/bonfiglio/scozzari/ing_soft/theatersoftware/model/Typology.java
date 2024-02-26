@@ -21,6 +21,6 @@ public class Typology {
     @Column
     private String nameTypology;
 
-    @ManyToMany(mappedBy = "typologies", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "typologies")
     private Set<Artist> artists = new HashSet<>();
 }

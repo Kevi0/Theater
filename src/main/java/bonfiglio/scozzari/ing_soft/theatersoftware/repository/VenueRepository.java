@@ -12,6 +12,7 @@ import java.util.Set;
 public interface VenueRepository extends JpaRepository<Venue, Long> {
 
     @NotNull Optional<Venue> findById(@NotNull Long id);
+
     Optional<Venue> findVenueByName(String name);
 
     @Modifying

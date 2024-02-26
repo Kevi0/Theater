@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SubRetiredDTO implements SubWorkDTO {
 
-    @NotBlank(message = "Pension type cannot be empty")
     private Boolean isOver65;
 
 }

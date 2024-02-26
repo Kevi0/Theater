@@ -7,6 +7,8 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Opera;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.OperaServiceImpl;
@@ -33,11 +35,11 @@ public class OperaController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO operaDTO
-    ) throws OperaAlreadyExistException, InvalidDataException {
+    ) throws OperaAlreadyExistException, InvalidDataException, SeasonNotFoundException, VenueNotFoundException {
 
         try {
-            if (operaDTO instanceof OperaDTO){
-                operaService.addOpera(operaMapper.operaDTOToOpera(operaDTO));
+            if (operaDTO instanceof OperaDTO dto){
+                operaService.addOpera(operaMapper.operaDTOToOpera(operaDTO), dto.getIdVenue(), dto.getIdSeasons());
 
                 return new ResponseEntity<>(new ResponseMessage("Opera added"), HttpStatus.OK);
             } else {

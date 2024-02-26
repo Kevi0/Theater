@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -17,5 +18,9 @@ public class OperaDTO implements InputDTO {
     private LocalDate startDate;
 
     private LocalDate startRehearsal;
+
+    private Long idVenue;
+
+    private Set<Long> idSeasons;
 
 }
