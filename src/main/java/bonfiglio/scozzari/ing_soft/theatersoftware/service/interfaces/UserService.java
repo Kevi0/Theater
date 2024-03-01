@@ -5,16 +5,18 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.us
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface UserService {
 
     void updateUser(Long id, User user) throws IllegalAccessException, UserNotFoundException, InvalidDataException;
 
+    void updatePassword(Long id, String password) throws InvalidDataException;
+
     Optional<User> deleteUser(Long id) throws UserAlreadyDeletedException, UserNotFoundException;
 
-    Set<Optional<User>> getAllUsers();
+    List<User> getAllUsers();
 
     Long getUserIdByUsername(String username) throws UserNotFoundException;
 

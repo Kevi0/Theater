@@ -48,10 +48,10 @@ public class User extends BaseEntityAudit implements UserDetails, Updatable {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL) // mappedBy = "user" -> user è il nome del campo nella classe Artist
     private Artist artist;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // mappedBy = "user" -> user è il nome del campo nella classe UserAgency
+    @OneToMany(mappedBy = "user") // mappedBy = "user" -> user è il nome del campo nella classe UserAgency
     private Set<UserAgency> userAgencies = new HashSet<>();
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL) // mappedBy = "user" -> user è il nome del campo nella classe UserTheater
+    @OneToMany(mappedBy = "user") // mappedBy = "user" -> user è il nome del campo nella classe UserTheater
     private Set<UserTheater> userTheaters = new HashSet<>();
 
 
@@ -83,18 +83,5 @@ public class User extends BaseEntityAudit implements UserDetails, Updatable {
     @Override
     public void setUpdateAt(LocalDateTime updateAt) {
         this.setUpdatedAt(updateAt);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), id, username, email);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(username, user.username) && Objects.equals(email, user.email);
     }
 }

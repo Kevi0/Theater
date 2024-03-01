@@ -29,7 +29,7 @@ public class GenerateUsername {
     }
 
     private boolean usernameExists(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.existsByUsername(username);
     }
 
 }

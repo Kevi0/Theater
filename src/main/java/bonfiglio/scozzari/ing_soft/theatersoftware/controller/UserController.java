@@ -1,8 +1,10 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.controller;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
-import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UserRegistrationDTO;
-import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UserRegistrationMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdatePasswordRequestDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdateRequestDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdatePasswordRequestMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdateRequestMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
@@ -14,8 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 @AllArgsConstructor
 @RestController
@@ -24,21 +25,38 @@ public class UserController {
 
     private final UserServiceImpl userService;
 
-    private final UserRegistrationMapper userMapper;
+    private final UpdateRequestMapper updateRequestMapper;
+    private final UpdatePasswordRequestMapper updatePasswordRequestMapper;
 
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
-            @RequestBody InputDTO userDTO
+            @RequestBody InputDTO requestDTO
     ) throws UserNotFoundException, IllegalAccessException, InvalidDataException {
 
-        if (userDTO instanceof UserRegistrationDTO) {
-            userService.updateUser(id, userMapper.userDTOToUser(userDTO));
+        if (requestDTO instanceof UpdateRequestDTO) {
+            userService.updateUser(id, updateRequestMapper.userDTOToUser(requestDTO));
 
             return new ResponseEntity<>(new ResponseMessage("User updated"), HttpStatus.OK);
         } else {
             throw new IllegalArgumentException("User not updated");
         }
+    }
+
+    @RequestMapping(value = "/update-password/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<ResponseMessage> updatePassword(
+            @PathVariable Long id,
+            @RequestBody InputDTO requestDTO
+    ) throws InvalidDataException {
+
+        if (requestDTO instanceof UpdatePasswordRequestDTO) {
+            userService.updatePassword(id, updatePasswordRequestMapper.userDTOToUser(requestDTO));
+
+            return new ResponseEntity<>(new ResponseMessage("Password updated"), HttpStatus.OK);
+        } else {
+            throw new IllegalArgumentException("Password not updated");
+        }
+
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
@@ -54,7 +72,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<Set<Optional<User>>> getAllUsers() {
+    public ResponseEntity<List<User>> getAllUsers() {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 

@@ -19,6 +19,12 @@ public class UserRegistrationValidator {
 
     }
 
+    public void validateUpdate(User user) throws InvalidDataException {
+        validateName(user.getName());
+        validateSurname(user.getSurname());
+        validateEmail(user.getEmail());
+    }
+
     private void validateName(String name) throws InvalidDataException {
 
         if (name == null || name.trim().isEmpty()) {

@@ -51,7 +51,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse register(User user) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
 
-        if (!userRepository.findByUsername(user.getUsername())) {
+        if (!userRepository.existsByUsername(user.getUsername())) {
 
             validator.validate(user);
 
@@ -80,14 +80,14 @@ public class AuthenticationService {
             } catch (ConstraintViolationException e) {
                 throw new UserAlreadyExistException("Errore durante la registrazione!");
             } catch (DataIntegrityViolationException e) {
-                throw new InvalidDataException("Errore durante la registrazione, problemi con l'itegrità dei dati!");
+                throw new DataIntegrityViolationException("Errore durante la registrazione, problemi con l'itegrità dei dati!");
             } catch (TransientObjectException | LockAcquisitionException e) {
                 throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
             }
 
-        } else if (userRepository.findByUsernameAndDeletedAtIsNull(user.getUsername())) {
+        } else if (userRepository.existsByUsernameAndDeletedAtIsNull(user.getUsername())) {
 
-            Optional<User> userToUpdate = userRepository.findUserByUsername(user.getUsername());
+            Optional<User> userToUpdate = userRepository.findByUsername(user.getUsername());
             User existingUser = userToUpdate.get();
             existingUser.setCreatedAt(LocalDateTime.now());
             existingUser.setDeletedAt(null);
@@ -116,7 +116,7 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(User user) throws BadCredentialsException {
 
-        var userToAuthenticate = userRepository.findUserByUsername(user.getUsername())
+        var userToAuthenticate = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new BadCredentialsException("Errore durante l'autenticazione: credenziali errate!"));
 
         if (!passwordEncoder.matches(user.getPassword(), userToAuthenticate.getPassword()))

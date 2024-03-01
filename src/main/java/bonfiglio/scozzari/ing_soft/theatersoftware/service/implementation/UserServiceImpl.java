@@ -13,9 +13,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -32,19 +31,41 @@ public class UserServiceImpl implements UserService {
     public void updateUser(Long id, User user) throws IllegalAccessException, UserNotFoundException, InvalidDataException {
         Optional<User> userToUpdate = userRepository.findById(id);
 
-        if (userToUpdate.isPresent() && (!userRepository.checkIfUserIsDeleted(id))) {
+        if (userToUpdate.isPresent() && (!userRepository.existsByIdAndDeletedAtIsNotNull(id))) {
 
-            validator.validate(user);
+            validator.validateUpdate(user);
             User existingUser = userToUpdate.get();
             ObjectUpdater<User> userUpdater = new ObjectUpdater<>();
 
             userRepository.save(userUpdater.updateObject(existingUser, user));
-            existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
 
         } else {
             throw new UserNotFoundException("Error when updating the user");
 
         }
+    }
+
+    @Override
+    public void updatePassword(Long id, String password) throws InvalidDataException {
+
+        Optional<User> userToUpdate = userRepository.findById(id);
+
+        if (userToUpdate.isPresent() && (!userRepository.existsByIdAndDeletedAtIsNotNull(id))) {
+
+            User existingUser = userToUpdate.get();
+            if (passwordEncoder.matches(password, existingUser.getPassword())) {
+
+                throw new InvalidDataException("Error when updating the password");
+
+            } else {
+
+                existingUser.setPassword(passwordEncoder.encode(password));
+                userRepository.save(existingUser);
+
+            }
+
+        }
+
     }
 
     @Override
@@ -56,7 +77,7 @@ public class UserServiceImpl implements UserService {
             User existingUser = userToDelete.get();
 
             if (existingUser.getDeletedAt() == null) {
-                userRepository.deleteUserById(id);
+                userRepository.softDeleteById(id);
                 return Optional.of(existingUser);
 
             } else {
@@ -69,19 +90,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Set<Optional<User>> getAllUsers() {
-        return new HashSet<>(userRepository.findAllUsers());
+    public List<User> getAllUsers() {
+        return userRepository.findAllByDeletedAtIsNull();
     }
 
     @Override
     public Long getUserIdByUsername(String username) throws UserNotFoundException {
-        return userRepository.findUserByUsername(username)
+        return userRepository.findByUsername(username)
                 .map(User::getId)
                 .orElseThrow(() -> new UserNotFoundException("Error when getting the user id by username"));
     }
 
     @Override
     public Optional<User> getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        return userRepository.findByUsername(username);
     }
 }

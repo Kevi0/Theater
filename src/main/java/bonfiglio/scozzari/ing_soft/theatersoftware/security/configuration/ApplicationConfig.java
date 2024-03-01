@@ -32,7 +32,7 @@ public class ApplicationConfig {
                 return null;
             }
         }*/
-        return username -> userRepository.findUserByUsername(username)
+        return username -> userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 

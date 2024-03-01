@@ -8,14 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserRegistrationDTO implements InputDTO {
+public class UpdateRequestDTO implements InputDTO {
 
     private String name;
 
     private String surname;
 
     private String email;
-
-    private String password;
 
 }

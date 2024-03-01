@@ -39,7 +39,7 @@ public class AgencyServiceImpl implements AgencyService {
     @Override
     public void addAgency(Agency agency, Set<Long> idUsers) throws AgencyAlreadyExistException, InvalidDataException, UserNotFoundException {
 
-        if (!agencyRepository.findByEmail(agency.getEmail())){
+        if (!agencyRepository.existsByEmail(agency.getEmail())){
 
             validator.validate(agency);
 
@@ -67,9 +67,9 @@ public class AgencyServiceImpl implements AgencyService {
             //TODO SEND EMAIL
             agencyRepository.save(agencyToInsert);
 
-        } else if (agencyRepository.findByEmailAndDeletedAtIsNull(agency.getEmail())) {
+        } else if (agencyRepository.existsByEmailAndDeletedAtIsNotNull(agency.getEmail())) {
 
-            Optional<Agency> agencyToUpdate = agencyRepository.findAgencyByEmail(agency.getEmail());
+            Optional<Agency> agencyToUpdate = agencyRepository.findByEmail(agency.getEmail());
             Agency existingAgency = agencyToUpdate.get();
             existingAgency.setCreatedAt(LocalDateTime.now());
             existingAgency.setDeletedAt(null);
@@ -87,7 +87,7 @@ public class AgencyServiceImpl implements AgencyService {
 
         Optional<Agency> agencyToUpdate = agencyRepository.findById(id);
 
-        if (agencyToUpdate.isPresent() && (!agencyRepository.checkIfAgencyIsDeleted(id))) {
+        if (agencyToUpdate.isPresent() && (!agencyRepository.existsByIdAndDeletedAtIsNotNull(id))) {
 
             validator.validate(agency);
             Agency existingAgency = agencyToUpdate.get();
@@ -109,7 +109,7 @@ public class AgencyServiceImpl implements AgencyService {
             Agency existingAgency = agencyToDelete.get();
 
             if (existingAgency.getDeletedAt() == null) {
-                agencyRepository.deleteAgencyById(id);
+                agencyRepository.softDeleteById(id);
                 return Optional.of(existingAgency);
 
             } else {
@@ -123,12 +123,12 @@ public class AgencyServiceImpl implements AgencyService {
 
     @Override
     public Set<Optional<Agency>> getAllAgencies() {
-        return new HashSet<>(agencyRepository.findAllAgencies());
+        return new HashSet<>(agencyRepository.findAllByDeletedAtIsNull());
     }
 
     @Override
     public Long getAgencyIdByName(String name) throws AgencyNotFoundException {
-        return agencyRepository.findAgencyByName(name)
+        return agencyRepository.findByName(name)
                 .map(Agency::getId)
                 .orElseThrow(() -> new AgencyNotFoundException("Error when getting the agency id by name"));
     }
