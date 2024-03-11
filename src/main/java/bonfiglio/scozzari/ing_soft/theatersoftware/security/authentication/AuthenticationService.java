@@ -1,25 +1,29 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.security.authentication;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.InvalidTokenException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.SendingMailException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.BadCredentialsException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UnregisteredUserException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyExistException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.enumaration.UserRoles;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TokenRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.security.configuration.JwtService;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.UserService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.UserService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.TokenServiceImpl;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.mail.EmailService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.UserRegistrationValidator;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.username.GenerateUsername;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.TransientObjectException;
 import org.hibernate.exception.LockAcquisitionException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -39,7 +43,9 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final UserService userService;
+    private final TokenServiceImpl tokenService;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     public final AuthenticationManager authenticationManager;
@@ -49,9 +55,9 @@ public class AuthenticationService {
 
     private final GenerateUsername generateUsername;
 
-    public AuthenticationResponse register(User user) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
+    public void register(User user) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
 
-        if (!userRepository.existsByUsername(user.getUsername())) {
+        if (!userRepository.existsByEmail(user.getEmail())) {
 
             validator.validate(user);
 
@@ -68,26 +74,18 @@ public class AuthenticationService {
             try {
 
                 userRepository.save(userToInsert);
-                sendRegistrationEmail(userToInsert);
 
-                var jwtToken = jwtService.generateToken(user);
-
-                return AuthenticationResponse
-                        .builder()
-                        .token(jwtToken)
-                        .build();
-
-            } catch (ConstraintViolationException e) {
+            } catch (ConstraintViolationException | DataIntegrityViolationException e) {
                 throw new UserAlreadyExistException("Errore durante la registrazione!");
-            } catch (DataIntegrityViolationException e) {
-                throw new DataIntegrityViolationException("Errore durante la registrazione, problemi con l'itegrità dei dati!");
             } catch (TransientObjectException | LockAcquisitionException e) {
                 throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
             }
 
-        } else if (userRepository.existsByUsernameAndDeletedAtIsNull(user.getUsername())) {
+            sendRegistrationEmail(userToInsert);
 
-            Optional<User> userToUpdate = userRepository.findByUsername(user.getUsername());
+        } else if (userRepository.existsByEmailAndDeletedAtIsNull(user.getEmail())) {
+
+            Optional<User> userToUpdate = userRepository.findByEmail(user.getEmail());
             User existingUser = userToUpdate.get();
             existingUser.setCreatedAt(LocalDateTime.now());
             existingUser.setDeletedAt(null);
@@ -95,32 +93,75 @@ public class AuthenticationService {
             try {
 
                 userRepository.save(existingUser);
-                sendRegistrationEmail(existingUser);
 
-                var jwtToken = jwtService.generateToken(user);
-
-                return AuthenticationResponse
-                        .builder()
-                        .token(jwtToken)
-                        .build();
-
-            } catch (MailException e) {
-                throw new SendingMailException("Errore durante l'invio della mail!");
+            } catch (ConstraintViolationException | DataIntegrityViolationException e) {
+                throw new UserAlreadyExistException("Errore durante la registrazione!");
+            } catch (TransientObjectException | LockAcquisitionException e) {
+                throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
             }
-            
+
+            sendRegistrationEmail(existingUser);
+
         } else {
             throw new UserAlreadyExistException("Errore durante la registrazione!");
         }
     }
 
 
-    public AuthenticationResponse authenticate(User user) throws BadCredentialsException {
+    public AuthenticationResponse authenticate(User user) throws BadCredentialsException, UserNotFoundException, InvalidTokenException, ExpiredJwtException {
 
         var userToAuthenticate = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new BadCredentialsException("Errore durante l'autenticazione: credenziali errate!"));
 
         if (!passwordEncoder.matches(user.getPassword(), userToAuthenticate.getPassword()))
             throw new BadCredentialsException("Errore durante l'autenticazione: credenziali errate!");
+
+        if (tokenRepository.existsByUser(userToAuthenticate)) {
+
+            String token = tokenRepository.findTokenByUser(userToAuthenticate);
+
+                if (jwtService.isTokenValid(token, userToAuthenticate)) {
+
+                    if (jwtService.isTokenExpired(token)) {
+
+                        jwtService.handleExpiredJwtException(token);
+
+                        /*tokenService.deleteToken(token);
+                        var newJwtToken = jwtService.generateToken(userToAuthenticate);
+                        tokenService.addToken(newJwtToken, userToAuthenticate);
+
+                        authenticationManager.authenticate(
+                                new UsernamePasswordAuthenticationToken(
+                                        user.getUsername(),
+                                        user.getPassword()
+                                )
+                        );
+
+                        return AuthenticationResponse
+                                .builder()
+                                .token(newJwtToken)
+                                .build();*/
+
+                    } else {
+
+                        authenticationManager.authenticate(
+                                new UsernamePasswordAuthenticationToken(
+                                        user.getUsername(),
+                                        user.getPassword()
+                                )
+                        );
+
+                        return AuthenticationResponse
+                                .builder()
+                                .token(token)
+                                .build();
+
+                    }
+
+                } else {
+                    throw new InvalidTokenException("Token non valido");
+                }
+        }
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -130,12 +171,15 @@ public class AuthenticationService {
         );
 
         var jwtToken = jwtService.generateToken(userToAuthenticate);
+        tokenService.addToken(jwtToken, userToAuthenticate);
 
         return AuthenticationResponse
                 .builder()
                 .token(jwtToken)
                 .build();
+
     }
+
 
     private void sendRegistrationEmail(User user) throws SendingMailException {
 
@@ -143,7 +187,6 @@ public class AuthenticationService {
         emailModel.put("subject", "Registrazione utente");
         emailModel.put("name", user.getName());
         emailModel.put("username", user.getUsername());
-        emailModel.put("password", user.getPassword());
 
         emailService.sendRegistrationEmail(user.getEmail(), (String) emailModel.get("subject"), null, null, "user-registration-email", emailModel);
 

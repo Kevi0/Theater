@@ -54,6 +54,9 @@ public class User extends BaseEntityAudit implements UserDetails, Updatable {
     @OneToMany(mappedBy = "user") // mappedBy = "user" -> user è il nome del campo nella classe UserTheater
     private Set<UserTheater> userTheaters = new HashSet<>();
 
+    @OneToMany(mappedBy = "user") // mappedBy = "user" -> user è il nome del campo nella classe Token
+    private Set<Token> tokens = new HashSet<>();
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -8,7 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.BankAccount;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.*;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.PermanentWorkService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.PermanentWorkService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

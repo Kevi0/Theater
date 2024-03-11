@@ -14,5 +14,4 @@ public class ErrorMessage {
     private LocalDateTime timestamp;
     private Integer status;
     private String error, message, path;
-
 }

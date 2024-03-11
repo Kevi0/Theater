@@ -17,10 +17,43 @@ import org.springframework.web.method.HandlerMethod;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 
 @RestControllerAdvice
 public class ExceptionManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionManager.class);
+
+    @ExceptionHandler(value = {DataAccessServiceException.class})
+    public ResponseEntity<ErrorMessage> handleDataAccessServiceException(DataAccessServiceException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        errorMessage.setError("INTERNAL SERVER ERROR");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DataAccessServiceException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {InvalidTokenException.class})
+    public ResponseEntity<ErrorMessage> handleInvalidTokenException(InvalidTokenException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errorMessage.setError("UNAUTHORIZED");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("InvalidTokenException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
 
     @ExceptionHandler(value = DataIntegrityViolationException.class)
     public ResponseEntity<ErrorMessage> handleDataIntegrityViolationException(DataIntegrityViolationException exception, HandlerMethod handlerMethod){
@@ -28,7 +61,7 @@ public class ExceptionManager {
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
         errorMessage.setError("BAD REQUEST");
-        errorMessage.setMessage("Invalid data");
+        errorMessage.setMessage(exception.getMessage());
         errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
         LOGGER.error("DataIntegrityViolationException: {}", exception.getMessage() + " Nella classe" +
@@ -45,7 +78,7 @@ public class ExceptionManager {
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
         errorMessage.setError("BAD REQUEST");
-        errorMessage.setMessage("Invalid data");
+        errorMessage.setMessage(exception.getMessage());
         errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
         LOGGER.error("ClassCastException: {}", exception.getMessage() + " Nella classe" +
@@ -63,7 +96,7 @@ public class ExceptionManager {
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         errorMessage.setError("INTERNAL SERVER ERROR");
-        errorMessage.setMessage("Errore nell'invio della mail");
+        errorMessage.setMessage(exception.getMessage());
         errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
         LOGGER.error("MailException: {}", exception.getMessage() + " Nella classe" +
@@ -81,7 +114,7 @@ public class ExceptionManager {
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
         errorMessage.setError("BAD REQUEST");
-        errorMessage.setMessage("Invalid date format");
+        errorMessage.setMessage(exception.getMessage());
         errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
         LOGGER.error("DateTimeParseException: {}", exception.getMessage() + " Nella classe" +
@@ -99,7 +132,7 @@ public class ExceptionManager {
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.BAD_REQUEST.value());
         errorMessage.setError("BAD REQUEST");
-        errorMessage.setMessage("Invalid data");
+        errorMessage.setMessage("Message Not Readable");
         errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
         LOGGER.error("HttpMessageNotReadableException: {}", exception.getMessage() + " Nella classe" +
@@ -129,18 +162,18 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler(value = {ExpiredJwtException.class})
-    public ResponseEntity<ErrorMessage> handleExpiredJwtException(ExpiredJwtException exception, HandlerMethod handlerMethod){
+    public ResponseEntity<ErrorMessage> handleExpiredJwtException(ExpiredJwtException exception){
 
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
         errorMessage.setError("UNAUTHORIZED");
-        errorMessage.setMessage("Il toke JWT è scaduto!");
-        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+        errorMessage.setMessage(exception.getMessage());
+        //errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
-        LOGGER.error("ExpiredJwtException: {}", exception.getMessage() + " Nella classe" +
+        /*LOGGER.error("ExpiredJwtException: {}", exception.getMessage() + " Nella classe" +
                 " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
-                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");*/
 
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
 

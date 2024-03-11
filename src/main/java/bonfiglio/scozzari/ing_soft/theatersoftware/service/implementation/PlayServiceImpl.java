@@ -6,7 +6,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.pl
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.play.PlayNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Play;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.PlayRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.PlayService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.PlayService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.PlayRegistrationValidator;
 import jakarta.transaction.Transactional;

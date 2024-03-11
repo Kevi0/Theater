@@ -3,8 +3,10 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.controller;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdatePasswordRequestDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdateRequestDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UserSummaryDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdatePasswordRequestMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdateRequestMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
@@ -12,12 +14,15 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@SuppressWarnings("deprecation")
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/user")
@@ -34,12 +39,17 @@ public class UserController {
             @RequestBody InputDTO requestDTO
     ) throws UserNotFoundException, IllegalAccessException, InvalidDataException {
 
-        if (requestDTO instanceof UpdateRequestDTO) {
-            userService.updateUser(id, updateRequestMapper.userDTOToUser(requestDTO));
+        try {
 
-            return new ResponseEntity<>(new ResponseMessage("User updated"), HttpStatus.OK);
-        } else {
-            throw new IllegalArgumentException("User not updated");
+            if (requestDTO instanceof UpdateRequestDTO) {
+                userService.updateUser(id, updateRequestMapper.userDTOToUser(requestDTO));
+
+                return new ResponseEntity<>(new ResponseMessage("User updated"), HttpStatus.OK);
+            } else {
+                throw new IllegalArgumentException("User not updated - Invalid CustomType");
+            }
+        } catch (JsonParseException e) {
+            throw new HttpMessageNotReadableException("Message Not Readable");
         }
     }
 
@@ -72,7 +82,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserSummaryDTO>> getAllUsers() throws DataAccessServiceException {
         return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
     }
 

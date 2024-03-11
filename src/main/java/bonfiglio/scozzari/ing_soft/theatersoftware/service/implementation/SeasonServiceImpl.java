@@ -5,14 +5,11 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.se
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
-import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.SeasonRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.SeasonService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.SeasonService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.SeasonRegistrationValidator;
 import jakarta.transaction.Transactional;

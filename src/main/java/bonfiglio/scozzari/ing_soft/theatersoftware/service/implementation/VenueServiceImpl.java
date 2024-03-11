@@ -8,7 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.VenueRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.VenueService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.VenueService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.VenueRegistrationValidator;
 import jakarta.transaction.Transactional;

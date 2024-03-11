@@ -1,4 +1,4 @@
-package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
+package bonfiglio.scozzari.ing_soft.theatersoftware.service;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;

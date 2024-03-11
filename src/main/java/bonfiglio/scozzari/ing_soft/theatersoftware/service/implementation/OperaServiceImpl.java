@@ -8,12 +8,11 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.se
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Opera;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
-import bonfiglio.scozzari.ing_soft.theatersoftware.model.Typology;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.OperaRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.SeasonRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.VenueRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.OperaService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.OperaService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.OperaRegistrationValidator;
 import jakarta.transaction.Transactional;

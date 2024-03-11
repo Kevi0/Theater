@@ -14,20 +14,28 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
+    Optional<User> findByEmail(String email);
+
     @Modifying
     @Query("UPDATE User u SET u.deletedAt = CURRENT_TIMESTAMP WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.artist LEFT JOIN FETCH u.userAgencies LEFT JOIN FETCH u.userTheaters WHERE u.deletedAt IS NULL")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.artist LEFT JOIN FETCH u.userAgencies LEFT JOIN FETCH u.userTheaters LEFT JOIN FETCH u.tokens WHERE u.deletedAt IS NULL")
     List<User> findAllByDeletedAtIsNull();
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.id = :id AND u.deletedAt IS NOT NULL")
     boolean existsByIdAndDeletedAtIsNotNull(Long id);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.username = :username AND u.deletedAt IS NOT NULL")
-    boolean existsByUsernameAndDeletedAtIsNull(String username); //findByUsernameAndDeletedAtIsNull
+    boolean existsByUsernameAndDeletedAtIsNull(String username);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :email AND u.deletedAt IS NOT NULL")
+    boolean existsByEmailAndDeletedAtIsNull(String email);
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.username = :username")
-    boolean existsByUsername(String username); //findByUsername
+    boolean existsByUsername(String username);
+
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.email = :email")
+    boolean existsByEmail(String email);
 
 }

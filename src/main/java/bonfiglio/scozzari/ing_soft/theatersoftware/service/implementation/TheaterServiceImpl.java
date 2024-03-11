@@ -12,7 +12,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.middle.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserTheaterRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.TheaterService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.TheaterService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.TheaterRegistrationValidator;
 import jakarta.transaction.Transactional;

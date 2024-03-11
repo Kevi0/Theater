@@ -8,7 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.ArtistRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.TypologyRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.ArtistService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.ArtistService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

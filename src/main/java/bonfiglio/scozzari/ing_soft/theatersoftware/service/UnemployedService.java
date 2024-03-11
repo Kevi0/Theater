@@ -1,4 +1,4 @@
-package bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces;
+package bonfiglio.scozzari.ing_soft.theatersoftware.service;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Unemployed;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;

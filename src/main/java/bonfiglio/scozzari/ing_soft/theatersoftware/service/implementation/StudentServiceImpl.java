@@ -3,7 +3,7 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Student;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.interfaces.Work;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.StudentRepository;
-import bonfiglio.scozzari.ing_soft.theatersoftware.service.interfaces.StudentService;
+import bonfiglio.scozzari.ing_soft.theatersoftware.service.StudentService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

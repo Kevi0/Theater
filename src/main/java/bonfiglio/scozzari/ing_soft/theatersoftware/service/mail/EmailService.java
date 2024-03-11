@@ -1,7 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.mail;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.SendingMailException;
-import freemarker.core.ParseException;
 import freemarker.template.*;
 import jakarta.annotation.Nullable;
 import jakarta.mail.MessagingException;
@@ -52,8 +51,8 @@ public class EmailService {
 
             mimeMessageHelper.setText(content, true);
 
-            ClassPathResource logo = new ClassPathResource("static/images/logo.png");
-            mimeMessageHelper.addInline("logo", logo);
+            /*ClassPathResource logo = new ClassPathResource("static/images/logo.png");
+            mimeMessageHelper.addInline("logo", logo);*/
 
             javaMailSender.send(mimeMessage);
 
