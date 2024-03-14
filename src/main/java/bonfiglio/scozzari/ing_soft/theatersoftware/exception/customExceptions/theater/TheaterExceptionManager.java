@@ -17,6 +17,22 @@ public class TheaterExceptionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TheaterExceptionManager.class);
 
+    @ExceptionHandler(value = {UnregisteredTheaterException.class})
+    public ResponseEntity<ErrorMessage> handleUnregisteredTheaterException(UnregisteredTheaterException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
+        errorMessage.setError("UNAUTHORIZED");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("UnregisteredTheaterException: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
+    }
+
     @ExceptionHandler(value = {TheaterAlreadyDeletedException.class})
     public ResponseEntity<ErrorMessage> handleTheaterAlreadyDeletedException(TheaterAlreadyDeletedException exception, HandlerMethod handlerMethod){
         ErrorMessage errorMessage = new ErrorMessage();

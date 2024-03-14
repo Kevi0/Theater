@@ -14,7 +14,7 @@ public class TheaterRegistrationValidator {
 
         validateName(theater.getName());
         validateCity(theater.getCity());
-        //validateTel(theater.getTel());
+        validateTel(theater.getTel());
         validateEmail(theater.getEmail());
         validateIva(theater.getIva());
         validatePec(theater.getPec());
@@ -27,24 +27,29 @@ public class TheaterRegistrationValidator {
     private void validateName(String name) throws InvalidDataException {
 
         if (name == null || name.trim().isEmpty()) {
-            throw new InvalidDataException("Error during registration: the 'name' field cannot be empty, or cannot contain only spaces!");
+            throw new InvalidDataException("Error during registration: the 'name' field cannot be empty, or cannot contain only spaces!");//fatto
         }
     }
 
     private void validateCity(String city) throws InvalidDataException {
 
         if (city == null || city.trim().isEmpty()) {
-            throw new InvalidDataException("Error during registration: the 'city' field cannot be empty, or cannot contain only spaces!");
+            throw new InvalidDataException("Error during registration: the 'city' field cannot be empty, or cannot contain only spaces!");//fatto
         }
         if (!city.matches(RegexPatterns.CITY_NAME_PATTERN)) {
-            throw new InvalidDataException("Error during registration: the 'city' field is not in the correct format!");
+            throw new InvalidDataException("Error during registration: the 'city' field is not in the correct format!"); //fatto
         }
     }
 
-    public String validateTel(String tel) throws InvalidDataException {
-        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
+    private void validateTel(String tel) throws InvalidDataException {
 
-        System.out.println(tel);
+        if (tel == null || tel.trim().isEmpty()) {
+            throw new InvalidDataException("Error during registration: the 'tel' field cannot be empty, or cannot contain only spaces!");
+        }
+    }
+
+    /*public String validateTel(String tel) throws InvalidDataException {
+        PhoneNumberUtil phoneUtil = PhoneNumberUtil.getInstance();
 
         try {
             Phonenumber.PhoneNumber parsedNumber = phoneUtil.parse(tel, null);
@@ -58,7 +63,7 @@ public class TheaterRegistrationValidator {
         } catch (Exception e) {
             throw new InvalidDataException("Error during registration: the 'tel' field is not in the correct format!");
         }
-    }
+    }*/
 
     private void validateEmail(String email) throws InvalidDataException {
 
@@ -70,16 +75,6 @@ public class TheaterRegistrationValidator {
         }
     }
 
-    private void validateIva(String iva) throws InvalidDataException {
-
-        if (iva == null || iva.trim().isEmpty()) {
-            throw new InvalidDataException("Error during registration: the 'iva' field cannot be empty, or cannot contain only spaces!");
-        }
-        if (!iva.matches(RegexPatterns.IVA_PATTERN)) {
-            throw new InvalidDataException("Error during registration: the 'iva' field is not in the correct format!");
-        }
-    }
-
     private void validatePec(String pec) throws InvalidDataException {
 
         if (pec == null || pec.trim().isEmpty()) {
@@ -87,6 +82,16 @@ public class TheaterRegistrationValidator {
         }
         if (!pec.matches(RegexPatterns.EMAIL_PATTERN)) {
             throw new InvalidDataException("Error during registration: the 'pec' field is not in the correct format!");
+        }
+    }
+
+    private void validateIva(String iva) throws InvalidDataException {
+
+        if (iva == null || iva.trim().isEmpty()) {
+            throw new InvalidDataException("Error during registration: the 'iva' field cannot be empty, or cannot contain only spaces!");
+        }
+        if (!iva.matches(RegexPatterns.IVA_PATTERN)) {
+            throw new InvalidDataException("Error during registration: the 'iva' field is not in the correct format!");
         }
     }
 

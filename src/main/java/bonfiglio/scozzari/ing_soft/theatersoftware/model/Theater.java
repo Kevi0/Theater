@@ -9,9 +9,9 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
 @Builder
@@ -23,16 +23,16 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String tel;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column
@@ -41,13 +41,13 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
     @Column
     private String website;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String iva;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String uniqueCode;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String recipientCode;
 
     @OneToMany(mappedBy = "theater") // mappedBy = "theater" -> theater è il nome del campo nella classe UserTheater
@@ -66,7 +66,6 @@ public class Theater extends BaseEntityAudit implements Observers, Updatable {
 
     @OneToMany(mappedBy = "theater") // mappedBy = "theater" -> theater è il nome del campo nella classe DigitalDrawer
     private Set<DigitalDrawer> digitalDrawers = new HashSet<>();
-
 
     @Override
     public void update() {

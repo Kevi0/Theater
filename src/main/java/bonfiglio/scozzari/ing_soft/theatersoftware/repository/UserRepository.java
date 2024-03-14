@@ -20,7 +20,11 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("UPDATE User u SET u.deletedAt = CURRENT_TIMESTAMP WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.artist LEFT JOIN FETCH u.userAgencies LEFT JOIN FETCH u.userTheaters LEFT JOIN FETCH u.tokens WHERE u.deletedAt IS NULL")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.artist " +
+            "LEFT JOIN FETCH u.userAgencies " +
+            "LEFT JOIN FETCH u.userTheaters " +
+            "LEFT JOIN FETCH u.tokens " +
+            "WHERE u.deletedAt IS NULL")
     List<User> findAllByDeletedAtIsNull();
 
     @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.id = :id AND u.deletedAt IS NOT NULL")

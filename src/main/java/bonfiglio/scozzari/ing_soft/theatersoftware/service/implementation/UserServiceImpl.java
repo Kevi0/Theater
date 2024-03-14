@@ -6,7 +6,9 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.In
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
+import bonfiglio.scozzari.ing_soft.theatersoftware.model.middle.UserTheater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserRepository;
+import bonfiglio.scozzari.ing_soft.theatersoftware.repository.UserTheaterRepository;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.UserService;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.ObjectUpdater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.utils.UserRegistrationValidator;
@@ -25,6 +27,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final UserTheaterRepository userTheaterRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -33,6 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateUser(Long id, User user) throws IllegalAccessException, UserNotFoundException, InvalidDataException {
+
         Optional<User> userToUpdate = userRepository.findById(id);
 
         if (userToUpdate.isPresent() && (!userRepository.existsByIdAndDeletedAtIsNotNull(id))) {
@@ -40,13 +44,12 @@ public class UserServiceImpl implements UserService {
             validator.validateUpdate(user);
             User existingUser = userToUpdate.get();
             ObjectUpdater<User> userUpdater = new ObjectUpdater<>();
-
             userRepository.save(userUpdater.updateObject(existingUser, user));
 
         } else {
             throw new UserNotFoundException("Error when updating the user");
-
         }
+
     }
 
     @Override
@@ -82,6 +85,7 @@ public class UserServiceImpl implements UserService {
 
             if (existingUser.getDeletedAt() == null) {
                 userRepository.softDeleteById(id);
+                removeUserRelations(existingUser);
                 return Optional.of(existingUser);
 
             } else {
@@ -115,5 +119,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
+    }
+
+    private void removeUserRelations(User user) {
+
+        List<UserTheater> userTheaters = userTheaterRepository.findByUser(user);
+        userTheaters.forEach(userTheater -> userTheaterRepository.deleteByUser(userTheater.getUser()));
+
     }
 }

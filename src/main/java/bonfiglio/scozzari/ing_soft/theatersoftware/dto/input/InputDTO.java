@@ -6,6 +6,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.opera.OperaDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.play.PlayDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.season.SeasonDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterUpdateRequestDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdatePasswordRequestDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UpdateRequestDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.user.UserAuthenticationDTO;
@@ -25,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = PlayDTO.class, name = "registrationPlay"),
         @JsonSubTypes.Type(value = SeasonDTO.class, name = "registrationSeason"),
         @JsonSubTypes.Type(value = TheaterDTO.class, name = "registrationTheater"),
+        @JsonSubTypes.Type(value = TheaterUpdateRequestDTO.class, name = "updateTheater"),
         @JsonSubTypes.Type(value = VenueDTO.class, name = "registrationVenue"),
         @JsonSubTypes.Type(value = UserRegistrationDTO.class, name = "registrationUser"),
         @JsonSubTypes.Type(value = UserAuthenticationDTO.class, name = "authenticationUser"),

@@ -57,8 +57,9 @@
     </style>
 </head>
 <body style="margin: 0; text-align: center">
+<center>
 <div class="card" style="margin: 0;">
-    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border: 1px solid #dce1e5;padding: 10px; margin: 0;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff" style="border: 1px solid #dce1e5; padding: 10px; margin: 0; ">
         <tr>
             <td width="2%">&nbsp;</td>
             <td height="75" width="96%" align="center">
@@ -72,14 +73,16 @@
             <td width="2%">&nbsp;</td>
             <td width="96%" align="center">
                 <div class="title">
-                    <h2>Grazie per esserti registrato a Theater, il nostro software per la gestione di eventi teatrali.</h2>
-                    <h2>Abbiamo ricevuto con successo la tua registrazione e siamo entusiasti di averti con noi.</h2>
-                    <h2>Per ulteriori informazioni o assistenza, non esitare a contattarci.</h2>
-                    <h2>Grazie ancora e benvenuto nel mondo di Theater!</h2>
+                    <br>
+                    <br>
+                    <h4>Grazie per esserti registrato a Theater, il nostro software per la gestione di eventi teatrali.</h4>
+                    <h4>Abbiamo ricevuto con successo la tua registrazione e siamo entusiasti di averti con noi.</h4>
+                    <h4>Per ulteriori informazioni o assistenza, non esitare a contattarci.</h4>
+                    <h4>Grazie ancora e benvenuto nel mondo di Theater!</h4>
                     <br>
                 </div>
             </td>
-            <td width="2%">&nbsp;</td>
+            <td style="width: 2%">&nbsp;</td>
         </tr>
         <!-- Inserted Username and Button Section Here -->
         <tr>
@@ -96,12 +99,14 @@
             <td style="width: 2%">&nbsp;</td>
             <td style="width: 96%; align-content: center">
                     <span style="font-size: x-small; font-family: Arial,serif; color: #000000; ">
-                        <p style="font-size:14px; margin-top: 5px">
+                        <p style=" font-size:14px; margin-top: 5px">
                             <br/>
                         </p>
-                        <p style="font-size:14px; margin-bottom: 20px">
-                            <span style="font-size: 18px;"><b>Per attivare il tuo account Theater, verifica i tuoi dati e conferma il tuo account.</b></span>
-                        </p>
+                        <center>
+                            <p style="font-size:14px; margin-bottom: 20px">
+                                <span style="font-size: 18px;"><b>Per attivare il tuo account Theater, verifica i tuoi dati e conferma il tuo account.</b></span>
+                            </p>
+                        </center>
                     </span>
             </td>
             <td style="width: 2%">&nbsp;</td>
@@ -146,5 +151,6 @@
         </tr>
     </table>
 </div>
+</center>
 </body>
 </html>

@@ -2,11 +2,17 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.controller;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterSummaryDTO;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterUpdateRequestDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.theater.TheaterMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.theater.TheaterUpdateRequestMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.UnregisteredTheaterException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UnregisteredUserException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
@@ -18,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -30,11 +37,12 @@ public class TheaterController {
     private TheaterServiceImpl theaterService;
 
     private final TheaterMapper theaterMapper;
+    private final TheaterUpdateRequestMapper theaterUpdateRequestMapper;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
-    ) throws TheaterAlreadyExistException, InvalidDataException, UserNotFoundException {
+    ) throws TheaterAlreadyExistException, InvalidDataException, UserNotFoundException, UnregisteredTheaterException, UnregisteredUserException {
 
         try {
             if (theaterDTO instanceof TheaterDTO dto){
@@ -53,11 +61,11 @@ public class TheaterController {
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
     public ResponseEntity<ResponseMessage> update(
             @PathVariable Long id,
-            @RequestBody InputDTO theaterDTO
+            @RequestBody InputDTO requestDTO
     ) throws TheaterNotFoundException, InvalidDataException, IllegalAccessException {
 
-        if (theaterDTO instanceof TheaterDTO){
-            theaterService.updateTheater(id, theaterMapper.theaterDTOToTheater(theaterDTO));
+        if (requestDTO instanceof TheaterUpdateRequestDTO) {
+            theaterService.updateTheater(id, theaterUpdateRequestMapper.theaterDTOToTheater(requestDTO));
 
             return new ResponseEntity<>(new ResponseMessage("Theater updated successfully!"), HttpStatus.OK);
         } else {
@@ -79,7 +87,7 @@ public class TheaterController {
     }
 
     @RequestMapping(value = "/theaters", method = RequestMethod.GET)
-    public ResponseEntity<Set<Optional<Theater>>> getAll(){
+    public ResponseEntity<List<TheaterSummaryDTO>> getAll() throws DataAccessServiceException {
         return new ResponseEntity<>(theaterService.getAllTheaters(), HttpStatus.OK);
     }
 
