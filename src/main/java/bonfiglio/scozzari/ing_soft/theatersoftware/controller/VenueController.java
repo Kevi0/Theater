@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -76,7 +77,7 @@ public class VenueController {
     }
 
     @RequestMapping(value = "/venues", method = RequestMethod.GET)
-    public ResponseEntity<Set<Optional<Venue>>> getVenues() {
+    public ResponseEntity<List<Venue>> getVenues() {
         return new ResponseEntity<>(venueService.getAllVenues(), HttpStatus.OK);
     }
 

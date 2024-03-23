@@ -4,10 +4,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.theater.TheaterSumm
 import bonfiglio.scozzari.ing_soft.theatersoftware.enumaration.TheaterRoles;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.UnregisteredTheaterException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.*;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UnregisteredUserException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
@@ -47,9 +44,38 @@ public class TheaterServiceImpl implements TheaterService {
 
 
     @Override
-    public void addTheater(Theater theater, Set<Long> idUsers) throws InvalidDataException, TheaterAlreadyExistException, UserNotFoundException, UnregisteredUserException, UnregisteredTheaterException {
+    public void addTheater(Theater theater, Set<Long> idUsers)
 
-        if (!theaterRepository.findByEmail(theater.getEmail())){
+            throws InvalidDataException, TheaterAlreadyExistException, UserNotFoundException,
+            UnregisteredUserException, UnregisteredTheaterException, DuplicateNameException,
+            DuplicateTelException, DuplicateEmailException, DuplicatePecException,
+            DuplicateUniqueCodeException, DuplicateRecipientCodeException {
+
+        if (!(theaterRepository.findByIva(theater.getIva()).isPresent())) {
+
+            if (theaterRepository.findByName(theater.getName()).isPresent()) {
+                throw new DuplicateNameException("Errore durante la registrazione del teatro, controlla il nome inserito!");
+            }
+
+            if (theaterRepository.findByTel(theater.getTel()).isPresent()) {
+                throw new DuplicateTelException("Errore durante la registrazione del teatro, controlla il telefono inserito!");
+            }
+
+            if (theaterRepository.findByEmail(theater.getEmail()).isPresent()) {
+                throw new DuplicateEmailException("Errore durante la registrazione del teatro, controlla l'email inserita!");
+            }
+
+            /*if (theaterRepository.findByPec(theater.getPec()).isPresent()) {
+                throw new DuplicatePecException("Errore durante la registrazione del teatro, controlla la pec inserita!");
+            }*/
+
+            if (theaterRepository.findByUniqueCode(theater.getUniqueCode()).isPresent()) {
+                throw new DuplicateUniqueCodeException("Errore durante la registrazione del teatro, controlla il codice univoco inserito!");
+            }
+
+            if (theaterRepository.findByRecipientCode(theater.getRecipientCode()).isPresent()) {
+                throw new DuplicateRecipientCodeException("Errore durante la registrazione del teatro, controlla il codice destinatario inserito!");
+            }
 
             validator.validate(theater);
 
@@ -69,11 +95,7 @@ public class TheaterServiceImpl implements TheaterService {
             for (Long idUser : idUsers) {
 
                 User user = userRepository.findById(idUser)
-                        .orElseThrow(() -> new UserNotFoundException("User not found with ID: " + idUser));
-
-                if (userRepository.existsByIdAndDeletedAtIsNotNull(idUser)) {
-                    throw new UnregisteredUserException("Error during registration, user not registered!");
-                }
+                        .orElseThrow(() -> new UserNotFoundException("Utenza non trovata!"));
 
                 UserTheater userTheater = UserTheater.builder()
                         .theater(theaterToInsert)
@@ -100,25 +122,8 @@ public class TheaterServiceImpl implements TheaterService {
             //TODO SEND EMAIL
 
 
-        } else if (theaterRepository.existsByEmailAndDeletedAtIsNotNull(theater.getEmail())) {
-
-            Optional<Theater> theaterToUpdate = theaterRepository.findTheaterByEmail(theater.getEmail());
-            Theater existingTheater = theaterToUpdate.get();
-            existingTheater.setCreatedAt(LocalDateTime.now());
-            existingTheater.setDeletedAt(null);
-
-            try {
-                theaterRepository.save(existingTheater);
-            } catch (ConstraintViolationException | DataIntegrityViolationException e) {
-                throw new TheaterAlreadyExistException("Errore durante la registrazione, teatro non registrato!");
-            } catch (TransientObjectException | LockAcquisitionException e) {
-                throw new UnregisteredTheaterException("Errore durante la registrazione, teatro non registrato!");
-            }
-
-            //TODO SEND EMAIL
-
         } else {
-            throw new TheaterAlreadyExistException("Error when entering the theater");
+            throw new TheaterAlreadyExistException("Errore durante la registrazione, teatro non registrato!");
         }
 
     }
@@ -128,7 +133,7 @@ public class TheaterServiceImpl implements TheaterService {
 
         Optional<Theater> theaterToUpdate = theaterRepository.findById(id);
 
-        if (theaterToUpdate.isPresent() && (!theaterRepository.existsByIdAndDeletedAtIsNotNull(id))) {
+        if (theaterToUpdate.isPresent()) {
 
             validator.validate(theater);
             Theater existingTheater = theaterToUpdate.get();
@@ -136,7 +141,7 @@ public class TheaterServiceImpl implements TheaterService {
             theaterRepository.save(theaterUpdater.updateObject(existingTheater, theater));
 
         } else {
-            throw new TheaterNotFoundException("Error when updating the theater");
+            throw new TheaterNotFoundException("Errore durante l'aggiornamento del teatro!");
         }
 
     }
@@ -147,18 +152,15 @@ public class TheaterServiceImpl implements TheaterService {
         Optional<Theater> theaterToDelete = theaterRepository.findById(id);
 
         if (theaterToDelete.isPresent()) {
+
             Theater existingTheater = theaterToDelete.get();
+            theaterRepository.delete(existingTheater);
 
-            if (existingTheater.getDeletedAt() == null) {
-                theaterRepository.deleteTheaterById(id);
-                return Optional.of(existingTheater);
-
-            } else {
-                throw new TheaterAlreadyDeletedException("Error when deleting the theater");
-            }
         } else {
-            throw new TheaterNotFoundException("Error when deleting the theater");
+            throw new TheaterNotFoundException("Errore durante l'eliminazione del teatro!");
         }
+
+        return theaterToDelete;
 
     }
 
@@ -166,12 +168,12 @@ public class TheaterServiceImpl implements TheaterService {
     public List<TheaterSummaryDTO> getAllTheaters() throws DataAccessServiceException {
 
         try {
-            List<Theater> theaters = theaterRepository.findAllByDeletedAtIsNull();
+            List<Theater> theaters = theaterRepository.findAll();
             return theaters.stream()
                     .map(TheaterSummaryDTO::new)
                     .toList();
         } catch (DataAccessException e) {
-            throw new DataAccessServiceException("Error when getting all theaters");
+            throw new DataAccessServiceException("Errore durante il recupero dei teatri!");
         }
 
     }
@@ -180,6 +182,6 @@ public class TheaterServiceImpl implements TheaterService {
     public Long getTheaterIdByName(String name) throws TheaterNotFoundException {
         return theaterRepository.findByName(name)
                 .map(Theater::getId)
-                .orElseThrow(() -> new TheaterNotFoundException("Error when getting the theater id by name"));
+                .orElseThrow(() -> new TheaterNotFoundException("Errore durante il recupero dell'id del teatro!"));
     }
 }

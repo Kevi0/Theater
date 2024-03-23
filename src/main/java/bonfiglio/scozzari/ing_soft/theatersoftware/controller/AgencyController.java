@@ -3,10 +3,14 @@ package bonfiglio.scozzari.ing_soft.theatersoftware.controller;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.InputDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.input.agency.AgencyDTO;
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.agency.AgencyMapper;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.DuplicateEmailException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.DuplicatePecException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.DuplicateTelException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Agency;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
@@ -18,8 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
-import java.util.Set;
+import java.util.List;
 
 @SuppressWarnings("deprecation")
 @AllArgsConstructor
@@ -34,7 +37,7 @@ public class AgencyController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO agencyDTO
-    ) throws AgencyAlreadyExistException, InvalidDataException, UserNotFoundException {
+    ) throws AgencyAlreadyExistException, InvalidDataException, UserNotFoundException, DuplicatePecException, DuplicateEmailException, DuplicateTelException {
 
         try {
             if (agencyDTO instanceof AgencyDTO dto) {
@@ -67,7 +70,7 @@ public class AgencyController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
-    ) throws AgencyNotFoundException, AgencyAlreadyDeletedException {
+    ) throws AgencyNotFoundException {
 
         if (agencyService.deleteAgency(id).isPresent()) {
             return new ResponseEntity<>(new ResponseMessage("Agency deleted"), HttpStatus.OK);
@@ -79,7 +82,7 @@ public class AgencyController {
 
 
     @RequestMapping(value = "/agencies", method = RequestMethod.GET)
-    public ResponseEntity<Set<Optional<Agency>>> getAll(){
+    public ResponseEntity<List<Agency>> getAll() throws DataAccessServiceException {
         return new ResponseEntity<>(agencyService.getAllAgencies(), HttpStatus.OK);
     }
 

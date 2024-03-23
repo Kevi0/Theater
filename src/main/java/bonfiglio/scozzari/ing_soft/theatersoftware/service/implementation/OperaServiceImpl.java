@@ -1,8 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyDeletedException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.opera.OperaNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.venue.VenueNotFoundException;
@@ -21,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -75,32 +74,11 @@ public class OperaServiceImpl implements OperaService {
     }
 
     @Override
-    public void addOpera(Opera opera) throws OperaAlreadyExistException, InvalidDataException {
-
-        if (operaRepository.findById(opera.getId()).isEmpty()) {
-
-            validator.validate(opera);
-
-            var operaToInsert = Opera.builder()
-                    .title(opera.getTitle())
-                    .startDate(opera.getStartDate())
-                    .startRehearsal(opera.getStartRehearsal())
-                    .build();
-            opera.setCreatedAt(LocalDateTime.now());
-            operaRepository.save(operaToInsert);
-
-        } else {
-            throw new OperaAlreadyExistException("Error when entering the opera");
-        }
-
-    }
-
-    @Override
     public void updateOpera(Long id, Opera opera) throws IllegalAccessException, OperaNotFoundException, InvalidDataException {
 
         Optional<Opera> operaToUpdate = operaRepository.findById(id);
 
-        if (operaToUpdate.isPresent() && (operaRepository.checkIfOperaIsDeleted(id))) {
+        if (operaToUpdate.isPresent()) {
 
             validator.validate(opera);
             Opera existingOpera = operaToUpdate.get();
@@ -114,26 +92,28 @@ public class OperaServiceImpl implements OperaService {
     }
 
     @Override
-    public Optional<Opera> deleteOpera(Long id) throws OperaAlreadyDeletedException, OperaNotFoundException {
+    public Optional<Opera> deleteOpera(Long id) throws OperaNotFoundException {
         Optional<Opera> operaToDelete = operaRepository.findById(id);
 
         if (operaToDelete.isPresent()) {
-            Opera existingOpera = operaToDelete.get();
 
-            if (existingOpera.getDeletedAt() == null) {
-                operaRepository.deleteOperaById(id);
-                return Optional.of(operaRepository.save(existingOpera));
-            } else {
-                throw new OperaAlreadyDeletedException("Error when deleting the theater");
-            }
+            Opera existingOpera = operaToDelete.get();
+            operaRepository.delete(existingOpera);
+
         } else {
             throw new OperaNotFoundException("Error when deleting the theater");
         }
+
+        return operaToDelete;
     }
 
     @Override
-    public Set<Optional<Opera>> getAllOperas() {
-        return new HashSet<>(operaRepository.findAllOperas());
+    public List<Opera> getAllOperas() {
+        try {
+            return operaRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error when getting all the operas");
+        }
     }
 
     @Override

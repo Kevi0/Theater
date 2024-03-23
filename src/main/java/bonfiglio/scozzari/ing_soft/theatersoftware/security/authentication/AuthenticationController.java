@@ -49,6 +49,24 @@ public class AuthenticationController {
         }
     }
 
+    @RequestMapping(value = "/register-admin", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
+    public ResponseEntity<ResponseMessage> registerAdmin(
+            @RequestBody InputDTO userDTO
+    ) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
+
+        try {
+            if (userDTO instanceof UserRegistrationDTO) {
+                userService.registerAdmin(userRegistrationMapper.userDTOToUser(userDTO));
+
+                return new ResponseEntity<>(new ResponseMessage("User registered"), HttpStatus.OK);
+            } else {
+                throw new IllegalArgumentException("User not registered - Invalid CustomType");
+            }
+        } catch (JsonParseException e){
+            throw new HttpMessageNotReadableException("Message Not Readable");
+        }
+    }
+
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST, consumes = "application/json", produces = "application/json")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody InputDTO userDTO

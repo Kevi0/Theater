@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -66,7 +67,7 @@ public class PlayController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
-    ) throws PlayNotFoundException, PlayAlreadyDeletedException {
+    ) throws PlayNotFoundException {
 
         if (playService.deletePlay(id).isPresent()){
             return new ResponseEntity<>(new ResponseMessage("Play deleted"), HttpStatus.OK);
@@ -76,7 +77,7 @@ public class PlayController {
     }
 
     @RequestMapping(value = "/plays", method = RequestMethod.GET)
-    public ResponseEntity<Set<Optional<Play>>> getAll() {
+    public ResponseEntity<List<Play>> getAll() {
         return new ResponseEntity<>(playService.getAllPlays(), HttpStatus.OK);
     }
 

@@ -6,8 +6,8 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.pl
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.play.PlayNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Play;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface PlayService {
 
@@ -19,7 +19,7 @@ public interface PlayService {
 
     Optional<Play> deletePlay(Long id) throws PlayAlreadyDeletedException, PlayNotFoundException;
 
-    Set<Optional<Play>> getAllPlays();
+    List<Play> getAllPlays();
 
     Long getPlayIdByName(String name) throws PlayNotFoundException;
 

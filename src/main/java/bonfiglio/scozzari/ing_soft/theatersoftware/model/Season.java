@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
 @Builder
 @Data

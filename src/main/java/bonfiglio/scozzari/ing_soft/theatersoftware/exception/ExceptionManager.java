@@ -198,18 +198,18 @@ public class ExceptionManager {
     }
 
     @ExceptionHandler(value = {AuthenticationException.class})
-    public ResponseEntity<ErrorMessage> handleAuthenticationException(AuthenticationException exception, HandlerMethod handlerMethod){
+    public ResponseEntity<ErrorMessage> handleAuthenticationException(AuthenticationException exception) {
 
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setTimestamp(LocalDateTime.now());
         errorMessage.setStatus(HttpStatus.UNAUTHORIZED.value());
         errorMessage.setError("UNAUTHORIZED");
         errorMessage.setMessage(exception.getMessage());
-        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+        //errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
 
-        LOGGER.error("AuthenticationException: {}", exception.getMessage() + " Nella classe" +
+        /*LOGGER.error("AuthenticationException: {}", exception.getMessage() + " Nella classe" +
                 " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
-                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");*/
 
         return new ResponseEntity<>(errorMessage, HttpStatus.UNAUTHORIZED);
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -57,16 +58,7 @@ public class VenueServiceImpl implements VenueService {
 
             venueRepository.save(venueToInsert);
 
-        } else if (venueRepository.findVenueByNameAndDeletedAtIsNull(venue.getName())) {
-
-                Optional<Venue> venueToUpdate = venueRepository.findById(venue.getId());
-                Venue existingVenue = venueToUpdate.get();
-                existingVenue.setCreatedAt(LocalDateTime.now());
-                existingVenue.setDeletedAt(null);
-                //TODO SEND EMAIL
-                venueRepository.save(existingVenue);
-        }
-        else {
+        } else {
             throw new VenueAlreadyExistException("Error when entering the venue");
         }
     }
@@ -76,19 +68,16 @@ public class VenueServiceImpl implements VenueService {
         Optional<Venue> venueToDelete = venueRepository.findById(id);
 
         if (venueToDelete.isPresent()) {
+
             Venue existingVenue = venueToDelete.get();
+            venueRepository.delete(existingVenue);
 
-            if (existingVenue.getDeletedAt() == null) {
-                venueRepository.deleteVenueById(id);
-
-                return Optional.of(existingVenue);
-            } else {
-                throw new VenueAlreadyExistException("Error when deleting the venue");
-            }
         }
         else {
             throw new VenueNotFoundException("Error when deleting the venue");
         }
+
+        return venueToDelete;
     }
 
     @Override
@@ -96,7 +85,7 @@ public class VenueServiceImpl implements VenueService {
 
         Optional<Venue> venueToUpdate = venueRepository.findById(id);
 
-        if (venueToUpdate.isPresent() && (!venueRepository.checkIfVenueIsDeleted(id))) {
+        if (venueToUpdate.isPresent()) {
 
             validator.validate(venue);
             Venue existingVenue = venueToUpdate.get();
@@ -108,8 +97,12 @@ public class VenueServiceImpl implements VenueService {
     }
 
     @Override
-    public Set<Optional<Venue>> getAllVenues() {
-        return new HashSet<>(venueRepository.findAllVenues());
+    public List<Venue> getAllVenues() {
+        try {
+            return venueRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error when getting the venues");
+        }
     }
 
     public Long getVenueIdByName(String name) throws VenueNotFoundException {

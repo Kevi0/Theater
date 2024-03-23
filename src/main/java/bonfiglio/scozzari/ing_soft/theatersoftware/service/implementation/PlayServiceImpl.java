@@ -1,7 +1,6 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.play.PlayAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.play.PlayAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.play.PlayNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Play;
@@ -15,8 +14,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -57,7 +56,7 @@ public class PlayServiceImpl implements PlayService {
 
         Optional<Play> playToUpdate = playRepository.findById(id);
 
-        if (playToUpdate.isPresent() && (!playRepository.checkIfPlayIsDeleted(id))) {
+        if (playToUpdate.isPresent()) {
 
             validator.validate(play);
             Play existingPlay = playToUpdate.get();
@@ -71,36 +70,35 @@ public class PlayServiceImpl implements PlayService {
     }
 
     @Override
-    public Optional<Play> deletePlay(Long id) throws PlayAlreadyDeletedException, PlayNotFoundException {
+    public Optional<Play> deletePlay(Long id) throws PlayNotFoundException {
 
         Optional<Play> playToDelete = playRepository.findById(id);
 
         if (playToDelete.isPresent()) {
+
             Play existingPlay = playToDelete.get();
-
-            if (existingPlay.getDeletedAt() == null) {
-                existingPlay.setDeletedAt(LocalDateTime.now());
-                playRepository.save(existingPlay);
-                return Optional.of(existingPlay);
-
-            } else {
-                throw new PlayAlreadyDeletedException("Error when deleting the play");
-            }
+            playRepository.delete(existingPlay);
 
         } else {
             throw new PlayNotFoundException("Error when deleting the play");
         }
 
+        return playToDelete;
+
     }
 
     @Override
-    public Set<Optional<Play>> getAllPlays() {
-        return new HashSet<>(playRepository.findAllPlays());
+    public List<Play> getAllPlays() {
+        try {
+            return playRepository.findAll();
+        } catch (Exception e) {
+            throw new RuntimeException("Error when getting all the plays");
+        }
     }
 
     @Override
     public Long getPlayIdByName(String name) throws PlayNotFoundException {
-        return playRepository.findPlayByName(name)
+        return playRepository.findByName(name)
                 .map(Play::getId)
                 .orElseThrow(() -> new PlayNotFoundException("Error when getting the play id by name"));
     }

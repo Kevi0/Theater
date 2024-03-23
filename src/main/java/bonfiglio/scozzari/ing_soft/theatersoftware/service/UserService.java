@@ -14,7 +14,7 @@ public interface UserService {
 
     void updateUser(Long id, User user) throws IllegalAccessException, UserNotFoundException, InvalidDataException;
 
-    void updatePassword(Long id, String password) throws InvalidDataException;
+    void updatePassword(Long id, String password) throws InvalidDataException, UserNotFoundException;
 
     Optional<User> deleteUser(Long id) throws UserAlreadyDeletedException, UserNotFoundException;
 
@@ -22,6 +22,6 @@ public interface UserService {
 
     Long getUserIdByUsername(String username) throws UserNotFoundException;
 
-    Optional<User> getUserByUsername(String username);
+    Optional<User> getUserByUsername(String username) throws UserNotFoundException;
 
 }

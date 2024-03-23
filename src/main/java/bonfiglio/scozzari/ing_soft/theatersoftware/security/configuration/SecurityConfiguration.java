@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+@SuppressWarnings("All")
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -19,28 +20,25 @@ public class SecurityConfiguration {
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/api/v1/auth/**")
-                .permitAll()
-                .requestMatchers("/api/artist/**")
-                .permitAll()
-                .requestMatchers("/api/**")
-                .permitAll()
-                .requestMatchers("/test-email/send")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
-                .and()
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api/v1/auth/register-admin").permitAll()
+                        .requestMatchers("/api/v1/auth/authenticate").permitAll()
+                        .requestMatchers("/api/v1/auth/register").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/api/artist/**").hasAuthority("ROLE_ARTIST")
+                        .requestMatchers("/api/theater/**").hasAnyAuthority("ROLE_THEATER_ADMIN", "ROLE_THEATER_EMPLOYEE")
+                        .requestMatchers("/api/agency/**").hasAnyAuthority("ROLE_AGENCY_ADMIN", "ROLE_AGENCY_EMPLOYEE")
+                        .anyRequest().authenticated()
+                )
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return httpSecurity.build();
+        return http.build();
     }
 
 }

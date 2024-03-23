@@ -17,6 +17,102 @@ public class TheaterExceptionManager {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TheaterExceptionManager.class);
 
+    @ExceptionHandler(value = {DuplicateNameException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicateName(DuplicateNameException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicateName: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {DuplicateTelException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicateTel(DuplicateTelException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicateTel: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {DuplicateEmailException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicateEmail(DuplicateEmailException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicateEmail: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {DuplicatePecException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicatePec(DuplicatePecException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicatePec: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {DuplicateUniqueCodeException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicateUniqueCode(DuplicateUniqueCodeException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicateUniqueCode: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {DuplicateRecipientCodeException.class})
+    public ResponseEntity<ErrorMessage> handleDuplicateRecipientCode(DuplicateRecipientCodeException exception, HandlerMethod handlerMethod){
+        ErrorMessage errorMessage = new ErrorMessage();
+        errorMessage.setTimestamp(LocalDateTime.now());
+        errorMessage.setStatus(HttpStatus.CONFLICT.value());
+        errorMessage.setError("CONFLICT");
+        errorMessage.setMessage(exception.getMessage());
+        errorMessage.setPath(RequestMappingUtils.extractPath(handlerMethod));
+
+        LOGGER.error("DuplicateRecipientCode: {}", exception.getMessage() + " Nella classe" +
+                " ' " + RequestMappingUtils.extractClassName(handlerMethod) + " ' " + " con nome del metodo" +
+                " ' " + RequestMappingUtils.extractMethodName(handlerMethod) + " ' ");
+
+        return new ResponseEntity<>(errorMessage, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(value = {UnregisteredTheaterException.class})
     public ResponseEntity<ErrorMessage> handleUnregisteredTheaterException(UnregisteredTheaterException exception, HandlerMethod handlerMethod){
         ErrorMessage errorMessage = new ErrorMessage();

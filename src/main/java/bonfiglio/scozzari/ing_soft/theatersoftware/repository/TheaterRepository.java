@@ -1,38 +1,24 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.repository;
 
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface TheaterRepository extends JpaRepository<Theater, Long> {
 
-    @NotNull Optional<Theater> findById(@NotNull Long id);
-
     Optional<Theater> findByName(String name);
 
-    Optional<Theater> findTheaterByEmail(String email);
+    Optional<Theater> findByTel(String tel);
 
-    @Modifying
-    @Query("UPDATE Theater t SET t.deletedAt = CURRENT_TIMESTAMP WHERE t.id = :id")
-    void deleteTheaterById(@Param("id") Long id);
+    Optional<Theater> findByEmail(String email);
 
-    @Query("SELECT t FROM Theater t WHERE t.deletedAt IS NULL")
-    List<Theater> findAllByDeletedAtIsNull();
+    Optional<Theater> findByPec(String pec);
 
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.id = :id AND t.deletedAt IS NOT NULL")
-    //return true if there is a theater with id = :id and deletedAt set (the theater has been deleted)
-    //return false if there is no theater with id = :id and deletedAt not set (the theater has not been deleted)
-    boolean existsByIdAndDeletedAtIsNotNull(Long id);
+    Optional<Theater> findByIva(String iva);
 
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.email = :email AND t.deletedAt IS NOT NULL")
-    boolean existsByEmailAndDeletedAtIsNotNull(String email);
+    Optional<Theater> findByUniqueCode(String uniqueCode);
 
-    @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Theater t WHERE t.email = :email")
-    boolean findByEmail(String email);
+    Optional<Theater> findByRecipientCode(String recipientCode);
+
 }

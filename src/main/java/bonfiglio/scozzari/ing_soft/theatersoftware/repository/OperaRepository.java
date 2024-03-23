@@ -16,19 +16,6 @@ public interface OperaRepository extends JpaRepository<Opera, Long> {
 
     Optional<Opera> findOperaByTitle(String title);
 
-    @Modifying
-    @Query("UPDATE Opera o SET o.deletedAt = CURRENT_TIMESTAMP WHERE o.id = :id")
-    void deleteOperaById(@Param("id") Long id);
-
-    @Query("SELECT o FROM Opera o WHERE o.deletedAt IS NULL")
-    Set<Optional<Opera>> findAllOperas();
-
-    @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.id = :id AND o.deletedAt IS NOT NULL")
-    boolean checkIfOperaIsDeleted(Long id);
-
-    /*@Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.title = :title AND o.deletedAt IS NOT NULL")
-    boolean findByIdAndDeletedAtIsNull(Long id);*/
-
     @Query("SELECT CASE WHEN COUNT(o) > 0 THEN true ELSE false END FROM Opera o WHERE o.id = :id")
     boolean findOperaById(Long id);
 

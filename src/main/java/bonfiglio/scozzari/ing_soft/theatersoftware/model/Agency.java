@@ -22,22 +22,22 @@ public class Agency extends BaseEntityAudit implements Updatable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, updatable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = true, unique = true)
     private String pec;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String tel1;
 
-    @Column
+    @Column(nullable = true, unique = true)
     private String tel2;
 
-    @Column
+    @Column(nullable = true, unique = false)
     private String website;
 
     @OneToMany(mappedBy = "agency") // mappedBy = "agency" -> agency è il nome del campo nella classe UserAgency

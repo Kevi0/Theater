@@ -8,13 +8,9 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.theater.TheaterMap
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.theater.TheaterUpdateRequestMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyDeletedException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterAlreadyExistException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.TheaterNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.UnregisteredTheaterException;
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.theater.*;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UnregisteredUserException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.TheaterServiceImpl;
 import lombok.AllArgsConstructor;
@@ -25,8 +21,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @SuppressWarnings("deprecation")
 @AllArgsConstructor
@@ -42,7 +36,11 @@ public class TheaterController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ResponseEntity<ResponseMessage> create(
             @RequestBody InputDTO theaterDTO
-    ) throws TheaterAlreadyExistException, InvalidDataException, UserNotFoundException, UnregisteredTheaterException, UnregisteredUserException {
+
+    ) throws TheaterAlreadyExistException, InvalidDataException, UserNotFoundException,
+            UnregisteredTheaterException, UnregisteredUserException, DuplicateNameException,
+            DuplicatePecException, DuplicateEmailException, DuplicateTelException,
+            DuplicateRecipientCodeException, DuplicateUniqueCodeException {
 
         try {
             if (theaterDTO instanceof TheaterDTO dto){

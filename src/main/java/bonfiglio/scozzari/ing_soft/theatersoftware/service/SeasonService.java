@@ -1,7 +1,7 @@
 package bonfiglio.scozzari.ing_soft.theatersoftware.service;
 
+import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.agency.AgencyAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonAlreadyExistException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.season.SeasonNotFoundException;
@@ -9,8 +9,8 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.th
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Season;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 public interface SeasonService {
 
@@ -20,7 +20,7 @@ public interface SeasonService {
 
     Optional<Season> deleteSeason(Long id) throws SeasonAlreadyDeletedException, SeasonNotFoundException;
 
-    Set<Optional<Season>> getAllSeasons();
+    List<Season> getAllSeasons() throws DataAccessServiceException;
 
     Long getSeasonIdByTitle(String title) throws SeasonNotFoundException;
 

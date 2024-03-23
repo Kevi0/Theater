@@ -8,9 +8,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdatePasswor
 import bonfiglio.scozzari.ing_soft.theatersoftware.dto.mapper.user.UpdateRequestMapper;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.DataAccessServiceException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.InvalidDataException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserAlreadyDeletedException;
 import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.user.UserNotFoundException;
-import bonfiglio.scozzari.ing_soft.theatersoftware.model.User;
 import bonfiglio.scozzari.ing_soft.theatersoftware.response.ResponseMessage;
 import bonfiglio.scozzari.ing_soft.theatersoftware.service.implementation.UserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -57,7 +55,7 @@ public class UserController {
     public ResponseEntity<ResponseMessage> updatePassword(
             @PathVariable Long id,
             @RequestBody InputDTO requestDTO
-    ) throws InvalidDataException {
+    ) throws InvalidDataException, UserNotFoundException {
 
         if (requestDTO instanceof UpdatePasswordRequestDTO) {
             userService.updatePassword(id, updatePasswordRequestMapper.userDTOToUser(requestDTO));
@@ -72,7 +70,7 @@ public class UserController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
-    ) throws UserNotFoundException, UserAlreadyDeletedException {
+    ) throws UserNotFoundException {
 
         if (userService.deleteUser(id).isPresent()) {
             return new ResponseEntity<>(new ResponseMessage("User deleted"), HttpStatus.OK);

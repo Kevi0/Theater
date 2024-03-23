@@ -57,7 +57,7 @@ public class EmailService {
             javaMailSender.send(mimeMessage);
 
         } catch (MailException | MessagingException | TemplateException | IOException e) {
-            throw new SendingMailException("Error when sending the email");
+            throw new SendingMailException("Errore durante l'invio della mail di registrazione");
         }
 
     }

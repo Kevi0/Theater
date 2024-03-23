@@ -24,6 +24,8 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.TransientObjectException;
 import org.hibernate.exception.LockAcquisitionException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,7 +38,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("All")
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -57,7 +58,14 @@ public class AuthenticationService {
 
     public void register(User user) throws UserAlreadyExistException, InvalidDataException, SendingMailException, UnregisteredUserException {
 
-        if (!userRepository.existsByEmail(user.getEmail())) {
+        if (!(userRepository.existsByEmail(user.getEmail()))) {
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+                throw new UnregisteredUserException("La registrazione richiede l'autenticazione.");
+            }
+
+            String currentUsername = authentication.getName();
 
             validator.validate(user);
 
@@ -70,43 +78,62 @@ public class AuthenticationService {
                     .role(UserRoles.USER)
                     .build();
             userToInsert.setCreatedAt(LocalDateTime.now());
+            userToInsert.setCreatedBy(currentUsername);
 
             try {
 
                 userRepository.save(userToInsert);
 
-            } catch (ConstraintViolationException | DataIntegrityViolationException e) {
-                throw new UserAlreadyExistException("Errore durante la registrazione!");
-            } catch (TransientObjectException | LockAcquisitionException e) {
-                throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
+            } catch (ConstraintViolationException | DataIntegrityViolationException | TransientObjectException | LockAcquisitionException e){
+                throw new UnregisteredUserException("Errore durante la registrazione: qualcosa è andato storto!");
             }
 
             sendRegistrationEmail(userToInsert);
-
-        } else if (userRepository.existsByEmailAndDeletedAtIsNull(user.getEmail())) {
-
-            Optional<User> userToUpdate = userRepository.findByEmail(user.getEmail());
-            User existingUser = userToUpdate.get();
-            existingUser.setCreatedAt(LocalDateTime.now());
-            existingUser.setDeletedAt(null);
-
-            try {
-
-                userRepository.save(existingUser);
-
-            } catch (ConstraintViolationException | DataIntegrityViolationException e) {
-                throw new UserAlreadyExistException("Errore durante la registrazione!");
-            } catch (TransientObjectException | LockAcquisitionException e) {
-                throw new UnregisteredUserException("Errore durante la registrazione, utente non registrato!");
-            }
-
-            sendRegistrationEmail(existingUser);
 
         } else {
             throw new UserAlreadyExistException("Errore durante la registrazione!");
         }
     }
 
+    public void registerAdmin(User user) throws UnregisteredUserException, InvalidDataException, SendingMailException, UserAlreadyExistException {
+
+        if (!(userRepository.existsByEmail(user.getEmail()))) {
+
+            /*Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
+                throw new UnregisteredUserException("La registrazione richiede l'autenticazione.");
+            }*/
+
+            //String currentUsername = authentication.getName();
+
+            validator.validate(user);
+
+            var userToInsert = User.builder()
+                    .name(user.getName())
+                    .surname(user.getSurname())
+                    .email(user.getEmail())
+                    .username(generateUsername.generateUniqueUsername())
+                    .password(passwordEncoder.encode(user.getPassword()))
+                    .role(UserRoles.ADMIN)
+                    .build();
+            userToInsert.setCreatedAt(LocalDateTime.now());
+            //userToInsert.setCreatedBy(currentUsername);
+
+            try {
+
+                userRepository.save(userToInsert);
+
+            } catch (ConstraintViolationException | DataIntegrityViolationException | TransientObjectException | LockAcquisitionException e){
+                throw new UnregisteredUserException("Errore durante la registrazione: qualcosa è andato storto!");
+            }
+
+            sendRegistrationEmail(userToInsert);
+
+        } else {
+            throw new UserAlreadyExistException("Errore durante la registrazione!");
+        }
+
+    }
 
     public AuthenticationResponse authenticate(User user) throws BadCredentialsException, UserNotFoundException, InvalidTokenException, ExpiredJwtException {
 
@@ -125,22 +152,6 @@ public class AuthenticationService {
                     if (jwtService.isTokenExpired(token)) {
 
                         jwtService.handleExpiredJwtException(token);
-
-                        /*tokenService.deleteToken(token);
-                        var newJwtToken = jwtService.generateToken(userToAuthenticate);
-                        tokenService.addToken(newJwtToken, userToAuthenticate);
-
-                        authenticationManager.authenticate(
-                                new UsernamePasswordAuthenticationToken(
-                                        user.getUsername(),
-                                        user.getPassword()
-                                )
-                        );
-
-                        return AuthenticationResponse
-                                .builder()
-                                .token(newJwtToken)
-                                .build();*/
 
                     } else {
 
@@ -192,7 +203,7 @@ public class AuthenticationService {
 
     }
 
-    public Optional<User> getAuthenticationUser() {
+    public Optional<User> getAuthenticationUser() throws UserNotFoundException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return userService.getUserByUsername(authentication.getName());

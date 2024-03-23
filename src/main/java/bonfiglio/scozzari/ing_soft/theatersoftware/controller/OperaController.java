@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -68,7 +69,7 @@ public class OperaController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<ResponseMessage> delete(
             @PathVariable Long id
-    ) throws OperaNotFoundException, OperaAlreadyDeletedException {
+    ) throws OperaNotFoundException {
 
         if (operaService.deleteOpera(id).isPresent()){
             return new ResponseEntity<>(new ResponseMessage("Opera deleted"), HttpStatus.OK);
@@ -78,7 +79,7 @@ public class OperaController {
     }
 
     @RequestMapping(value = "/operas", method = RequestMethod.GET)
-    public Set<Optional<Opera>> getAll(){
+    public List<Opera> getAll(){
         return operaService.getAllOperas();
     }
 

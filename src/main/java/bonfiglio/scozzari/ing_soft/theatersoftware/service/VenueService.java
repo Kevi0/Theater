@@ -6,6 +6,7 @@ import bonfiglio.scozzari.ing_soft.theatersoftware.exception.customExceptions.ve
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Theater;
 import bonfiglio.scozzari.ing_soft.theatersoftware.model.Venue;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,5 +18,5 @@ public interface VenueService {
 
     Optional<Venue> deleteVenue(Long id) throws VenueNotFoundException, VenueAlreadyExistException;
 
-    Set<Optional<Venue>> getAllVenues();
+    List<Venue> getAllVenues();
 }

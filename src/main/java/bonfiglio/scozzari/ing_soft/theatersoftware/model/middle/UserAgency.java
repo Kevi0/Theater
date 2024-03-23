@@ -23,13 +23,13 @@ public class UserAgency {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private AgencyRoles role;
-
     @ManyToOne
     private User user;
 
     @ManyToOne
     private Agency agency;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private AgencyRoles role;
 }

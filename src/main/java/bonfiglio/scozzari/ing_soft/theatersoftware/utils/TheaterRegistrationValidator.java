@@ -17,7 +17,7 @@ public class TheaterRegistrationValidator {
         validateTel(theater.getTel());
         validateEmail(theater.getEmail());
         validateIva(theater.getIva());
-        validatePec(theater.getPec());
+        //validatePec(theater.getPec());
         validateWebsite(theater.getWebsite());
         validateUniqueCode(theater.getUniqueCode());
         validateRecipientCode(theater.getRecipientCode());
@@ -75,7 +75,7 @@ public class TheaterRegistrationValidator {
         }
     }
 
-    private void validatePec(String pec) throws InvalidDataException {
+    /*private void validatePec(String pec) throws InvalidDataException {
 
         if (pec == null || pec.trim().isEmpty()) {
             throw new InvalidDataException("Error during registration: the 'pec' field cannot be empty, or cannot contain only spaces!");
@@ -83,7 +83,7 @@ public class TheaterRegistrationValidator {
         if (!pec.matches(RegexPatterns.EMAIL_PATTERN)) {
             throw new InvalidDataException("Error during registration: the 'pec' field is not in the correct format!");
         }
-    }
+    }*/
 
     private void validateIva(String iva) throws InvalidDataException {
 

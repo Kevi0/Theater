@@ -30,7 +30,7 @@ public class TokenServiceImpl implements TokenService {
         if (extractUser.isPresent()) {
             tokenRepository.save(new Token(token, extractUser.get()));
         } else {
-            throw new UserNotFoundException("Error when adding the token");
+            throw new UserNotFoundException("Errore durante la creazione del token");
         }
 
     }
